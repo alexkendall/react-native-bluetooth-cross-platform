@@ -12,7 +12,6 @@
 		00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302C01ABCB91800DB3ED1 /* libRCTImage.a */; };
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
-		00E356F31AD99517003FC87E /* RCTUnderdarkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RCTUnderdarkTests.m */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
@@ -21,94 +20,11 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		FAA68E041D133DBB00E77DA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA68E031D133DBB00E77DA5 /* AppDelegate.swift */; };
 		FAA68E101D13423D00E77DA5 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = FAA68E0F1D13423D00E77DA5 /* main.jsbundle */; };
-		FAA693131D146D2100E77DA5 /* AbstractMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692E21D146D2100E77DA5 /* AbstractMessage.m */; };
-		FAA693141D146D2100E77DA5 /* AbstractMessageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692E41D146D2100E77DA5 /* AbstractMessageBuilder.m */; };
-		FAA693151D146D2100E77DA5 /* CodedInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692E71D146D2100E77DA5 /* CodedInputStream.m */; };
-		FAA693161D146D2100E77DA5 /* CodedOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692E91D146D2100E77DA5 /* CodedOutputStream.m */; };
-		FAA693171D146D2100E77DA5 /* ConcreteExtensionField.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692EB1D146D2100E77DA5 /* ConcreteExtensionField.m */; };
-		FAA693181D146D2100E77DA5 /* Descriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692ED1D146D2100E77DA5 /* Descriptor.pb.m */; };
-		FAA693191D146D2100E77DA5 /* ExtendableMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692EF1D146D2100E77DA5 /* ExtendableMessage.m */; };
-		FAA6931A1D146D2100E77DA5 /* ExtendableMessageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692F11D146D2100E77DA5 /* ExtendableMessageBuilder.m */; };
-		FAA6931B1D146D2100E77DA5 /* ExtensionRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692F41D146D2100E77DA5 /* ExtensionRegistry.m */; };
-		FAA6931C1D146D2100E77DA5 /* Field.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692F61D146D2100E77DA5 /* Field.m */; };
-		FAA6931D1D146D2100E77DA5 /* GeneratedMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692F91D146D2100E77DA5 /* GeneratedMessage.m */; };
-		FAA6931E1D146D2100E77DA5 /* GeneratedMessageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692FB1D146D2100E77DA5 /* GeneratedMessageBuilder.m */; };
-		FAA6931F1D146D2100E77DA5 /* MutableExtensionRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692FF1D146D2100E77DA5 /* MutableExtensionRegistry.m */; };
-		FAA693201D146D2100E77DA5 /* MutableField.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA693011D146D2100E77DA5 /* MutableField.m */; };
-		FAA693211D146D2100E77DA5 /* ObjectivecDescriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA693031D146D2100E77DA5 /* ObjectivecDescriptor.pb.m */; };
-		FAA693221D146D2100E77DA5 /* PBArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA693051D146D2100E77DA5 /* PBArray.m */; };
-		FAA693231D146D2100E77DA5 /* RingBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA693081D146D2100E77DA5 /* RingBuffer.m */; };
-		FAA693241D146D2100E77DA5 /* TextFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA6930A1D146D2100E77DA5 /* TextFormat.m */; };
-		FAA693251D146D2100E77DA5 /* UnknownFieldSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA6930C1D146D2100E77DA5 /* UnknownFieldSet.m */; };
-		FAA693261D146D2100E77DA5 /* UnknownFieldSetBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA6930E1D146D2100E77DA5 /* UnknownFieldSetBuilder.m */; };
-		FAA693271D146D2100E77DA5 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA693101D146D2100E77DA5 /* Utilities.m */; };
-		FAA693281D146D2100E77DA5 /* WireFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA693121D146D2100E77DA5 /* WireFormat.m */; };
-		FAA693311D146D8600E77DA5 /* ProtocolBuffers.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA693301D146D8600E77DA5 /* ProtocolBuffers.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FAA693381D146D8600E77DA5 /* ProtocolBuffers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA6932E1D146D8600E77DA5 /* ProtocolBuffers.framework */; };
-		FAA6933F1D146D8600E77DA5 /* ProtocolBuffersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA6933E1D146D8600E77DA5 /* ProtocolBuffersTests.swift */; };
-		FAA693431D146D8600E77DA5 /* ProtocolBuffers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA6932E1D146D8600E77DA5 /* ProtocolBuffers.framework */; };
-		FAA693441D146D8600E77DA5 /* ProtocolBuffers.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FAA6932E1D146D8600E77DA5 /* ProtocolBuffers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		FAA6934B1D146D9A00E77DA5 /* AbstractMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692E11D146D2100E77DA5 /* AbstractMessage.h */; };
-		FAA6934C1D146D9A00E77DA5 /* AbstractMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692E21D146D2100E77DA5 /* AbstractMessage.m */; };
-		FAA6934D1D146D9A00E77DA5 /* AbstractMessageBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692E31D146D2100E77DA5 /* AbstractMessageBuilder.h */; };
-		FAA6934E1D146D9A00E77DA5 /* AbstractMessageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692E41D146D2100E77DA5 /* AbstractMessageBuilder.m */; };
-		FAA6934F1D146D9A00E77DA5 /* Bootstrap.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692E51D146D2100E77DA5 /* Bootstrap.h */; };
-		FAA693501D146D9A00E77DA5 /* CodedInputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692E61D146D2100E77DA5 /* CodedInputStream.h */; };
-		FAA693511D146D9A00E77DA5 /* CodedInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692E71D146D2100E77DA5 /* CodedInputStream.m */; };
-		FAA693521D146D9A00E77DA5 /* CodedOutputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692E81D146D2100E77DA5 /* CodedOutputStream.h */; };
-		FAA693531D146D9A00E77DA5 /* CodedOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692E91D146D2100E77DA5 /* CodedOutputStream.m */; };
-		FAA693541D146D9A00E77DA5 /* ConcreteExtensionField.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692EA1D146D2100E77DA5 /* ConcreteExtensionField.h */; };
-		FAA693551D146D9A00E77DA5 /* ConcreteExtensionField.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692EB1D146D2100E77DA5 /* ConcreteExtensionField.m */; };
-		FAA693561D146D9A00E77DA5 /* Descriptor.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692EC1D146D2100E77DA5 /* Descriptor.pb.h */; };
-		FAA693571D146D9A00E77DA5 /* Descriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692ED1D146D2100E77DA5 /* Descriptor.pb.m */; };
-		FAA693581D146D9A00E77DA5 /* ExtendableMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692EE1D146D2100E77DA5 /* ExtendableMessage.h */; };
-		FAA693591D146D9A00E77DA5 /* ExtendableMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692EF1D146D2100E77DA5 /* ExtendableMessage.m */; };
-		FAA6935A1D146D9A00E77DA5 /* ExtendableMessageBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692F01D146D2100E77DA5 /* ExtendableMessageBuilder.h */; };
-		FAA6935B1D146D9A00E77DA5 /* ExtendableMessageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692F11D146D2100E77DA5 /* ExtendableMessageBuilder.m */; };
-		FAA6935C1D146D9A00E77DA5 /* ExtensionField.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692F21D146D2100E77DA5 /* ExtensionField.h */; };
-		FAA6935D1D146D9A00E77DA5 /* ExtensionRegistry.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692F31D146D2100E77DA5 /* ExtensionRegistry.h */; };
-		FAA6935E1D146D9A00E77DA5 /* ExtensionRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692F41D146D2100E77DA5 /* ExtensionRegistry.m */; };
-		FAA6935F1D146D9A00E77DA5 /* Field.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692F51D146D2100E77DA5 /* Field.h */; };
-		FAA693601D146D9A00E77DA5 /* Field.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692F61D146D2100E77DA5 /* Field.m */; };
-		FAA693611D146D9A00E77DA5 /* ForwardDeclarations.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692F71D146D2100E77DA5 /* ForwardDeclarations.h */; };
-		FAA693621D146D9A00E77DA5 /* GeneratedMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692F81D146D2100E77DA5 /* GeneratedMessage.h */; };
-		FAA693631D146D9A00E77DA5 /* GeneratedMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692F91D146D2100E77DA5 /* GeneratedMessage.m */; };
-		FAA693641D146D9A00E77DA5 /* GeneratedMessageBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692FA1D146D2100E77DA5 /* GeneratedMessageBuilder.h */; };
-		FAA693651D146D9A00E77DA5 /* GeneratedMessageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692FB1D146D2100E77DA5 /* GeneratedMessageBuilder.m */; };
-		FAA693661D146D9A00E77DA5 /* Message.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692FC1D146D2100E77DA5 /* Message.h */; };
-		FAA693671D146D9A00E77DA5 /* MessageBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692FD1D146D2100E77DA5 /* MessageBuilder.h */; };
-		FAA693681D146D9A00E77DA5 /* MutableExtensionRegistry.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA692FE1D146D2100E77DA5 /* MutableExtensionRegistry.h */; };
-		FAA693691D146D9A00E77DA5 /* MutableExtensionRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA692FF1D146D2100E77DA5 /* MutableExtensionRegistry.m */; };
-		FAA6936A1D146D9A00E77DA5 /* MutableField.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA693001D146D2100E77DA5 /* MutableField.h */; };
-		FAA6936B1D146D9A00E77DA5 /* MutableField.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA693011D146D2100E77DA5 /* MutableField.m */; };
-		FAA6936C1D146D9A00E77DA5 /* ObjectivecDescriptor.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA693021D146D2100E77DA5 /* ObjectivecDescriptor.pb.h */; };
-		FAA6936D1D146D9A00E77DA5 /* ObjectivecDescriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA693031D146D2100E77DA5 /* ObjectivecDescriptor.pb.m */; };
-		FAA6936E1D146D9A00E77DA5 /* PBArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA693041D146D2100E77DA5 /* PBArray.h */; };
-		FAA6936F1D146D9A00E77DA5 /* PBArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA693051D146D2100E77DA5 /* PBArray.m */; };
-		FAA693701D146D9A00E77DA5 /* ProtocolBuffers.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA693061D146D2100E77DA5 /* ProtocolBuffers.h */; };
-		FAA693711D146D9A00E77DA5 /* RingBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA693071D146D2100E77DA5 /* RingBuffer.h */; };
-		FAA693721D146D9A00E77DA5 /* RingBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA693081D146D2100E77DA5 /* RingBuffer.m */; };
-		FAA693731D146D9A00E77DA5 /* TextFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA693091D146D2100E77DA5 /* TextFormat.h */; };
-		FAA693741D146D9A00E77DA5 /* TextFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA6930A1D146D2100E77DA5 /* TextFormat.m */; };
-		FAA693751D146D9A00E77DA5 /* UnknownFieldSet.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA6930B1D146D2100E77DA5 /* UnknownFieldSet.h */; };
-		FAA693761D146D9A00E77DA5 /* UnknownFieldSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA6930C1D146D2100E77DA5 /* UnknownFieldSet.m */; };
-		FAA693771D146D9A00E77DA5 /* UnknownFieldSetBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA6930D1D146D2100E77DA5 /* UnknownFieldSetBuilder.h */; };
-		FAA693781D146D9A00E77DA5 /* UnknownFieldSetBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA6930E1D146D2100E77DA5 /* UnknownFieldSetBuilder.m */; };
-		FAA693791D146D9A00E77DA5 /* Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA6930F1D146D2100E77DA5 /* Utilities.h */; };
-		FAA6937A1D146D9A00E77DA5 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA693101D146D2100E77DA5 /* Utilities.m */; };
-		FAA6937B1D146D9A00E77DA5 /* WireFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA693111D146D2100E77DA5 /* WireFormat.h */; };
-		FAA6937C1D146D9A00E77DA5 /* WireFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA693121D146D2100E77DA5 /* WireFormat.m */; };
-		FAA693811D146DE800E77DA5 /* MSWeakTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA693801D146DE800E77DA5 /* MSWeakTimer.m */; };
-		FAA6938A1D146DF400E77DA5 /* MSWeakTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA693891D146DF400E77DA5 /* MSWeakTimer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FAA693911D146DF400E77DA5 /* MSWeakTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA693871D146DF400E77DA5 /* MSWeakTimer.framework */; };
-		FAA693981D146DF500E77DA5 /* MSWeakTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA693971D146DF500E77DA5 /* MSWeakTimerTests.swift */; };
-		FAA6939C1D146DF500E77DA5 /* MSWeakTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA693871D146DF400E77DA5 /* MSWeakTimer.framework */; };
-		FAA6939D1D146DF500E77DA5 /* MSWeakTimer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FAA693871D146DF400E77DA5 /* MSWeakTimer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		FAA693A41D146DFB00E77DA5 /* MSWeakTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = FAA6937F1D146DE800E77DA5 /* MSWeakTimer.h */; };
-		FAA693A51D146DFB00E77DA5 /* MSWeakTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA693801D146DE800E77DA5 /* MSWeakTimer.m */; };
-		FAA693A71D146E2400E77DA5 /* Underdark.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA693A61D146E2400E77DA5 /* Underdark.framework */; };
 		FAA693A91D146E8900E77DA5 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA693A81D146E8900E77DA5 /* NetworkManager.swift */; };
 		FAA693AB1D146F5000E77DA5 /* NetworkManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA693AA1D146F5000E77DA5 /* NetworkManagerBridge.m */; };
+		FAA693AD1D14813400E77DA5 /* Underdark.framework in Resources */ = {isa = PBXBuildFile; fileRef = FAA693A61D146E2400E77DA5 /* Underdark.framework */; };
+		FAA693B01D1481E100E77DA5 /* Underdark.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA693A61D146E2400E77DA5 /* Underdark.framework */; };
+		FAA693B11D1481E100E77DA5 /* Underdark.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FAA693A61D146E2400E77DA5 /* Underdark.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,13 +63,6 @@
 			remoteGlobalIDString = 832C81801AAF6DEF007FA2F7;
 			remoteInfo = RCTVibration;
 		};
-		00E356F41AD99517003FC87E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = RCTUnderdark;
-		};
 		139105C01AF99BAD00B5F7CC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */;
@@ -189,48 +98,6 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
-		FAA693391D146D8600E77DA5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FAA6932D1D146D8600E77DA5;
-			remoteInfo = ProtocolBuffers;
-		};
-		FAA6933B1D146D8600E77DA5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = RCTUnderdark;
-		};
-		FAA693411D146D8600E77DA5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FAA6932D1D146D8600E77DA5;
-			remoteInfo = ProtocolBuffers;
-		};
-		FAA693921D146DF400E77DA5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FAA693861D146DF400E77DA5;
-			remoteInfo = MSWeakTimer;
-		};
-		FAA693941D146DF500E77DA5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = RCTUnderdark;
-		};
-		FAA6939A1D146DF500E77DA5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FAA693861D146DF400E77DA5;
-			remoteInfo = MSWeakTimer;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -240,19 +107,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FAA6939D1D146DF500E77DA5 /* MSWeakTimer.framework in Embed Frameworks */,
-				FAA693441D146D8600E77DA5 /* ProtocolBuffers.framework in Embed Frameworks */,
+				FAA693B11D1481E100E77DA5 /* Underdark.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FAA68F881D13464D00E77DA5 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -263,7 +120,6 @@
 		00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImage.xcodeproj; path = "../node_modules/react-native/Libraries/Image/RCTImage.xcodeproj"; sourceTree = "<group>"; };
 		00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTNetwork.xcodeproj; path = "../node_modules/react-native/Libraries/Network/RCTNetwork.xcodeproj"; sourceTree = "<group>"; };
 		00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVibration.xcodeproj; path = "../node_modules/react-native/Libraries/Vibration/RCTVibration.xcodeproj"; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* RCTUnderdarkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RCTUnderdarkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* RCTUnderdarkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTUnderdarkTests.m; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
@@ -277,83 +133,12 @@
 		FAA68E021D133DBB00E77DA5 /* RCTUnderdark-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTUnderdark-Bridging-Header.h"; sourceTree = "<group>"; };
 		FAA68E031D133DBB00E77DA5 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAA68E0F1D13423D00E77DA5 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		FAA692E11D146D2100E77DA5 /* AbstractMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractMessage.h; sourceTree = "<group>"; };
-		FAA692E21D146D2100E77DA5 /* AbstractMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractMessage.m; sourceTree = "<group>"; };
-		FAA692E31D146D2100E77DA5 /* AbstractMessageBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractMessageBuilder.h; sourceTree = "<group>"; };
-		FAA692E41D146D2100E77DA5 /* AbstractMessageBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractMessageBuilder.m; sourceTree = "<group>"; };
-		FAA692E51D146D2100E77DA5 /* Bootstrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bootstrap.h; sourceTree = "<group>"; };
-		FAA692E61D146D2100E77DA5 /* CodedInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodedInputStream.h; sourceTree = "<group>"; };
-		FAA692E71D146D2100E77DA5 /* CodedInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CodedInputStream.m; sourceTree = "<group>"; };
-		FAA692E81D146D2100E77DA5 /* CodedOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodedOutputStream.h; sourceTree = "<group>"; };
-		FAA692E91D146D2100E77DA5 /* CodedOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CodedOutputStream.m; sourceTree = "<group>"; };
-		FAA692EA1D146D2100E77DA5 /* ConcreteExtensionField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConcreteExtensionField.h; sourceTree = "<group>"; };
-		FAA692EB1D146D2100E77DA5 /* ConcreteExtensionField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConcreteExtensionField.m; sourceTree = "<group>"; };
-		FAA692EC1D146D2100E77DA5 /* Descriptor.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Descriptor.pb.h; sourceTree = "<group>"; };
-		FAA692ED1D146D2100E77DA5 /* Descriptor.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Descriptor.pb.m; sourceTree = "<group>"; };
-		FAA692EE1D146D2100E77DA5 /* ExtendableMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtendableMessage.h; sourceTree = "<group>"; };
-		FAA692EF1D146D2100E77DA5 /* ExtendableMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtendableMessage.m; sourceTree = "<group>"; };
-		FAA692F01D146D2100E77DA5 /* ExtendableMessageBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtendableMessageBuilder.h; sourceTree = "<group>"; };
-		FAA692F11D146D2100E77DA5 /* ExtendableMessageBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtendableMessageBuilder.m; sourceTree = "<group>"; };
-		FAA692F21D146D2100E77DA5 /* ExtensionField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtensionField.h; sourceTree = "<group>"; };
-		FAA692F31D146D2100E77DA5 /* ExtensionRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtensionRegistry.h; sourceTree = "<group>"; };
-		FAA692F41D146D2100E77DA5 /* ExtensionRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtensionRegistry.m; sourceTree = "<group>"; };
-		FAA692F51D146D2100E77DA5 /* Field.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Field.h; sourceTree = "<group>"; };
-		FAA692F61D146D2100E77DA5 /* Field.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Field.m; sourceTree = "<group>"; };
-		FAA692F71D146D2100E77DA5 /* ForwardDeclarations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForwardDeclarations.h; sourceTree = "<group>"; };
-		FAA692F81D146D2100E77DA5 /* GeneratedMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneratedMessage.h; sourceTree = "<group>"; };
-		FAA692F91D146D2100E77DA5 /* GeneratedMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedMessage.m; sourceTree = "<group>"; };
-		FAA692FA1D146D2100E77DA5 /* GeneratedMessageBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneratedMessageBuilder.h; sourceTree = "<group>"; };
-		FAA692FB1D146D2100E77DA5 /* GeneratedMessageBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedMessageBuilder.m; sourceTree = "<group>"; };
-		FAA692FC1D146D2100E77DA5 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
-		FAA692FD1D146D2100E77DA5 /* MessageBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBuilder.h; sourceTree = "<group>"; };
-		FAA692FE1D146D2100E77DA5 /* MutableExtensionRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MutableExtensionRegistry.h; sourceTree = "<group>"; };
-		FAA692FF1D146D2100E77DA5 /* MutableExtensionRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MutableExtensionRegistry.m; sourceTree = "<group>"; };
-		FAA693001D146D2100E77DA5 /* MutableField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MutableField.h; sourceTree = "<group>"; };
-		FAA693011D146D2100E77DA5 /* MutableField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MutableField.m; sourceTree = "<group>"; };
-		FAA693021D146D2100E77DA5 /* ObjectivecDescriptor.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectivecDescriptor.pb.h; sourceTree = "<group>"; };
-		FAA693031D146D2100E77DA5 /* ObjectivecDescriptor.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectivecDescriptor.pb.m; sourceTree = "<group>"; };
-		FAA693041D146D2100E77DA5 /* PBArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBArray.h; sourceTree = "<group>"; };
-		FAA693051D146D2100E77DA5 /* PBArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBArray.m; sourceTree = "<group>"; };
-		FAA693061D146D2100E77DA5 /* ProtocolBuffers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtocolBuffers.h; sourceTree = "<group>"; };
-		FAA693071D146D2100E77DA5 /* RingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingBuffer.h; sourceTree = "<group>"; };
-		FAA693081D146D2100E77DA5 /* RingBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RingBuffer.m; sourceTree = "<group>"; };
-		FAA693091D146D2100E77DA5 /* TextFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFormat.h; sourceTree = "<group>"; };
-		FAA6930A1D146D2100E77DA5 /* TextFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFormat.m; sourceTree = "<group>"; };
-		FAA6930B1D146D2100E77DA5 /* UnknownFieldSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnknownFieldSet.h; sourceTree = "<group>"; };
-		FAA6930C1D146D2100E77DA5 /* UnknownFieldSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnknownFieldSet.m; sourceTree = "<group>"; };
-		FAA6930D1D146D2100E77DA5 /* UnknownFieldSetBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnknownFieldSetBuilder.h; sourceTree = "<group>"; };
-		FAA6930E1D146D2100E77DA5 /* UnknownFieldSetBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnknownFieldSetBuilder.m; sourceTree = "<group>"; };
-		FAA6930F1D146D2100E77DA5 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
-		FAA693101D146D2100E77DA5 /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
-		FAA693111D146D2100E77DA5 /* WireFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WireFormat.h; sourceTree = "<group>"; };
-		FAA693121D146D2100E77DA5 /* WireFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WireFormat.m; sourceTree = "<group>"; };
-		FAA6932E1D146D8600E77DA5 /* ProtocolBuffers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ProtocolBuffers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FAA693301D146D8600E77DA5 /* ProtocolBuffers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProtocolBuffers.h; sourceTree = "<group>"; };
-		FAA693321D146D8600E77DA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FAA693371D146D8600E77DA5 /* ProtocolBuffersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtocolBuffersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FAA6933E1D146D8600E77DA5 /* ProtocolBuffersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolBuffersTests.swift; sourceTree = "<group>"; };
-		FAA693401D146D8600E77DA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FAA6937F1D146DE800E77DA5 /* MSWeakTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSWeakTimer.h; sourceTree = "<group>"; };
-		FAA693801D146DE800E77DA5 /* MSWeakTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSWeakTimer.m; sourceTree = "<group>"; };
-		FAA693871D146DF400E77DA5 /* MSWeakTimer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MSWeakTimer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FAA693891D146DF400E77DA5 /* MSWeakTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MSWeakTimer.h; sourceTree = "<group>"; };
-		FAA6938B1D146DF400E77DA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FAA693901D146DF400E77DA5 /* MSWeakTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MSWeakTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FAA693971D146DF500E77DA5 /* MSWeakTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSWeakTimerTests.swift; sourceTree = "<group>"; };
-		FAA693991D146DF500E77DA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FAA693A61D146E2400E77DA5 /* Underdark.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Underdark.framework; sourceTree = "<group>"; };
 		FAA693A81D146E8900E77DA5 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		FAA693AA1D146F5000E77DA5 /* NetworkManagerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkManagerBridge.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		00E356EB1AD99517003FC87E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		13B07F8C1A680F5B00A75B9A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -364,43 +149,11 @@
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
-				FAA693431D146D8600E77DA5 /* ProtocolBuffers.framework in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
+				FAA693B01D1481E100E77DA5 /* Underdark.framework in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
-				FAA6939C1D146DF500E77DA5 /* MSWeakTimer.framework in Frameworks */,
-				FAA693A71D146E2400E77DA5 /* Underdark.framework in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FAA6932A1D146D8600E77DA5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FAA693341D146D8600E77DA5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FAA693381D146D8600E77DA5 /* ProtocolBuffers.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FAA693831D146DF400E77DA5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FAA6938D1D146DF400E77DA5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FAA693911D146DF400E77DA5 /* MSWeakTimer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -484,7 +237,6 @@
 		13B07FAE1A68108700A75B9A /* RCTUnderdark */ = {
 			isa = PBXGroup;
 			children = (
-				FAA692E01D146D1400E77DA5 /* ProtocolBuffers */,
 				FAA68E031D133DBB00E77DA5 /* AppDelegate.swift */,
 				FAA693A81D146E8900E77DA5 /* NetworkManager.swift */,
 				FAA693AA1D146F5000E77DA5 /* NetworkManagerBridge.m */,
@@ -544,11 +296,6 @@
 				13B07FAE1A68108700A75B9A /* RCTUnderdark */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* RCTUnderdarkTests */,
-				FAA6937E1D146DC300E77DA5 /* MSWeakTimer */,
-				FAA6932F1D146D8600E77DA5 /* ProtocolBuffers */,
-				FAA6933D1D146D8600E77DA5 /* ProtocolBuffersTests */,
-				FAA693881D146DF400E77DA5 /* MSWeakTimer */,
-				FAA693961D146DF500E77DA5 /* MSWeakTimerTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 			);
 			indentWidth = 2;
@@ -559,88 +306,8 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* RCTUnderdark.app */,
-				00E356EE1AD99517003FC87E /* RCTUnderdarkTests.xctest */,
-				FAA6932E1D146D8600E77DA5 /* ProtocolBuffers.framework */,
-				FAA693371D146D8600E77DA5 /* ProtocolBuffersTests.xctest */,
-				FAA693871D146DF400E77DA5 /* MSWeakTimer.framework */,
-				FAA693901D146DF400E77DA5 /* MSWeakTimerTests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		FAA692E01D146D1400E77DA5 /* ProtocolBuffers */ = {
-			isa = PBXGroup;
-			children = (
-				FAA692E11D146D2100E77DA5 /* AbstractMessage.h */,
-				FAA692E21D146D2100E77DA5 /* AbstractMessage.m */,
-				FAA692E31D146D2100E77DA5 /* AbstractMessageBuilder.h */,
-				FAA692E41D146D2100E77DA5 /* AbstractMessageBuilder.m */,
-				FAA692E51D146D2100E77DA5 /* Bootstrap.h */,
-				FAA692E61D146D2100E77DA5 /* CodedInputStream.h */,
-				FAA692E71D146D2100E77DA5 /* CodedInputStream.m */,
-				FAA692E81D146D2100E77DA5 /* CodedOutputStream.h */,
-				FAA692E91D146D2100E77DA5 /* CodedOutputStream.m */,
-				FAA692EA1D146D2100E77DA5 /* ConcreteExtensionField.h */,
-				FAA692EB1D146D2100E77DA5 /* ConcreteExtensionField.m */,
-				FAA692EC1D146D2100E77DA5 /* Descriptor.pb.h */,
-				FAA692ED1D146D2100E77DA5 /* Descriptor.pb.m */,
-				FAA692EE1D146D2100E77DA5 /* ExtendableMessage.h */,
-				FAA692EF1D146D2100E77DA5 /* ExtendableMessage.m */,
-				FAA692F01D146D2100E77DA5 /* ExtendableMessageBuilder.h */,
-				FAA692F11D146D2100E77DA5 /* ExtendableMessageBuilder.m */,
-				FAA692F21D146D2100E77DA5 /* ExtensionField.h */,
-				FAA692F31D146D2100E77DA5 /* ExtensionRegistry.h */,
-				FAA692F41D146D2100E77DA5 /* ExtensionRegistry.m */,
-				FAA692F51D146D2100E77DA5 /* Field.h */,
-				FAA692F61D146D2100E77DA5 /* Field.m */,
-				FAA692F71D146D2100E77DA5 /* ForwardDeclarations.h */,
-				FAA692F81D146D2100E77DA5 /* GeneratedMessage.h */,
-				FAA692F91D146D2100E77DA5 /* GeneratedMessage.m */,
-				FAA692FA1D146D2100E77DA5 /* GeneratedMessageBuilder.h */,
-				FAA692FB1D146D2100E77DA5 /* GeneratedMessageBuilder.m */,
-				FAA692FC1D146D2100E77DA5 /* Message.h */,
-				FAA692FD1D146D2100E77DA5 /* MessageBuilder.h */,
-				FAA692FE1D146D2100E77DA5 /* MutableExtensionRegistry.h */,
-				FAA692FF1D146D2100E77DA5 /* MutableExtensionRegistry.m */,
-				FAA693001D146D2100E77DA5 /* MutableField.h */,
-				FAA693011D146D2100E77DA5 /* MutableField.m */,
-				FAA693021D146D2100E77DA5 /* ObjectivecDescriptor.pb.h */,
-				FAA693031D146D2100E77DA5 /* ObjectivecDescriptor.pb.m */,
-				FAA693041D146D2100E77DA5 /* PBArray.h */,
-				FAA693051D146D2100E77DA5 /* PBArray.m */,
-				FAA693061D146D2100E77DA5 /* ProtocolBuffers.h */,
-				FAA693071D146D2100E77DA5 /* RingBuffer.h */,
-				FAA693081D146D2100E77DA5 /* RingBuffer.m */,
-				FAA693091D146D2100E77DA5 /* TextFormat.h */,
-				FAA6930A1D146D2100E77DA5 /* TextFormat.m */,
-				FAA6930B1D146D2100E77DA5 /* UnknownFieldSet.h */,
-				FAA6930C1D146D2100E77DA5 /* UnknownFieldSet.m */,
-				FAA6930D1D146D2100E77DA5 /* UnknownFieldSetBuilder.h */,
-				FAA6930E1D146D2100E77DA5 /* UnknownFieldSetBuilder.m */,
-				FAA6930F1D146D2100E77DA5 /* Utilities.h */,
-				FAA693101D146D2100E77DA5 /* Utilities.m */,
-				FAA693111D146D2100E77DA5 /* WireFormat.h */,
-				FAA693121D146D2100E77DA5 /* WireFormat.m */,
-			);
-			name = ProtocolBuffers;
-			sourceTree = "<group>";
-		};
-		FAA6932F1D146D8600E77DA5 /* ProtocolBuffers */ = {
-			isa = PBXGroup;
-			children = (
-				FAA693301D146D8600E77DA5 /* ProtocolBuffers.h */,
-				FAA693321D146D8600E77DA5 /* Info.plist */,
-			);
-			path = ProtocolBuffers;
-			sourceTree = "<group>";
-		};
-		FAA6933D1D146D8600E77DA5 /* ProtocolBuffersTests */ = {
-			isa = PBXGroup;
-			children = (
-				FAA6933E1D146D8600E77DA5 /* ProtocolBuffersTests.swift */,
-				FAA693401D146D8600E77DA5 /* Info.plist */,
-			);
-			path = ProtocolBuffersTests;
 			sourceTree = "<group>";
 		};
 		FAA6937D1D146DAF00E77DA5 /* New Group */ = {
@@ -651,103 +318,9 @@
 			path = ../ProtocolBuffers;
 			sourceTree = "<group>";
 		};
-		FAA6937E1D146DC300E77DA5 /* MSWeakTimer */ = {
-			isa = PBXGroup;
-			children = (
-				FAA6937F1D146DE800E77DA5 /* MSWeakTimer.h */,
-				FAA693801D146DE800E77DA5 /* MSWeakTimer.m */,
-			);
-			name = MSWeakTimer;
-			path = ProtocolBuffers;
-			sourceTree = "<group>";
-		};
-		FAA693881D146DF400E77DA5 /* MSWeakTimer */ = {
-			isa = PBXGroup;
-			children = (
-				FAA693891D146DF400E77DA5 /* MSWeakTimer.h */,
-				FAA6938B1D146DF400E77DA5 /* Info.plist */,
-			);
-			path = MSWeakTimer;
-			sourceTree = "<group>";
-		};
-		FAA693961D146DF500E77DA5 /* MSWeakTimerTests */ = {
-			isa = PBXGroup;
-			children = (
-				FAA693971D146DF500E77DA5 /* MSWeakTimerTests.swift */,
-				FAA693991D146DF500E77DA5 /* Info.plist */,
-			);
-			path = MSWeakTimerTests;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		FAA6932B1D146D8600E77DA5 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FAA6934B1D146D9A00E77DA5 /* AbstractMessage.h in Headers */,
-				FAA693791D146D9A00E77DA5 /* Utilities.h in Headers */,
-				FAA6936C1D146D9A00E77DA5 /* ObjectivecDescriptor.pb.h in Headers */,
-				FAA693701D146D9A00E77DA5 /* ProtocolBuffers.h in Headers */,
-				FAA6938A1D146DF400E77DA5 /* MSWeakTimer.h in Headers */,
-				FAA693581D146D9A00E77DA5 /* ExtendableMessage.h in Headers */,
-				FAA693711D146D9A00E77DA5 /* RingBuffer.h in Headers */,
-				FAA693521D146D9A00E77DA5 /* CodedOutputStream.h in Headers */,
-				FAA693311D146D8600E77DA5 /* ProtocolBuffers.h in Headers */,
-				FAA693671D146D9A00E77DA5 /* MessageBuilder.h in Headers */,
-				FAA6935A1D146D9A00E77DA5 /* ExtendableMessageBuilder.h in Headers */,
-				FAA693501D146D9A00E77DA5 /* CodedInputStream.h in Headers */,
-				FAA6935F1D146D9A00E77DA5 /* Field.h in Headers */,
-				FAA693561D146D9A00E77DA5 /* Descriptor.pb.h in Headers */,
-				FAA693541D146D9A00E77DA5 /* ConcreteExtensionField.h in Headers */,
-				FAA693621D146D9A00E77DA5 /* GeneratedMessage.h in Headers */,
-				FAA693771D146D9A00E77DA5 /* UnknownFieldSetBuilder.h in Headers */,
-				FAA693641D146D9A00E77DA5 /* GeneratedMessageBuilder.h in Headers */,
-				FAA693681D146D9A00E77DA5 /* MutableExtensionRegistry.h in Headers */,
-				FAA693731D146D9A00E77DA5 /* TextFormat.h in Headers */,
-				FAA6935C1D146D9A00E77DA5 /* ExtensionField.h in Headers */,
-				FAA6936A1D146D9A00E77DA5 /* MutableField.h in Headers */,
-				FAA6934D1D146D9A00E77DA5 /* AbstractMessageBuilder.h in Headers */,
-				FAA6934F1D146D9A00E77DA5 /* Bootstrap.h in Headers */,
-				FAA6937B1D146D9A00E77DA5 /* WireFormat.h in Headers */,
-				FAA6935D1D146D9A00E77DA5 /* ExtensionRegistry.h in Headers */,
-				FAA693661D146D9A00E77DA5 /* Message.h in Headers */,
-				FAA693751D146D9A00E77DA5 /* UnknownFieldSet.h in Headers */,
-				FAA6936E1D146D9A00E77DA5 /* PBArray.h in Headers */,
-				FAA693611D146D9A00E77DA5 /* ForwardDeclarations.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FAA693841D146DF400E77DA5 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FAA693A41D146DFB00E77DA5 /* MSWeakTimer.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* RCTUnderdarkTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "RCTUnderdarkTests" */;
-			buildPhases = (
-				00E356EA1AD99517003FC87E /* Sources */,
-				00E356EB1AD99517003FC87E /* Frameworks */,
-				00E356EC1AD99517003FC87E /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				00E356F51AD99517003FC87E /* PBXTargetDependency */,
-			);
-			name = RCTUnderdarkTests;
-			productName = RCTUnderdarkTests;
-			productReference = 00E356EE1AD99517003FC87E /* RCTUnderdarkTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		13B07F861A680F5B00A75B9A /* RCTUnderdark */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RCTUnderdark" */;
@@ -757,92 +330,15 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				FAA68F7D1D1345A900E77DA5 /* Embed Frameworks */,
-				FAA68F881D13464D00E77DA5 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				FAA693421D146D8600E77DA5 /* PBXTargetDependency */,
-				FAA6939B1D146DF500E77DA5 /* PBXTargetDependency */,
 			);
 			name = RCTUnderdark;
 			productName = "Hello World";
 			productReference = 13B07F961A680F5B00A75B9A /* RCTUnderdark.app */;
 			productType = "com.apple.product-type.application";
-		};
-		FAA6932D1D146D8600E77DA5 /* ProtocolBuffers */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = FAA693451D146D8700E77DA5 /* Build configuration list for PBXNativeTarget "ProtocolBuffers" */;
-			buildPhases = (
-				FAA693291D146D8600E77DA5 /* Sources */,
-				FAA6932A1D146D8600E77DA5 /* Frameworks */,
-				FAA6932B1D146D8600E77DA5 /* Headers */,
-				FAA6932C1D146D8600E77DA5 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = ProtocolBuffers;
-			productName = ProtocolBuffers;
-			productReference = FAA6932E1D146D8600E77DA5 /* ProtocolBuffers.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		FAA693361D146D8600E77DA5 /* ProtocolBuffersTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = FAA693481D146D8700E77DA5 /* Build configuration list for PBXNativeTarget "ProtocolBuffersTests" */;
-			buildPhases = (
-				FAA693331D146D8600E77DA5 /* Sources */,
-				FAA693341D146D8600E77DA5 /* Frameworks */,
-				FAA693351D146D8600E77DA5 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				FAA6933A1D146D8600E77DA5 /* PBXTargetDependency */,
-				FAA6933C1D146D8600E77DA5 /* PBXTargetDependency */,
-			);
-			name = ProtocolBuffersTests;
-			productName = ProtocolBuffersTests;
-			productReference = FAA693371D146D8600E77DA5 /* ProtocolBuffersTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		FAA693861D146DF400E77DA5 /* MSWeakTimer */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = FAA6939E1D146DF500E77DA5 /* Build configuration list for PBXNativeTarget "MSWeakTimer" */;
-			buildPhases = (
-				FAA693821D146DF400E77DA5 /* Sources */,
-				FAA693831D146DF400E77DA5 /* Frameworks */,
-				FAA693841D146DF400E77DA5 /* Headers */,
-				FAA693851D146DF400E77DA5 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = MSWeakTimer;
-			productName = MSWeakTimer;
-			productReference = FAA693871D146DF400E77DA5 /* MSWeakTimer.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		FAA6938F1D146DF400E77DA5 /* MSWeakTimerTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = FAA693A11D146DF500E77DA5 /* Build configuration list for PBXNativeTarget "MSWeakTimerTests" */;
-			buildPhases = (
-				FAA6938C1D146DF400E77DA5 /* Sources */,
-				FAA6938D1D146DF400E77DA5 /* Frameworks */,
-				FAA6938E1D146DF400E77DA5 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				FAA693931D146DF400E77DA5 /* PBXTargetDependency */,
-				FAA693951D146DF500E77DA5 /* PBXTargetDependency */,
-			);
-			name = MSWeakTimerTests;
-			productName = MSWeakTimerTests;
-			productReference = FAA693901D146DF400E77DA5 /* MSWeakTimerTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -853,26 +349,6 @@
 				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = Facebook;
-				TargetAttributes = {
-					00E356ED1AD99517003FC87E = {
-						CreatedOnToolsVersion = 6.2;
-						TestTargetID = 13B07F861A680F5B00A75B9A;
-					};
-					FAA6932D1D146D8600E77DA5 = {
-						CreatedOnToolsVersion = 7.3;
-					};
-					FAA693361D146D8600E77DA5 = {
-						CreatedOnToolsVersion = 7.3;
-						TestTargetID = 13B07F861A680F5B00A75B9A;
-					};
-					FAA693861D146DF400E77DA5 = {
-						CreatedOnToolsVersion = 7.3;
-					};
-					FAA6938F1D146DF400E77DA5 = {
-						CreatedOnToolsVersion = 7.3;
-						TestTargetID = 13B07F861A680F5B00A75B9A;
-					};
-				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RCTUnderdark" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -930,11 +406,6 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* RCTUnderdark */,
-				00E356ED1AD99517003FC87E /* RCTUnderdarkTests */,
-				FAA6932D1D146D8600E77DA5 /* ProtocolBuffers */,
-				FAA693361D146D8600E77DA5 /* ProtocolBuffersTests */,
-				FAA693861D146DF400E77DA5 /* MSWeakTimer */,
-				FAA6938F1D146DF400E77DA5 /* MSWeakTimerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1013,47 +484,13 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		00E356EC1AD99517003FC87E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		13B07F8E1A680F5B00A75B9A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAA693AD1D14813400E77DA5 /* Underdark.framework in Resources */,
 				FAA68E101D13423D00E77DA5 /* main.jsbundle in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FAA6932C1D146D8600E77DA5 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FAA693351D146D8600E77DA5 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FAA693851D146DF400E77DA5 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FAA6938E1D146DF400E77DA5 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1077,139 +514,17 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		00E356EA1AD99517003FC87E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				00E356F31AD99517003FC87E /* RCTUnderdarkTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		13B07F871A680F5B00A75B9A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FAA693211D146D2100E77DA5 /* ObjectivecDescriptor.pb.m in Sources */,
-				FAA693241D146D2100E77DA5 /* TextFormat.m in Sources */,
 				FAA693AB1D146F5000E77DA5 /* NetworkManagerBridge.m in Sources */,
-				FAA693221D146D2100E77DA5 /* PBArray.m in Sources */,
-				FAA6931D1D146D2100E77DA5 /* GeneratedMessage.m in Sources */,
-				FAA693261D146D2100E77DA5 /* UnknownFieldSetBuilder.m in Sources */,
-				FAA693231D146D2100E77DA5 /* RingBuffer.m in Sources */,
-				FAA693271D146D2100E77DA5 /* Utilities.m in Sources */,
-				FAA6931B1D146D2100E77DA5 /* ExtensionRegistry.m in Sources */,
-				FAA693251D146D2100E77DA5 /* UnknownFieldSet.m in Sources */,
-				FAA693171D146D2100E77DA5 /* ConcreteExtensionField.m in Sources */,
-				FAA693181D146D2100E77DA5 /* Descriptor.pb.m in Sources */,
-				FAA693131D146D2100E77DA5 /* AbstractMessage.m in Sources */,
-				FAA6931F1D146D2100E77DA5 /* MutableExtensionRegistry.m in Sources */,
-				FAA6931E1D146D2100E77DA5 /* GeneratedMessageBuilder.m in Sources */,
-				FAA693201D146D2100E77DA5 /* MutableField.m in Sources */,
 				FAA693A91D146E8900E77DA5 /* NetworkManager.swift in Sources */,
-				FAA693151D146D2100E77DA5 /* CodedInputStream.m in Sources */,
-				FAA6931C1D146D2100E77DA5 /* Field.m in Sources */,
 				FAA68E041D133DBB00E77DA5 /* AppDelegate.swift in Sources */,
-				FAA693811D146DE800E77DA5 /* MSWeakTimer.m in Sources */,
-				FAA693161D146D2100E77DA5 /* CodedOutputStream.m in Sources */,
-				FAA693191D146D2100E77DA5 /* ExtendableMessage.m in Sources */,
-				FAA693141D146D2100E77DA5 /* AbstractMessageBuilder.m in Sources */,
-				FAA6931A1D146D2100E77DA5 /* ExtendableMessageBuilder.m in Sources */,
-				FAA693281D146D2100E77DA5 /* WireFormat.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FAA693291D146D8600E77DA5 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FAA6934C1D146D9A00E77DA5 /* AbstractMessage.m in Sources */,
-				FAA693691D146D9A00E77DA5 /* MutableExtensionRegistry.m in Sources */,
-				FAA693781D146D9A00E77DA5 /* UnknownFieldSetBuilder.m in Sources */,
-				FAA693571D146D9A00E77DA5 /* Descriptor.pb.m in Sources */,
-				FAA693551D146D9A00E77DA5 /* ConcreteExtensionField.m in Sources */,
-				FAA693761D146D9A00E77DA5 /* UnknownFieldSet.m in Sources */,
-				FAA693651D146D9A00E77DA5 /* GeneratedMessageBuilder.m in Sources */,
-				FAA6936F1D146D9A00E77DA5 /* PBArray.m in Sources */,
-				FAA693511D146D9A00E77DA5 /* CodedInputStream.m in Sources */,
-				FAA693631D146D9A00E77DA5 /* GeneratedMessage.m in Sources */,
-				FAA6936B1D146D9A00E77DA5 /* MutableField.m in Sources */,
-				FAA6937C1D146D9A00E77DA5 /* WireFormat.m in Sources */,
-				FAA693601D146D9A00E77DA5 /* Field.m in Sources */,
-				FAA6937A1D146D9A00E77DA5 /* Utilities.m in Sources */,
-				FAA693591D146D9A00E77DA5 /* ExtendableMessage.m in Sources */,
-				FAA693741D146D9A00E77DA5 /* TextFormat.m in Sources */,
-				FAA6935B1D146D9A00E77DA5 /* ExtendableMessageBuilder.m in Sources */,
-				FAA693531D146D9A00E77DA5 /* CodedOutputStream.m in Sources */,
-				FAA6934E1D146D9A00E77DA5 /* AbstractMessageBuilder.m in Sources */,
-				FAA6936D1D146D9A00E77DA5 /* ObjectivecDescriptor.pb.m in Sources */,
-				FAA693721D146D9A00E77DA5 /* RingBuffer.m in Sources */,
-				FAA6935E1D146D9A00E77DA5 /* ExtensionRegistry.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FAA693331D146D8600E77DA5 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FAA6933F1D146D8600E77DA5 /* ProtocolBuffersTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FAA693821D146DF400E77DA5 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FAA693A51D146DFB00E77DA5 /* MSWeakTimer.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FAA6938C1D146DF400E77DA5 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FAA693981D146DF500E77DA5 /* MSWeakTimerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* RCTUnderdark */;
-			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
-		};
-		FAA6933A1D146D8600E77DA5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FAA6932D1D146D8600E77DA5 /* ProtocolBuffers */;
-			targetProxy = FAA693391D146D8600E77DA5 /* PBXContainerItemProxy */;
-		};
-		FAA6933C1D146D8600E77DA5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* RCTUnderdark */;
-			targetProxy = FAA6933B1D146D8600E77DA5 /* PBXContainerItemProxy */;
-		};
-		FAA693421D146D8600E77DA5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FAA6932D1D146D8600E77DA5 /* ProtocolBuffers */;
-			targetProxy = FAA693411D146D8600E77DA5 /* PBXContainerItemProxy */;
-		};
-		FAA693931D146DF400E77DA5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FAA693861D146DF400E77DA5 /* MSWeakTimer */;
-			targetProxy = FAA693921D146DF400E77DA5 /* PBXContainerItemProxy */;
-		};
-		FAA693951D146DF500E77DA5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* RCTUnderdark */;
-			targetProxy = FAA693941D146DF500E77DA5 /* PBXContainerItemProxy */;
-		};
-		FAA6939B1D146DF500E77DA5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FAA693861D146DF400E77DA5 /* MSWeakTimer */;
-			targetProxy = FAA6939A1D146DF500E77DA5 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		13B07FB11A68108700A75B9A /* LaunchScreen.xib */ = {
@@ -1224,37 +539,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		00E356F61AD99517003FC87E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = RCTUnderdarkTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RCTUnderdark.app/RCTUnderdark";
-			};
-			name = Debug;
-		};
-		00E356F71AD99517003FC87E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = RCTUnderdarkTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RCTUnderdark.app/RCTUnderdark";
-			};
-			name = Release;
-		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1396,182 +680,9 @@
 			};
 			name = Release;
 		};
-		FAA693461D146D8700E77DA5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = ProtocolBuffers/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = alexkendall.ProtocolBuffers;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		FAA693471D146D8700E77DA5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = ProtocolBuffers/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = alexkendall.ProtocolBuffers;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		FAA693491D146D8700E77DA5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = ProtocolBuffersTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = alexkendall.ProtocolBuffersTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RCTUnderdark.app/RCTUnderdark";
-			};
-			name = Debug;
-		};
-		FAA6934A1D146D8700E77DA5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = ProtocolBuffersTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = alexkendall.ProtocolBuffersTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RCTUnderdark.app/RCTUnderdark";
-			};
-			name = Release;
-		};
-		FAA6939F1D146DF500E77DA5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = MSWeakTimer/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = alexkendall.MSWeakTimer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		FAA693A01D146DF500E77DA5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = MSWeakTimer/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = alexkendall.MSWeakTimer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		FAA693A21D146DF500E77DA5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = MSWeakTimerTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = alexkendall.MSWeakTimerTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RCTUnderdark.app/RCTUnderdark";
-			};
-			name = Debug;
-		};
-		FAA693A31D146DF500E77DA5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = MSWeakTimerTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = alexkendall.MSWeakTimerTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RCTUnderdark.app/RCTUnderdark";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "RCTUnderdarkTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				00E356F61AD99517003FC87E /* Debug */,
-				00E356F71AD99517003FC87E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RCTUnderdark" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1589,38 +700,6 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
-		};
-		FAA693451D146D8700E77DA5 /* Build configuration list for PBXNativeTarget "ProtocolBuffers" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				FAA693461D146D8700E77DA5 /* Debug */,
-				FAA693471D146D8700E77DA5 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		FAA693481D146D8700E77DA5 /* Build configuration list for PBXNativeTarget "ProtocolBuffersTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				FAA693491D146D8700E77DA5 /* Debug */,
-				FAA6934A1D146D8700E77DA5 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		FAA6939E1D146DF500E77DA5 /* Build configuration list for PBXNativeTarget "MSWeakTimer" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				FAA6939F1D146DF500E77DA5 /* Debug */,
-				FAA693A01D146DF500E77DA5 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		FAA693A11D146DF500E77DA5 /* Build configuration list for PBXNativeTarget "MSWeakTimerTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				FAA693A21D146DF500E77DA5 /* Debug */,
-				FAA693A31D146DF500E77DA5 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

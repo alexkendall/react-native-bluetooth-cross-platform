@@ -18,19 +18,43 @@ var NetworkManager = NativeModules.NetworkManager
 class RCTUnderdark extends Component {
   constructor(props) {
     super(props)
+    this.observe = this.observe.bind(this)
   }
   render() {
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={()=>{
-          NetworkManager.sayHello("World")
+          NetworkManager.observe("WIFI")
         }}>
           <View style={styles.scanButton}>
-            <Text style={styles.scanText}>SCAN</Text>
+            <Text style={styles.scanText}>WIFI</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={()=>{
+          NetworkManager.observe("BT")
+        }}>
+          <View style={styles.scanButton}>
+            <Text style={styles.scanText}>BLUETOOTH</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={()=>{
+          NetworkManager.observe("WIFI-BT")
+        }}>
+          <View style={styles.scanButton}>
+            <Text style={styles.scanText}>WIFI & BLUETOOTH</Text>
           </View>
         </TouchableOpacity>
       </View>
     );
+  }
+  observe(type) {
+    if (type == "WIFI") {
+      NetworkManager.initTransport("WIFI")
+    } else if (type == "BT") {
+      NetworkManager.initTransport("BT")
+    } else if (type == "WIFI-BT") {
+      NetworkManager.initTransport("WIFI-BT")
+    }
   }
 }
 
@@ -45,11 +69,13 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     height: 35,
     width: 100,
+    marginBottom: 20,
     justifyContent: "center",
     alignItems: "center",
   },
   scanText: {
-    color: "red",
+    color: "white",
+    textAlign: "center",
   }
 });
 

@@ -9,13 +9,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-    /*
     #if DEBUG
-    let jsLocation = NSURL(string: "http://localhost:8081/index.ios.bundle?platform=ios&dev=true")
+    //let jsLocation = NSURL(string: "http://localhost:8081/index.ios.bundle?platform=ios&dev=true")
     #else
-    let jsLocation = NSBundle.mainBundle().URLForResource("main", withExtension: "jsbundle")
+    //let jsLocation = NSBundle.mainBundle().URLForResource("main", withExtension: "jsbundle")
     #endif
-    */
+    
     let jsLocation = NSURL(string: "http://localhost:8081/index.ios.bundle?platform=ios&dev=true")
     let rootController = UIViewController()
     window = UIWindow(frame: UIScreen.mainScreen().bounds)
@@ -53,14 +52,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   // MARK: - Core Data stack
   
   lazy var applicationDocumentsDirectory: NSURL = {
-    // The directory the application uses to store the Core Data store file. This code uses a directory named "alexkendall.Queue_SoundCloud" in the application's documents Application Support directory.
+    // The directory the application uses to store the Core Data store file. This code uses a directory named "alexkendall.RCTUnderdark" in the application's documents Application Support directory.
     let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
     return urls[urls.count-1]
   }()
   
   lazy var managedObjectModel: NSManagedObjectModel = {
     // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-    let modelURL = NSBundle.mainBundle().URLForResource("Queue_SoundCloud", withExtension: "momd")!
+    let modelURL = NSBundle.mainBundle().URLForResource("RCTUnderDark", withExtension: "momd")!
     return NSManagedObjectModel(contentsOfURL: modelURL)!
   }()
   

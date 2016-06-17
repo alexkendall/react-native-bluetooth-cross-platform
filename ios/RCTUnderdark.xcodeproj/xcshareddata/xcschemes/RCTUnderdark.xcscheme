@@ -66,7 +66,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FAA690AF1D14648300E77DA5"
+               BlueprintIdentifier = "FAA6938F1D146DF400E77DA5"
                BuildableName = "MSWeakTimerTests.xctest"
                BlueprintName = "MSWeakTimerTests"
                ReferencedContainer = "container:RCTUnderdark.xcodeproj">
