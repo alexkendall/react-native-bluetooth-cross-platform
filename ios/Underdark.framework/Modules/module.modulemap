@@ -1,0 +1,6 @@
+framework module Underdark {
+  umbrella header "Underdark.h"
+
+  export *
+  module * { export * }
+}
