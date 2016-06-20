@@ -18,6 +18,7 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		FA1384FA1D183C3E002FA29A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1384F91D183C3E002FA29A /* User.swift */; };
 		FAA68E041D133DBB00E77DA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA68E031D133DBB00E77DA5 /* AppDelegate.swift */; };
 		FAA68E101D13423D00E77DA5 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = FAA68E0F1D13423D00E77DA5 /* main.jsbundle */; };
 		FAA693A91D146E8900E77DA5 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA693A81D146E8900E77DA5 /* NetworkManager.swift */; };
@@ -130,6 +131,7 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		FA1384F91D183C3E002FA29A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FAA68E021D133DBB00E77DA5 /* RCTUnderdark-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTUnderdark-Bridging-Header.h"; sourceTree = "<group>"; };
 		FAA68E031D133DBB00E77DA5 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAA68E0F1D13423D00E77DA5 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 			children = (
 				FAA68E031D133DBB00E77DA5 /* AppDelegate.swift */,
 				FAA693A81D146E8900E77DA5 /* NetworkManager.swift */,
+				FA1384F91D183C3E002FA29A /* User.swift */,
 				FAA693AA1D146F5000E77DA5 /* NetworkManagerBridge.m */,
 				FAA68E021D133DBB00E77DA5 /* RCTUnderdark-Bridging-Header.h */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -266,6 +269,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				FAA693A61D146E2400E77DA5 /* Underdark.framework */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
 				00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */,
@@ -291,7 +295,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				FAA693A61D146E2400E77DA5 /* Underdark.framework */,
 				FAA68E0F1D13423D00E77DA5 /* main.jsbundle */,
 				13B07FAE1A68108700A75B9A /* RCTUnderdark */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -518,6 +521,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA1384FA1D183C3E002FA29A /* User.swift in Sources */,
 				FAA693AB1D146F5000E77DA5 /* NetworkManagerBridge.m in Sources */,
 				FAA693A91D146E8900E77DA5 /* NetworkManager.swift in Sources */,
 				FAA68E041D133DBB00E77DA5 /* AppDelegate.swift in Sources */,

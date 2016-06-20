@@ -13,48 +13,32 @@ import {
   TouchableOpacity,
   NativeModules,
 } from 'react-native';
-var NetworkManager = NativeModules.NetworkManager
+var NetworkManager = require('./NetworkManager.js')
 
 class RCTUnderdark extends Component {
   constructor(props) {
     super(props)
-    this.observe = this.observe.bind(this)
+    console.log(NetworkManager)
   }
   render() {
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={()=>{
-          NetworkManager.observe("WIFI")
+          NetworkManager.browse("WIFI-BT")
         }}>
           <View style={styles.scanButton}>
-            <Text style={styles.scanText}>WIFI</Text>
+            <Text style={styles.scanText}>ADVERTISE</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={()=>{
-          NetworkManager.observe("BT")
+          NetworkManager.advertise("WIFI-BT")
         }}>
           <View style={styles.scanButton}>
-            <Text style={styles.scanText}>BLUETOOTH</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={()=>{
-          NetworkManager.observe("WIFI-BT")
-        }}>
-          <View style={styles.scanButton}>
-            <Text style={styles.scanText}>WIFI & BLUETOOTH</Text>
+            <Text style={styles.scanText}>BROWSE</Text>
           </View>
         </TouchableOpacity>
       </View>
     );
-  }
-  observe(type) {
-    if (type == "WIFI") {
-      NetworkManager.initTransport("WIFI")
-    } else if (type == "BT") {
-      NetworkManager.initTransport("BT")
-    } else if (type == "WIFI-BT") {
-      NetworkManager.initTransport("WIFI-BT")
-    }
   }
 }
 
