@@ -2,7 +2,7 @@ import Foundation
 import Underdark
 
 @objc(NetworkManager)
-class NetworkManager: NSObject, UDTransportDelegate {
+public class NetworkManager: NSObject, UDTransportDelegate {
   private var transport: UDTransport? = nil
   private let deviceId: String = UIDevice.currentDevice().identifierForVendor?.UUIDString ?? ""
   private var links: [UDLink] = [UDLink]()
@@ -11,6 +11,7 @@ class NetworkManager: NSObject, UDTransportDelegate {
   private var logTimer: NSTimer! = nil
   private var type: User.PeerType = User.PeerType.OFFLINE
   private var transportConfigured: Bool = false
+  public var delegate: NetworkManagerDelegate? = nil
   // MARK: Private Functions
   private func initTransport(kind: String) {
     if !self.transportConfigured {
@@ -131,13 +132,11 @@ class NetworkManager: NSObject, UDTransportDelegate {
   }
   
   // MARK: Network Manager Transport Delegate
-  @objc func transport(transport: UDTransport!, linkConnected link: UDLink!) {
-    print("link connected")
+  @objc public func transport(transport: UDTransport!, linkConnected link: UDLink!) {
     links.append(link)
   }
   
-  @objc func transport(transport: UDTransport!, linkDisconnected link: UDLink!) {
-    print("link disconnected")
+  @objc public func transport(transport: UDTransport!, linkDisconnected link: UDLink!) {
     for i in 0..<links.count {
       if link.nodeId == links[i].nodeId {
         links.removeAtIndex(i)
@@ -151,10 +150,14 @@ class NetworkManager: NSObject, UDTransportDelegate {
       }
     }
   }
-  @objc func transport(transport: UDTransport!, link: UDLink!, didReceiveFrame frameData: NSData!) {
+  @objc public func transport(transport: UDTransport!, link: UDLink!, didReceiveFrame frameData: NSData!) {
     let strData = String(data: frameData, encoding: NSUTF8StringEncoding)!
     for i in 0..<nearbyUsers.count {
       if link.nodeId == nearbyUsers[i].link.nodeId {
+        let user = nearbyUsers[i]
+        if user.connected {
+          delegate?.recievedMessageFromUser(strData, user: user)
+        }
         return
       }
     }
@@ -166,8 +169,9 @@ class NetworkManager: NSObject, UDTransportDelegate {
     } else if strData.containsString("browser_") {
       id = strData.stringByReplacingOccurrencesOfString("browser_", withString: "")
     }
-    let user = User(inLink: link, inId: id)
+    let user = User(inLink: link, inId: id, inConnected: false)
     nearbyUsers.append(user)
+    delegate?.detectedUser(user)
     self.log()
   }
 }
