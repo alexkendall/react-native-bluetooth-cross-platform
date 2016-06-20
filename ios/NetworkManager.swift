@@ -9,34 +9,35 @@ class NetworkManager: NSObject, UDTransportDelegate {
   private var connectedUsers: [User] = [User]()
   private var advertiseTimer: NSTimer! = nil
   private var type: User.PeerType = User.PeerType.OFFLINE
+  private var transportConfigured: Bool = false
   // MARK: Private Functions
   private func initTransport(kind: String) {
-    if transport != nil {
-      return
+    if !self.transportConfigured {
+      let appId: Int32 = 234235
+      let nodeId: Int64
+      let queue = dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)
+      var buf : Int64 = 0;
+      while buf == 0 {
+        arc4random_buf(&buf, sizeofValue(buf))
+      }
+      if buf < 0 {
+        buf = -buf
+      }
+      nodeId = buf
+      var transportKinds = [AnyObject]()
+      if kind == "WIFI" {
+        transportKinds.append(UDTransportKind.Wifi.rawValue)
+      }
+      if kind == "BT" {
+        transportKinds.append(UDTransportKind.Bluetooth.rawValue)
+      }
+      if kind == "WIFI-BT" {
+        transportKinds.append(UDTransportKind.Bluetooth.rawValue)
+        transportKinds.append(UDTransportKind.Wifi.rawValue)
+      }
+      transport = UDUnderdark.configureTransportWithAppId(appId, nodeId: nodeId, delegate: self, queue: queue, kinds: transportKinds)
+      self.transportConfigured = true
     }
-    let appId: Int32 = 234235
-    let nodeId: Int64
-    let queue = dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)
-    var buf : Int64 = 0;
-    while buf == 0 {
-      arc4random_buf(&buf, sizeofValue(buf))
-    }
-    if buf < 0 {
-      buf = -buf
-    }
-    nodeId = buf
-    var transportKinds = [AnyObject]()
-    if kind == "WIFI" {
-      transportKinds.append(UDTransportKind.Wifi.rawValue)
-    }
-    if kind == "BT" {
-      transportKinds.append(UDTransportKind.Bluetooth.rawValue)
-    }
-    if kind == "WIFI-BT" {
-      transportKinds.append(UDTransportKind.Bluetooth.rawValue)
-      transportKinds.append(UDTransportKind.Wifi.rawValue)
-    }
-    transport = UDUnderdark.configureTransportWithAppId(appId, nodeId: nodeId, delegate: self, queue: queue, kinds: transportKinds)
     transport?.start()
   }
   func initTimer() {
@@ -65,14 +66,12 @@ class NetworkManager: NSObject, UDTransportDelegate {
         break
     }
     data = dataStr?.dataUsingEncoding(NSUTF8StringEncoding)
-    print("broadcasting type...\(dataStr ?? "")")
     for i in 0..<links.count {
       links[i].sendFrame(data)
     }
   }
   func stopTransort() {
     transport?.stop()
-    transport = nil
     advertiseTimer.invalidate()
     advertiseTimer = nil
   }
@@ -88,13 +87,12 @@ class NetworkManager: NSObject, UDTransportDelegate {
   }
   
   @objc func stopBrowsing() {
-    transport?.stop()
-    transport = nil
     if self.type == .ADVERTISER_BROWSER {
       self.type = .ADVERTISER
       return
     }
     self.type = .OFFLINE
+    stopTransort()
   }
   
   // MARK: Underdark Advertiser
@@ -109,14 +107,12 @@ class NetworkManager: NSObject, UDTransportDelegate {
   }
   
   @objc func stopAdvertising() {
-    print("should stop advertising...")
-    transport?.stop()
-    transport = nil
     if self.type == .ADVERTISER_BROWSER {
       self.type = .BROWSER
       return
     }
     self.type = .OFFLINE
+    stopTransort()
   }
   
   // MARK: Network Manager Transport Delegate
