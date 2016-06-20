@@ -4,10 +4,11 @@ import Underdark
 @objc(NetworkManager)
 class NetworkManager: NSObject, UDTransportDelegate {
   private var transport: UDTransport? = nil
-  private var links: [UDLink] = [UDLink]()
   private let deviceId: String = UIDevice.currentDevice().identifierForVendor?.UUIDString ?? ""
-  private var connectedUsers: [User] = [User]()
+  private var links: [UDLink] = [UDLink]()
+  private var nearbyUsers: [User] = [User]()
   private var advertiseTimer: NSTimer! = nil
+  private var logTimer: NSTimer! = nil
   private var type: User.PeerType = User.PeerType.OFFLINE
   private var transportConfigured: Bool = false
   // MARK: Private Functions
@@ -37,8 +38,17 @@ class NetworkManager: NSObject, UDTransportDelegate {
       }
       transport = UDUnderdark.configureTransportWithAppId(appId, nodeId: nodeId, delegate: self, queue: queue, kinds: transportKinds)
       self.transportConfigured = true
+      dispatch_async(dispatch_get_main_queue(), {
+        self.logTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: #selector(self.log), userInfo: nil, repeats: true)
+        NSRunLoop.mainRunLoop().addTimer(self.logTimer, forMode: NSDefaultRunLoopMode)
+      })
     }
     transport?.start()
+  }
+  func log() {
+    for i in 0..<nearbyUsers.count {
+      nearbyUsers[i].logInfo()
+    }
   }
   func initTimer() {
     dispatch_async(dispatch_get_main_queue(), {
@@ -46,7 +56,7 @@ class NetworkManager: NSObject, UDTransportDelegate {
         self.advertiseTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: #selector(self.broadcastType), userInfo: nil, repeats: true)
         NSRunLoop.mainRunLoop().addTimer(self.advertiseTimer, forMode: NSDefaultRunLoopMode)
       }
-      })
+    })
   }
   func broadcastType() {
     var dataStr: String?
@@ -114,10 +124,15 @@ class NetworkManager: NSObject, UDTransportDelegate {
     self.type = .OFFLINE
     stopTransort()
   }
+  // MARK: Communication Implementation
+  @objc func messageUser(message: String, user: User) {
+    let msgData = message.dataUsingEncoding(NSUTF8StringEncoding)
+    user.link.sendFrame(msgData)
+  }
   
   // MARK: Network Manager Transport Delegate
   @objc func transport(transport: UDTransport!, linkConnected link: UDLink!) {
-   print("link connected")
+    print("link connected")
     links.append(link)
   }
   
@@ -126,11 +141,33 @@ class NetworkManager: NSObject, UDTransportDelegate {
     for i in 0..<links.count {
       if link.nodeId == links[i].nodeId {
         links.removeAtIndex(i)
+        break
+      }
+    }
+    for i in 0..<nearbyUsers.count {
+      if nearbyUsers[i].link.nodeId == link.nodeId {
+        nearbyUsers.removeAtIndex(i)
+        return
       }
     }
   }
   @objc func transport(transport: UDTransport!, link: UDLink!, didReceiveFrame frameData: NSData!) {
     let strData = String(data: frameData, encoding: NSUTF8StringEncoding)!
-    print("did recieve frame \(strData)")
+    for i in 0..<nearbyUsers.count {
+      if link.nodeId == nearbyUsers[i].link.nodeId {
+        return
+      }
+    }
+    var id = ""
+    if strData.containsString("browseradvertiser_") {
+      id = strData.stringByReplacingOccurrencesOfString("browseradvertiser_", withString: "")
+    } else if strData.containsString("advertiser_") {
+      id = strData.stringByReplacingOccurrencesOfString("advertiser_", withString: "")
+    } else if strData.containsString("browser_") {
+      id = strData.stringByReplacingOccurrencesOfString("browser_", withString: "")
+    }
+    let user = User(inLink: link, inId: id)
+    nearbyUsers.append(user)
+    self.log()
   }
 }

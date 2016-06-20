@@ -18,8 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     print("RELEASE")
     #endif
     */
-    //let jsLocation = NSBundle.mainBundle().URLForResource("main", withExtension: "jsbundle")
-    let jsLocation = NSURL(string: "http://localhost:8081/index.ios.bundle?platform=ios&dev=true")
+    let jsLocation = NSBundle.mainBundle().URLForResource("main", withExtension: "jsbundle")
+    //let jsLocation = NSURL(string: "http://localhost:8081/index.ios.bundle?platform=ios&dev=true")
     let rootController = UIViewController()
     window = UIWindow(frame: UIScreen.mainScreen().bounds)
     window?.rootViewController = rootController
