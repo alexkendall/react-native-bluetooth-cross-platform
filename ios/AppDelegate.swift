@@ -9,12 +9,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    /*
     #if DEBUG
-    //let jsLocation = NSURL(string: "http://localhost:8081/index.ios.bundle?platform=ios&dev=true")
+    let jsLocation = NSURL(string: "http://localhost:8081/index.ios.bundle?platform=ios&dev=true")
+    print("DEBUG")
     #else
-    //let jsLocation = NSBundle.mainBundle().URLForResource("main", withExtension: "jsbundle")
+    let jsLocation = NSBundle.mainBundle().URLForResource("main", withExtension: "jsbundle")
+    print("RELEASE")
     #endif
-    
+    */
+    //let jsLocation = NSBundle.mainBundle().URLForResource("main", withExtension: "jsbundle")
     let jsLocation = NSURL(string: "http://localhost:8081/index.ios.bundle?platform=ios&dev=true")
     let rootController = UIViewController()
     window = UIWindow(frame: UIScreen.mainScreen().bounds)

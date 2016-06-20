@@ -8,5 +8,8 @@ RCT_EXTERN_METHOD(browse:(NSString*)kind)
 
 RCT_EXTERN_METHOD(advertise:(NSString*)kind)
 
+RCT_EXTERN_METHOD(stopAdvertising)
+
+RCT_EXTERN_METHOD(stopBrowsing)
 
 @end

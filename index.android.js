@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   instructions: {
     textAlign: 'center',
-    color: '#FF0000',
+    color: '#FF00',
     marginBottom: 5,
   },
 });
