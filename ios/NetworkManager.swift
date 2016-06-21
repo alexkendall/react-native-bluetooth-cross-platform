@@ -162,14 +162,18 @@ public class NetworkManager: NSObject, UDTransportDelegate {
       }
     }
     var id = ""
+    var mode = User.PeerType.OFFLINE
     if strData.containsString("browseradvertiser_") {
       id = strData.stringByReplacingOccurrencesOfString("browseradvertiser_", withString: "")
+      mode = User.PeerType.ADVERTISER_BROWSER
     } else if strData.containsString("advertiser_") {
       id = strData.stringByReplacingOccurrencesOfString("advertiser_", withString: "")
+      mode = User.PeerType.ADVERTISER
     } else if strData.containsString("browser_") {
       id = strData.stringByReplacingOccurrencesOfString("browser_", withString: "")
+      mode = User.PeerType.BROWSER
     }
-    let user = User(inLink: link, inId: id, inConnected: false)
+    let user = User(inLink: link, inId: id, inConnected: false, peerType: mode)
     nearbyUsers.append(user)
     delegate?.detectedUser(user)
     self.log()
