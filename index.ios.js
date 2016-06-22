@@ -40,7 +40,7 @@ class RCTUnderdark extends Component {
   detectedUser(dict) {
     var newUser = new User(dict)
     var newUsers = this.state.users
-    for(var i = 0; i < newUser.count; ++i){
+    for(var i = 0; i < newUsers.length; ++i){
       if (newUser.id == newUsers[i].id) {
         newUsers[i].type = newUser.type
         this.setState({
@@ -78,12 +78,14 @@ class RCTUnderdark extends Component {
   }
   renderUser(user) {
     return (
-      <View>
-      <Text> Id: {user.id} </Text>
-      <Text> PeerType: {user.type} </Text>
-      <Text> Connected: {user.connected} </Text>
-      <Text> Message: {user.message} </Text>
+      <TouchableOpacity>
+      <View style={{marginBottom: 15,}}>
+        <Text style={{fontSize: 14, fontWeight: "800"}}> Id: {user.id} </Text>
+        <Text> PeerType: {user.type} </Text>
+        <Text> Connected: {user.connected} </Text>
+        <Text> Message: {user.message} </Text>
       </View>
+      </TouchableOpacity>
     )
   }
   render() {
@@ -163,7 +165,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   listView: {
-    marginBottom: 50,
+    marginTop: 50,
   },
 });
 
