@@ -12,4 +12,6 @@ RCT_EXTERN_METHOD(stopAdvertising)
 
 RCT_EXTERN_METHOD(stopBrowsing)
 
+RCT_EXTERN_METHOD(inviteUser:(NSString*)userId)
+
 @end

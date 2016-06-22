@@ -130,7 +130,23 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     let msgData = message.dataUsingEncoding(NSUTF8StringEncoding)
     user.link.sendFrame(msgData)
   }
-  
+  @objc func inviteUser(user: User) {
+    var msgStr = "invitation_\(deviceId)"
+    if self.type == .BROWSER {
+      msgStr = "\(msgStr)browser"
+    } else {
+      msgStr = "\(msgStr)advertiserbrowser"
+    }
+    user.link.sendFrame(msgStr.dataUsingEncoding(NSUTF8StringEncoding))
+  }
+  @objc func autheticateUser(id: String) {
+    var msgStr = "accepted_\(deviceId)"
+    if self.type == .ADVERTISER {
+      msgStr = "\(msgStr)avertiser"
+    } else {
+      msgStr = "\(msgStr)advertiserbrowser"
+    }
+  }
   // MARK: Network Manager Transport Delegate
   @objc public func transport(transport: UDTransport!, linkConnected link: UDLink!) {
     links.append(link)
@@ -157,6 +173,12 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         let user = nearbyUsers[i]
         if user.connected {
           delegate?.recievedMessageFromUser(strData, user: user)
+          var dict = [String: AnyObject]()
+          dict["id"] = user.deviceId
+          dict["connected"] = user.connected
+          dict["message"]  = strData
+          dict["type"] = user.mode.rawValue
+          bridge.eventDispatcher().sendAppEventWithName("messageReceived", body: dict)
         }
         return
       }
@@ -172,10 +194,56 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     } else if strData.containsString("browser_") {
       id = strData.stringByReplacingOccurrencesOfString("browser_", withString: "")
       mode = User.PeerType.BROWSER
+    } else if strData.containsString("invitation_") {
+      id = strData.stringByReplacingOccurrencesOfString("invitation_", withString: "")
+      if strData.containsString("advertiserbrowser") {
+        mode = User.PeerType.ADVERTISER_BROWSER
+        id = strData.stringByReplacingOccurrencesOfString("advertiserbrowser", withString: "")
+      } else {
+        mode = User.PeerType.BROWSER
+         id = strData.stringByReplacingOccurrencesOfString("browser", withString: "")
+      }
+      let user = User(inLink: link, inId: id, inConnected: true, peerType: mode)
+      delegate?.recievedInvitationFromUser(user, invitationHandler: {accept in
+        if accept {
+          self.autheticateUser(id)
+        }
+      })
+      nearbyUsers.append(user)
+      return
+    } else if strData.containsString("accepted_") {
+      id = strData.stringByReplacingOccurrencesOfString("accepted_", withString: "")
+      if strData.containsString("advertiserbrowser") {
+        mode = User.PeerType.ADVERTISER_BROWSER
+        id = strData.stringByReplacingOccurrencesOfString("advertiserbrowser", withString: "")
+      } else {
+        mode = User.PeerType.BROWSER
+        id = strData.stringByReplacingOccurrencesOfString("advertiser", withString: "")
+      }
+      let user = User(inLink: link, inId: id, inConnected: true, peerType: mode)
+      nearbyUsers.append(user)
+      var dict = [String: AnyObject]()
+      dict["id"] = user.deviceId
+      dict["connected"] = true
+      dict["message"] = nil
+      dict["type"] = mode.rawValue
+      bridge.eventDispatcher().sendAppEventWithName("connectedToUser", body: dict)
+      return
     }
     let user = User(inLink: link, inId: id, inConnected: false, peerType: mode)
     nearbyUsers.append(user)
+    // fire delegate
     delegate?.detectedUser(user)
+    // notify js
+    var dict = [String: AnyObject]()
+    dict["id"] = user.deviceId
+    dict["connected"] = user.connected
+    dict["message"] = nil
+    dict["type"] = mode.rawValue
+    // Only Advertisers are Detectable to User
+    if type == .ADVERTISER || type == .ADVERTISER_BROWSER {
+      bridge.eventDispatcher().sendAppEventWithName("detectedUser", body: dict)
+    }
     self.log()
   }
 }

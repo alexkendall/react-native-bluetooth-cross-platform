@@ -3,11 +3,12 @@ import UIKit
 import CoreData
 import Underdark
 
+var bridge: RCTBridge!
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
   
   var window: UIWindow?
-  
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     /*
     #if DEBUG
@@ -25,6 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window?.rootViewController = rootController
     let rootView = RCTRootView(bundleURL: jsLocation, moduleName: "RCTUnderdark", initialProperties: nil, launchOptions: launchOptions)
     rootController.view = rootView
+    bridge = rootView.bridge
+    bridge = rootView.bridge
     window?.makeKeyAndVisible()
     return true
   }

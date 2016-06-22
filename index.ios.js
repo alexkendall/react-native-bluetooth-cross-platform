@@ -12,6 +12,7 @@ import {
   View,
   TouchableOpacity,
   NativeModules,
+  NativeAppEventEmitter,
 } from 'react-native';
 var NetworkManager = require('./NetworkManager.js')
 
@@ -25,6 +26,14 @@ class RCTUnderdark extends Component {
     this.toggleAdvertise = this.toggleAdvertise.bind(this)
     this.toggleBrowse = this.toggleBrowse.bind(this)
     this.getButtonStyle = this.getButtonStyle.bind(this)
+    this.detectedUser = this.detectedUser.bind(this)
+  }
+  componentDidMount() {
+    NetworkManager.addPeerDetectedListener(this.detectedUser)
+  }
+  detectedUser(user) {
+    console.log("id: " + user.id)
+    console.log("connected: " + user.connected)
   }
   toggleBrowse() {
     if(this.state.browsing) {

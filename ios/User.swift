@@ -16,11 +16,11 @@ public class User: NSObject {
     deviceId = inId
     connected = inConnected
   }
-  public enum PeerType {
-    case BROWSER
-    case ADVERTISER
-    case ADVERTISER_BROWSER
-    case OFFLINE
+  public enum PeerType: String {
+    case BROWSER = "browser"
+    case ADVERTISER = "advertiser"
+    case ADVERTISER_BROWSER = "advertiserbrowser"
+    case OFFLINE = "offline"
   }
   
   func logInfo() {
