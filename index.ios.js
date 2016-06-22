@@ -13,27 +13,48 @@ import {
   TouchableOpacity,
   NativeModules,
   NativeAppEventEmitter,
+  ListView,
 } from 'react-native';
 var NetworkManager = require('./NetworkManager.js')
+var User = require('./User.js')
 
 class RCTUnderdark extends Component {
   constructor(props) {
+    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     super(props)
     this.state = {
       browsing: false,
       advertising: false,
+      ds: ds,
+      users: [],
     }
     this.toggleAdvertise = this.toggleAdvertise.bind(this)
     this.toggleBrowse = this.toggleBrowse.bind(this)
     this.getButtonStyle = this.getButtonStyle.bind(this)
     this.detectedUser = this.detectedUser.bind(this)
+    this.renderUser = this.renderUser.bind(this)
   }
   componentDidMount() {
     NetworkManager.addPeerDetectedListener(this.detectedUser)
   }
-  detectedUser(user) {
-    console.log("id: " + user.id)
-    console.log("connected: " + user.connected)
+  detectedUser(dict) {
+    var newUser = new User(dict)
+    var newUsers = this.state.users
+    for(var i = 0; i < newUser.count; ++i){
+      if (newUser.id == newUsers[i].id) {
+        newUsers[i].type = newUser.type
+        this.setState({
+          ds: this.state.ds.cloneWithRows(newUsers),
+          users: newUsers,
+        })
+        return
+      }
+    }
+    newUsers.push(newUser)
+    this.setState({
+      ds: this.state.ds.cloneWithRows(newUsers),
+      users: newUsers,
+    })
   }
   toggleBrowse() {
     if(this.state.browsing) {
@@ -55,6 +76,16 @@ class RCTUnderdark extends Component {
       advertising: !this.state.advertising
     })
   }
+  renderUser(user) {
+    return (
+      <View>
+      <Text> Id: {user.id} </Text>
+      <Text> PeerType: {user.type} </Text>
+      <Text> Connected: {user.connected} </Text>
+      <Text> Message: {user.message} </Text>
+      </View>
+    )
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -72,6 +103,11 @@ class RCTUnderdark extends Component {
             <Text style={styles.scanText}>BROWSE</Text>
           </View>
         </TouchableOpacity>
+        <ListView
+          style={styles.listView}
+          dataSource={this.state.ds}
+          renderRow={this.renderUser}
+        />
       </View>
     );
   }
@@ -104,13 +140,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5F5F5',
+    marginTop: 30,
   },
   onButton: {
     backgroundColor: "black",
     height: 35,
     width: 100,
-    marginBottom: 20,
+    marginTop: 30,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -118,14 +154,17 @@ const styles = StyleSheet.create({
     backgroundColor: "gray",
     height: 35,
     width: 100,
-    marginBottom: 20,
+    marginTop: 30,
     justifyContent: "center",
     alignItems: "center",
   },
   scanText: {
     color: "white",
     textAlign: "center",
-  }
+  },
+  listView: {
+    marginBottom: 50,
+  },
 });
 
 AppRegistry.registerComponent('RCTUnderdark', () => RCTUnderdark);

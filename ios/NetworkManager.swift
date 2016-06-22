@@ -228,6 +228,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
       dict["message"] = nil
       dict["type"] = mode.rawValue
       bridge.eventDispatcher().sendAppEventWithName("connectedToUser", body: dict)
+      delegate?.connectedToUser(user)
       return
     }
     let user = User(inLink: link, inId: id, inConnected: false, peerType: mode)
