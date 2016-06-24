@@ -114,7 +114,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     stopTransort()
   }
   @objc func getConnectedPeers(callback: RCTResponseSenderBlock) {
-    var connectedPeers = [NSDictionary]()
+    var connectedPeers = [[String: AnyObject]]()
     if self.type == .BROWSER || self.type == .ADVERTISER_BROWSER {
       for i in 0..<nearbyUsers.count {
         if nearbyUsers[i].connected {
@@ -170,12 +170,13 @@ public class NetworkManager: NSObject, UDTransportDelegate {
       }
     }
   }
-  @objc func autheticateUser(id: String) {
-    var msgStr = "accepted_\(deviceId)"
-    if self.type == .ADVERTISER {
-      msgStr = "\(msgStr)avertiser"
-    } else {
-      msgStr = "\(msgStr)advertiserbrowser"
+  @objc func acceptInvitation(userId: String) {
+    let msg = "accepted_\(deviceId)".dataUsingEncoding(NSUTF8StringEncoding)
+    for i in 0..<nearbyUsers.count {
+      if nearbyUsers[i].deviceId == userId {
+        nearbyUsers[i].connected = true
+        nearbyUsers[i].link.sendFrame(msg)
+      }
     }
   }
   // MARK: Network Manager Transport Delegate
@@ -205,8 +206,8 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         let user = nearbyUsers[i]
         if user.connected {
           delegate?.recievedMessageFromUser(strData, user: user)
-          let dict = getJSUser(user, message: strData)
-          bridge.eventDispatcher().sendAppEventWithName("messageReceived", body: dict)
+          let jsUser = getJSUser(user, message: strData)
+          bridge.eventDispatcher().sendAppEventWithName("messageReceived", body: jsUser)
         }
       }
     }
@@ -233,12 +234,12 @@ public class NetworkManager: NSObject, UDTransportDelegate {
       let user = User(inLink: link, inId: id, inConnected: true, peerType: mode)
       delegate?.recievedInvitationFromUser(user, invitationHandler: {accept in
         if accept {
-          self.autheticateUser(id)
+          self.acceptInvitation(id)
         }
       })
+      let jsUser = getJSUser(user, message: "invite")
+      bridge.eventDispatcher().sendAppEventWithName("recievedInvitation", body: jsUser)
       return
-    } else if strData.containsString("ivitation_"){
-      print("Revieved invitation from user")
     } else if strData.containsString("accepted_") {
       id = strData.stringByReplacingOccurrencesOfString("accepted_", withString: "")
       if strData.containsString("advertiserbrowser") {
@@ -249,9 +250,17 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         id = strData.stringByReplacingOccurrencesOfString("advertiser", withString: "")
       }
       let user = User(inLink: link, inId: id, inConnected: true, peerType: mode)
-      let dict = getJSUser(user, message: strData)
-      bridge.eventDispatcher().sendAppEventWithName("connectedToUser", body: dict)
+      let jsUser = getJSUser(user, message: strData)
+      bridge.eventDispatcher().sendAppEventWithName("connectedToUser", body: jsUser)
       delegate?.connectedToUser(user)
+      for i in 0..<self.nearbyUsers.count {
+        let nbUser = self.nearbyUsers[i]
+        if nbUser.deviceId == id {
+          if nbUser.connected != user.connected {
+            nbUser.connected = true
+          }
+        }
+      }
       return
     }
     let user = User(inLink: link, inId: id, inConnected: false, peerType: mode)
@@ -268,8 +277,8 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     // fire delegate
     delegate?.detectedUser(user)
     // notify js
-    let dict = getJSUser(user, message: strData)
+    let jsUser = getJSUser(user, message: strData)
     // Only Advertisers are Detectable to User
-    bridge.eventDispatcher().sendAppEventWithName("detectedUser", body: dict)
+    bridge.eventDispatcher().sendAppEventWithName("detectedUser", body: jsUser)
   }
 }

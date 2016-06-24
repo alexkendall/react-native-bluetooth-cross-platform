@@ -24,8 +24,8 @@ module.exports = {
   inviteUser(userId) {
     NativeManager.inviteUser(userId)
   },
-  getConnectedPeers(callback) {
-
+  acceptInvitation(userId) {
+    NativeManager.acceptInvitation(userId)
   },
   getNearbyPeers(callback) {
     NativeManager.getNearbyPeers((peers) => {
@@ -38,7 +38,7 @@ module.exports = {
     })
   },
   /*listener callbacks
-  user contains .id (required), type(required), connected(required), message(optional),
+  user contains .id (string), type(string), connected(bool), message(string),
   */
   addPeerDetectedListener(callback) {
     NativeAppEventEmitter.addListener(
@@ -58,5 +58,17 @@ module.exports = {
       'connectedToUser',
       (user) => callback(user)
     );
-  }
+  },
+  addInviteListener(callback) {
+    NativeAppEventEmitter.addListener(
+      'recievedInvitation',
+      (user) => callback(user)
+    );
+  },
+  addConnectedListener(callback) {
+    NativeAppEventEmitter.addListener(
+      'connectedToUser',
+      (user) => callback(user)
+    );
+  },
 }

@@ -4,6 +4,7 @@ class User {
     this.id = dictionary.id
     this.connected = dictionary.connected
     this.message = dictionary.message
+    this.renderType = "user"
   }
 }
 

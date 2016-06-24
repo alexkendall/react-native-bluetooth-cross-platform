@@ -3,7 +3,6 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -14,6 +13,7 @@ import {
   NativeModules,
   NativeAppEventEmitter,
   ListView,
+  ActionSheetIOS,
 } from 'react-native';
 var NetworkManager = require('./NetworkManager.js')
 var User = require('./User.js')
@@ -25,7 +25,7 @@ class RCTUnderdark extends Component {
     this.state = {
       browsing: false,
       advertising: false,
-      ds: ds,
+      ds: ds.cloneWithRows([{type: "mpc"}]),
       users: [],
     }
     this.toggleAdvertise = this.toggleAdvertise.bind(this)
@@ -33,17 +33,50 @@ class RCTUnderdark extends Component {
     this.getButtonStyle = this.getButtonStyle.bind(this)
     this.detectedUser = this.detectedUser.bind(this)
     this.renderUser = this.renderUser.bind(this)
+    this.renderMPC = this.renderMPC.bind(this)
+    this.updateDS = this.updateDS.bind(this)
+    this.renderRow = this.renderRow.bind(this)
+  }
+  updateDS() {
+    let source = [{type: "mpc"}]
+    for(var i = 0; i < this.state.users.length; ++i) {
+      let user = new User(this.state.users[i])
+      source.push(user)
+    }
+    this.setState({
+      ds: this.state.ds.cloneWithRows(source),
+    })
   }
   componentDidMount() {
+    // eventListeners
     NetworkManager.addPeerDetectedListener(this.detectedUser)
+    NetworkManager.addInviteListener(this.handleInvite)
   }
   detectedUser(dict) {
     NetworkManager.getNearbyPeers((peers) => {
       this.setState({
-        ds: this.state.ds.cloneWithRows(peers),
         users: peers,
       })
     })
+    this.updateDS()
+  }
+  handleInvite(user) {
+    var BUTTONS = [
+      'Accept',
+      'Cancel',
+    ];
+
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: BUTTONS,
+      cancelButtonIndex: 1,
+      destructiveButtonIndex: 0,
+    },
+    (buttonIndex) => {
+      if(buttonIndex == 0) {
+        NetworkManager.acceptInvitation(user.id)
+        return
+      }
+    });
   }
   toggleBrowse() {
     if(this.state.browsing) {
@@ -66,12 +99,17 @@ class RCTUnderdark extends Component {
     })
   }
   renderUser(user) {
+    console.log(user)
+    let mainColor = "black"
+    if(user.connected) {
+      mainColor = "blue"
+    }
     return (
       <TouchableOpacity onPress={() => {
           NetworkManager.inviteUser(user.id)
         }}>
       <View style={{marginBottom: 15,}}>
-        <Text style={{fontSize: 14, fontWeight: "800"}}> Id: {user.id} </Text>
+        <Text style={{fontSize: 14, fontWeight: "800", color: mainColor}}> Id: {user.id} </Text>
         <Text> PeerType: {user.type} </Text>
         <Text> Connected: {user.connected} </Text>
         <Text> Message: {user.message} </Text>
@@ -79,27 +117,38 @@ class RCTUnderdark extends Component {
       </TouchableOpacity>
     )
   }
+  renderMPC() {
+    return (
+    <View style={{flexDirection: "row", justifyContent: "space-around", flex: 1,}}>
+      <TouchableOpacity onPress={()=>{
+        this.toggleAdvertise()
+      }}>
+        <View style={this.getButtonStyle(this.state.advertising)}>
+          <Text style={styles.scanText}>ADVERTISE</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={()=>{
+        this.toggleBrowse()
+      }}>
+        <View style={this.getButtonStyle(this.state.browsing)}>
+          <Text style={styles.scanText}>BROWSE</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+    )
+  }
+  renderRow(model){
+    if(model.renderType == "user") {
+      return this.renderUser(model)
+    }
+    return this.renderMPC()
+  }
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={()=>{
-          this.toggleAdvertise()
-        }}>
-          <View style={this.getButtonStyle(this.state.advertising)}>
-            <Text style={styles.scanText}>ADVERTISE</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={()=>{
-          this.toggleBrowse()
-        }}>
-          <View style={this.getButtonStyle(this.state.browsing)}>
-            <Text style={styles.scanText}>BROWSE</Text>
-          </View>
-        </TouchableOpacity>
         <ListView
         dataSource={this.state.ds}
-        renderRow={this.renderUser}
-        style={styles.listView}
+        renderRow={this.renderRow}
         />
       </View>
     );
@@ -127,7 +176,6 @@ class RCTUnderdark extends Component {
   }
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -154,9 +202,6 @@ const styles = StyleSheet.create({
   scanText: {
     color: "white",
     textAlign: "center",
-  },
-  listView: {
-    marginTop: 50,
   },
 });
 
