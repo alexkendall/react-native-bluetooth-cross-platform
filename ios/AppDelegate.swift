@@ -3,6 +3,7 @@ import UIKit
 import CoreData
 import Underdark
 
+
 var bridge: RCTBridge!
 
 @UIApplicationMain
@@ -10,17 +11,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   var window: UIWindow?
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-    /*
-    #if DEBUG
+    #if IOS_SIMULATOR
     let jsLocation = NSURL(string: "http://localhost:8081/index.ios.bundle?platform=ios&dev=true")
-    print("DEBUG")
+      print("SIMULATOR")
     #else
     let jsLocation = NSBundle.mainBundle().URLForResource("main", withExtension: "jsbundle")
-    print("RELEASE")
+      print("NOT SIMULATOR")
     #endif
-    */
-    //let jsLocation = NSBundle.mainBundle().URLForResource("main", withExtension: "jsbundle")
-    let jsLocation = NSURL(string: "http://localhost:8081/index.ios.bundle?platform=ios&dev=true")
     let rootController = UIViewController()
     window = UIWindow(frame: UIScreen.mainScreen().bounds)
     window?.rootViewController = rootController

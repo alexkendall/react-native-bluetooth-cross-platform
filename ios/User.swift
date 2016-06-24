@@ -15,6 +15,7 @@ public class User: NSObject {
     link = inLink
     deviceId = inId
     connected = inConnected
+    mode = peerType
   }
   public enum PeerType: String {
     case BROWSER = "browser"

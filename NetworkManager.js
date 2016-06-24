@@ -22,7 +22,20 @@ module.exports = {
     NativeManager.stopBrowsing()
   },
   inviteUser(userId) {
-    NativeManager.inviteoUser(userId)
+    NativeManager.inviteUser(userId)
+  },
+  getConnectedPeers(callback) {
+
+  },
+  getNearbyPeers(callback) {
+    NativeManager.getNearbyPeers((peers) => {
+      callback(peers)
+    })
+  },
+  getConnectedPeers(callback) {
+    NativeManager.getConnectedPeers((peers) => {
+      callback(peers)
+    })
   },
   /*listener callbacks
   user contains .id (required), type(required), connected(required), message(optional),

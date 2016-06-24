@@ -14,4 +14,8 @@ RCT_EXTERN_METHOD(stopBrowsing)
 
 RCT_EXTERN_METHOD(inviteUser:(NSString*)userId)
 
+RCT_EXTERN_METHOD(getConnectedPeers:(RCTResponseSenderBlock)callback)
+
+RCT_EXTERN_METHOD(getNearbyPeers:(RCTResponseSenderBlock)callback)
+
 @end

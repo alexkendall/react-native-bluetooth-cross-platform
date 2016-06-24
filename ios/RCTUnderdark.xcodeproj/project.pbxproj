@@ -568,6 +568,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				"OTHER_SWIFT_FLAGS[sdk=iphonesimulator*]" = "-D IOS_SIMULATOR ";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rct.underdark;
 				PRODUCT_NAME = RCTUnderdark;
 				SWIFT_OBJC_BRIDGING_HEADER = "RCTUnderdark-Bridging-Header.h";
