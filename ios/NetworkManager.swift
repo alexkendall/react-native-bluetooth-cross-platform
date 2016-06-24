@@ -271,6 +271,5 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     let dict = getJSUser(user, message: strData)
     // Only Advertisers are Detectable to User
     bridge.eventDispatcher().sendAppEventWithName("detectedUser", body: dict)
-    self.log()
   }
 }

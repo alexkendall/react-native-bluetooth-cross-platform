@@ -38,24 +38,11 @@ class RCTUnderdark extends Component {
     NetworkManager.addPeerDetectedListener(this.detectedUser)
   }
   detectedUser(dict) {
-    //console.log("Detctected User:" +dict)
-    var newUser = new User(dict)
-    var newUsers = this.state.users
-    for(var i = 0; i < newUsers.length; ++i){
-      console.log("user detected type: " + newUser.type)
-      if (newUser.id == newUsers[i].id) {
-        newUsers[i].type = newUser.type
-        this.setState({
-          ds: this.state.ds.cloneWithRows(newUsers),
-          users: newUsers,
-        })
-        return
-      }
-    }
-    newUsers.push(newUser)
-    this.setState({
-      ds: this.state.ds.cloneWithRows(newUsers),
-      users: newUsers,
+    NetworkManager.getNearbyPeers((peers) => {
+      this.setState({
+        ds: this.state.ds.cloneWithRows(peers),
+        users: peers,
+      })
     })
   }
   toggleBrowse() {
@@ -67,14 +54,6 @@ class RCTUnderdark extends Component {
     this.setState({
       browsing: !this.state.browsing
     })
-    /*
-    NetworkManager.getConnectedPeers((peers) => {
-      console.log(peers)
-    })
-    */
-    NetworkManager.getNearbyPeers((peers) => {
-      console.log(peers)
-    })
   }
   toggleAdvertise() {
     if(this.state.advertising) {
@@ -84,14 +63,6 @@ class RCTUnderdark extends Component {
     }
     this.setState({
       advertising: !this.state.advertising
-    })
-    /*
-    NetworkManager.getConnectedPeers((peers) => {
-      console.log(peers)
-    })
-    */
-    NetworkManager.getNearbyPeers((peers) => {
-      console.log(peers)
     })
   }
   renderUser(user) {
@@ -125,6 +96,11 @@ class RCTUnderdark extends Component {
             <Text style={styles.scanText}>BROWSE</Text>
           </View>
         </TouchableOpacity>
+        <ListView
+        dataSource={this.state.ds}
+        renderRow={this.renderUser}
+        style={styles.listView}
+        />
       </View>
     );
   }
