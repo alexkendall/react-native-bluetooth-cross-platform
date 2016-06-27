@@ -173,13 +173,11 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     }
   }
   @objc func acceptInvitation(userId: String) {
-    print("Accepted invitation from userId: \(userId)")
     let msg = "accepted_\(deviceId)".dataUsingEncoding(NSUTF8StringEncoding)
     for i in 0..<nearbyUsers.count {
       if nearbyUsers[i].deviceId == userId {
         nearbyUsers[i].connected = true
         nearbyUsers[i].link.sendFrame(msg)
-        print("sendingframe accepted to user")
       }
     }
   }
@@ -249,10 +247,10 @@ public class NetworkManager: NSObject, UDTransportDelegate {
       id = strData.stringByReplacingOccurrencesOfString("accepted_", withString: "")
       if strData.containsString("advertiserbrowser") {
         mode = User.PeerType.ADVERTISER_BROWSER
-        id = strData.stringByReplacingOccurrencesOfString("advertiserbrowser", withString: "")
+        id = id.stringByReplacingOccurrencesOfString("advertiserbrowser", withString: "")
       } else {
         mode = User.PeerType.BROWSER
-        id = strData.stringByReplacingOccurrencesOfString("advertiser", withString: "")
+        id = id.stringByReplacingOccurrencesOfString("advertiser", withString: "")
       }
       let user = User(inLink: link, inId: id, inConnected: true, peerType: mode)
       let jsUser = getJSUser(user, message: strData)

@@ -30,6 +30,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
         this.activity = inActivity;
     }
 
+    @Override
     public String getName() {
         return "NetworkManager";
     }
@@ -46,15 +47,16 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
         if(nodeId < 0) {
             nodeId = -nodeId;
         }
-        if(kind == "WIFI") {
+
+        if("WIFI".equals(kind)) {
             EnumSet.of(TransportKind.WIFI);
 
-        } else if(kind == "BT") {
+        } else if("BT".equals(kind)) {
             kinds = EnumSet.of(TransportKind.BLUETOOTH);
 
         } else {
             kinds = EnumSet.of(TransportKind.WIFI, TransportKind.BLUETOOTH);
-        }
+    }
         this.transport = Underdark.configureTransport(
                 234235,
                 nodeId,

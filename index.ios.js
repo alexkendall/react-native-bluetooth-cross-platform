@@ -1,8 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -37,6 +32,7 @@ class RCTUnderdark extends Component {
     this.renderMPC = this.renderMPC.bind(this)
     this.updateDS = this.updateDS.bind(this)
     this.renderRow = this.renderRow.bind(this)
+    this.connectedToUser = this.connectedToUser.bind(this)
   }
   updateDS() {
     let source = [{type: "mpc", advertising: this.state.advertising, browsing: this.state.browsing,}]
@@ -52,8 +48,17 @@ class RCTUnderdark extends Component {
     // eventListeners
     NetworkManager.addPeerDetectedListener(this.detectedUser)
     NetworkManager.addInviteListener(this.handleInvite)
+    NetworkManager.addConnectedListener(this.connectedToUser)
   }
   detectedUser(dict) {
+    NetworkManager.getNearbyPeers((peers) => {
+      this.setState({
+        users: peers,
+      })
+    })
+    this.updateDS()
+  }
+  connectedToUser(user) {
     NetworkManager.getNearbyPeers((peers) => {
       this.setState({
         users: peers,
@@ -101,6 +106,7 @@ class RCTUnderdark extends Component {
     this.updateDS()
   }
   renderUser(user) {
+    console.log(user)
     let mainColor = "black"
     if(user.connected) {
       mainColor = "blue"
