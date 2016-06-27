@@ -32,7 +32,6 @@ class RCTUnderdark extends Component {
   }
 
   toggleAdvertise() {
-    console.log("should print network manager")
     if(this.state.advertising) {
       NetworkManager.stopAdvertising()
     } else {

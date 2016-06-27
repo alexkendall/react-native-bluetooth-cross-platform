@@ -8,12 +8,15 @@ import io.underdark.transport.TransportKind;
 import io.underdark.transport.TransportListener;
 import android.app.Activity;
 import android.os.Debug;
+import android.util.Log;
+
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 public class NetworkManager extends ReactContextBaseJavaModule implements TransportListener {
@@ -22,7 +25,9 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     private Node node;
     private Transport transport;
     private Vector<Link> links;
+    private Vector<User> nearbyUsers;
     private Activity activity;
+    private TransportListener listener;
 
     // MARK: ReactContextBaseJavaModule
     public NetworkManager(ReactApplicationContext reactContext, Activity inActivity) {
@@ -39,6 +44,8 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
         if(transportConfigured){
             return;
         }
+        this.listener = this;
+        links = new Vector<Link>();
         long nodeId = 0;
         while(nodeId == 0) {
             nodeId = new Random().nextLong();
@@ -95,7 +102,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     @Override
     public void transportLinkConnected(Transport transport, Link link) {
         this.links.add(link);
-        System.out.println("Link Connected");
+        Log.d("NetworkManager", "Link Connected");
     }
 
     @Override
@@ -105,11 +112,37 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
                 this.links.removeElementAt(i);
                 return;
             }
-        System.out.println("Link Disconnected");
+        Log.d("NetworkManager", "Link Disconnected");
     }
 
     @Override
     public void transportLinkDidReceiveFrame(Transport transport, Link link, byte[] frameData) {
-        System.out.println("Recieved frame");
+        Log.d("NetworkManager", "Received frame");
+        try {
+            String message = new String(frameData, "UTF-8");
+            String id = "";
+            Boolean connected = false;
+            User.PeerType peerType = User.PeerType.OFFLINE;
+            if(message.contains("advertiserbrowser_")) {
+                peerType = User.PeerType.ADVERTISER_BROWSER;
+                message = message.replace("advertiserbrowser_", "");
+            } else if(message.contains("advertiser_")) {
+                peerType = User.PeerType.ADVERISER;
+                message = message.replace("advertiser_", "");
+            } else if(message.contains("browser_")) {
+                peerType = User.PeerType.BROWSER;
+                message = message.replace("browser_", "");
+            }
+            User user = new User(id, link, connected, peerType);
+            for(int i = 0; i < this.nearbyUsers.size(); ++i) {
+                if(this.nearbyUsers.get(i).link.getNodeId() == link.getNodeId()) {
+                    this.nearbyUsers.removeElementAt(i);
+                }
+            }
+            nearbyUsers.add(user);
+            Log.d("User ID", message);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 }
