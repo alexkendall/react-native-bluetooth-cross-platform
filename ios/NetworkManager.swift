@@ -39,10 +39,12 @@ public class NetworkManager: NSObject, UDTransportDelegate {
       }
       transport = UDUnderdark.configureTransportWithAppId(appId, nodeId: nodeId, delegate: self, queue: queue, kinds: transportKinds)
       self.transportConfigured = true
+      /*
       dispatch_async(dispatch_get_main_queue(), {
         self.logTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: #selector(self.log), userInfo: nil, repeats: true)
         NSRunLoop.mainRunLoop().addTimer(self.logTimer, forMode: NSDefaultRunLoopMode)
       })
+      */
     }
     transport?.start()
   }
@@ -171,11 +173,13 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     }
   }
   @objc func acceptInvitation(userId: String) {
+    print("Accepted invitation from userId: \(userId)")
     let msg = "accepted_\(deviceId)".dataUsingEncoding(NSUTF8StringEncoding)
     for i in 0..<nearbyUsers.count {
       if nearbyUsers[i].deviceId == userId {
         nearbyUsers[i].connected = true
         nearbyUsers[i].link.sendFrame(msg)
+        print("sendingframe accepted to user")
       }
     }
   }
@@ -226,12 +230,13 @@ public class NetworkManager: NSObject, UDTransportDelegate {
       id = strData.stringByReplacingOccurrencesOfString("invitation_", withString: "")
       if strData.containsString("advertiserbrowser") {
         mode = User.PeerType.ADVERTISER_BROWSER
-        id = strData.stringByReplacingOccurrencesOfString("advertiserbrowser", withString: "")
+        id = id.stringByReplacingOccurrencesOfString("advertiserbrowser", withString: "")
       } else {
         mode = User.PeerType.BROWSER
-         id = strData.stringByReplacingOccurrencesOfString("browser", withString: "")
+         id = id.stringByReplacingOccurrencesOfString("browser", withString: "")
       }
       let user = User(inLink: link, inId: id, inConnected: true, peerType: mode)
+      user.logInfo()
       delegate?.recievedInvitationFromUser(user, invitationHandler: {accept in
         if accept {
           self.acceptInvitation(id)

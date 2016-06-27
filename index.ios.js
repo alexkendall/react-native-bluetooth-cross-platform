@@ -14,6 +14,7 @@ import {
   NativeAppEventEmitter,
   ListView,
   ActionSheetIOS,
+  Dimensions,
 } from 'react-native';
 var NetworkManager = require('./NetworkManager.js')
 var User = require('./User.js')
@@ -25,7 +26,7 @@ class RCTUnderdark extends Component {
     this.state = {
       browsing: false,
       advertising: false,
-      ds: ds.cloneWithRows([{type: "mpc"}]),
+      ds: ds.cloneWithRows([{type: "mpc", advertising: false, browsing: false,}]),
       users: [],
     }
     this.toggleAdvertise = this.toggleAdvertise.bind(this)
@@ -38,7 +39,7 @@ class RCTUnderdark extends Component {
     this.renderRow = this.renderRow.bind(this)
   }
   updateDS() {
-    let source = [{type: "mpc"}]
+    let source = [{type: "mpc", advertising: this.state.advertising, browsing: this.state.browsing,}]
     for(var i = 0; i < this.state.users.length; ++i) {
       let user = new User(this.state.users[i])
       source.push(user)
@@ -61,13 +62,12 @@ class RCTUnderdark extends Component {
     this.updateDS()
   }
   handleInvite(user) {
-    var BUTTONS = [
+    var buttons = [
       'Accept',
       'Cancel',
     ];
-
     ActionSheetIOS.showActionSheetWithOptions({
-      options: BUTTONS,
+      options: buttons,
       cancelButtonIndex: 1,
       destructiveButtonIndex: 0,
     },
@@ -87,6 +87,7 @@ class RCTUnderdark extends Component {
     this.setState({
       browsing: !this.state.browsing
     })
+    this.updateDS()
   }
   toggleAdvertise() {
     if(this.state.advertising) {
@@ -97,9 +98,9 @@ class RCTUnderdark extends Component {
     this.setState({
       advertising: !this.state.advertising
     })
+    this.updateDS()
   }
   renderUser(user) {
-    console.log(user)
     let mainColor = "black"
     if(user.connected) {
       mainColor = "blue"
@@ -117,7 +118,7 @@ class RCTUnderdark extends Component {
       </TouchableOpacity>
     )
   }
-  renderMPC() {
+  renderMPC(model) {
     return (
     <View style={{flexDirection: "row", justifyContent: "space-around", flex: 1,}}>
       <TouchableOpacity onPress={()=>{
@@ -141,7 +142,7 @@ class RCTUnderdark extends Component {
     if(model.renderType == "user") {
       return this.renderUser(model)
     }
-    return this.renderMPC()
+    return this.renderMPC(model)
   }
   render() {
     return (
