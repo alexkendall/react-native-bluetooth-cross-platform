@@ -25,6 +25,7 @@
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+        <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     </application>
 
 </manifest>

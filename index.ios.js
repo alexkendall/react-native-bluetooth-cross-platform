@@ -55,16 +55,16 @@ class RCTUnderdark extends Component {
       this.setState({
         users: peers,
       })
+      this.updateDS()
     })
-    this.updateDS()
   }
   connectedToUser(user) {
     NetworkManager.getNearbyPeers((peers) => {
       this.setState({
         users: peers,
       })
+      this.updateDS()
     })
-    this.updateDS()
   }
   handleInvite(user) {
     var buttons = [

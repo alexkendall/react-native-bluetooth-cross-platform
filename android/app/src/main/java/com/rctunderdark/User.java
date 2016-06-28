@@ -2,7 +2,13 @@ package com.rctunderdark;
 
 import android.util.Log;
 
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableMapKeySetIterator;
+import com.facebook.react.bridge.ReadableType;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -25,15 +31,15 @@ public class User {
         this.peerType = inType;
     }
 
-    public Map<String, Object> getJSUser() {
-        final Map<String, Object> map = new HashMap<>();
-        map.put("id", this.deviceId);
-        map.put("connected", this.connected);
-        map.put("type", getStringValue(this.peerType));
+    public WritableMap getJSUser() {
+        WritableMap map = Arguments.createMap();
+        map.putString("id", deviceId);
+        map.putString("type", getStringValue(peerType));
+        map.putBoolean("connected", connected);
         return map;
     }
 
-    public String getStringValue(PeerType type) {
+    public static String getStringValue(PeerType type) {
         switch(type) {
             case ADVERISER:
                 return "advertiser";
