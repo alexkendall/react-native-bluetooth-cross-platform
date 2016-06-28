@@ -28,6 +28,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     private Vector<User> nearbyUsers;
     private Activity activity;
     private TransportListener listener;
+    private User.PeerType type = User.PeerType.OFFLINE;
 
     // MARK: ReactContextBaseJavaModule
     public NetworkManager(ReactApplicationContext reactContext, Activity inActivity) {
@@ -78,21 +79,42 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     private void stopTransport() {
         transport.stop();
     }
+
     // MARK: React Methods
     @ReactMethod
     public void advertise(String kind) {
         initTransport(kind);
+        if(this.type == User.PeerType.BROWSER) {
+            this.type = User.PeerType.ADVERTISER_BROWSER;
+        }
+        this.initTransport(kind);
     }
     @ReactMethod
     public void browse(String kind) {
+        if(this.type == User.PeerType.ADVERISER) {
+            this.type = User.PeerType.ADVERTISER_BROWSER;
+        } else {
+            this.type = User.PeerType.BROWSER;
+        }
         initTransport(kind);
     }
+
     @ReactMethod
     public void stopAdvertising() {
+        if(this.type == User.PeerType.ADVERTISER_BROWSER) {
+            this.type = User.PeerType.BROWSER;
+        } else {
+            this.type = User.PeerType.OFFLINE;
+        }
         stopTransport();
     }
     @ReactMethod
     public void stopBrowsing() {
+        if(this.type == User.PeerType.ADVERTISER_BROWSER) {
+            this.type = User.PeerType.ADVERISER;
+        } else {
+            this.type = User.PeerType.OFFLINE;
+        }
         stopTransport();
     }
     //MARK: TransportListener
