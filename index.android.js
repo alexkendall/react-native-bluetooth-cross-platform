@@ -93,13 +93,6 @@ class RCTUnderdark extends Component {
       browsing: !this.state.browsing
     })
     this.updateDS()
-    NetworkManager.getNearbyPeers((peers)=> {
-      this.setState({
-        users: peers,
-      })
-      this.updateDS
-      console.log(peers)
-    })
   }
   toggleAdvertise() {
     if(this.state.advertising) {
@@ -111,13 +104,6 @@ class RCTUnderdark extends Component {
       advertising: !this.state.advertising
     })
     this.updateDS()
-    NetworkManager.getNearbyPeers((peers)=> {
-      this.setState({
-        users: peers,
-      })
-      this.updateDS
-      console.log(peers)
-    })
   }
   renderUser(user) {
     let mainColor = "black"

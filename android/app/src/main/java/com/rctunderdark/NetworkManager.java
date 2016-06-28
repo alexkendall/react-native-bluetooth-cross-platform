@@ -17,6 +17,7 @@ import java.nio.charset.*;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
@@ -24,6 +25,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import java.io.UnsupportedEncodingException;
 import java.util.*;
@@ -41,10 +43,12 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     private Timer broadcastTimer;
     private Boolean isRunning = false;
     private String deviceID = UUID.randomUUID().toString();;
+    private ReactContext context;
     // MARK: ReactContextBaseJavaModule
     public NetworkManager(ReactApplicationContext reactContext, Activity inActivity) {
         super(reactContext);
         this.activity = inActivity;
+        this.context = reactContext;
         this.listener = this;
     }
     @Override
@@ -181,9 +185,11 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     }
     @ReactMethod
     public void inviteUser(String userId) {
-        byte[] data = "invitation_".concat(deviceID).getBytes(Charset.forName("UTF-8"));
+        byte[] data = "invitation_".concat(deviceID).concat(User.getStringValue(type)).getBytes(Charset.forName("UTF-8"));
         for(int i = 0; i < nearbyUsers.size(); ++i) {
-            if(nearbyUsers.elementAt(i).deviceId == userId) {
+            Log.i("Device Id",nearbyUsers.elementAt(i).deviceId);
+            if(nearbyUsers.elementAt(i).deviceId.equals(userId)) {
+                Log.i("Invite User", userId);
                 nearbyUsers.elementAt(i).link.sendFrame(data);
             }
         }
@@ -191,6 +197,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     //MARK: TransportListener
     @Override
     public void transportNeedsActivity(Transport transport, ActivityCallback callback) {
+
     }
     @Override
     public void transportLinkConnected(Transport transport, Link link) {
@@ -210,7 +217,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
 
     @Override
     public void transportLinkDidReceiveFrame(Transport transport, Link link, byte[] frameData) {
-        Log.d("NetworkManager", "Received frame");
+        //Log.d("NetworkManager", "Received frame");
         try {
             String message = new String(frameData, "UTF-8");
             String id = "";
@@ -233,7 +240,9 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
                 }
             }
             nearbyUsers.add(user);
-            Log.d("User ID", message);
+            context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("detectedUser", user.getJSUser());
+            //Log.d("User ID", message);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
