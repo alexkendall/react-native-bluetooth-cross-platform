@@ -35,13 +35,16 @@ class RCTUnderdark extends Component {
     this.connectedToUser = this.connectedToUser.bind(this)
   }
   updateDS() {
-    let source = [{type: "mpc", advertising: this.state.advertising, browsing: this.state.browsing,}]
-    for(var i = 0; i < this.state.users.length; ++i) {
-      let user = new User(this.state.users[i])
-      source.push(user)
-    }
-    this.setState({
-      ds: this.state.ds.cloneWithRows(source),
+    NetworkManager.getNearbyPeers((peers) => {
+      let source = [{type: "mpc", advertising: this.state.advertising, browsing: this.state.browsing,}]
+      for(var i = 0; i < peers.length; ++i) {
+        let user = new User(peers[i])
+        source.push(user)
+      }
+      this.setState({
+        users: peers,
+        ds: this.state.ds.cloneWithRows(source)
+      })
     })
   }
   componentDidMount() {
@@ -51,20 +54,10 @@ class RCTUnderdark extends Component {
     NetworkManager.addConnectedListener(this.connectedToUser)
   }
   detectedUser(dict) {
-    NetworkManager.getNearbyPeers((peers) => {
-      this.setState({
-        users: peers,
-      })
-      this.updateDS()
-    })
+    this.updateDS()
   }
   connectedToUser(user) {
-    NetworkManager.getNearbyPeers((peers) => {
-      this.setState({
-        users: peers,
-      })
-      this.updateDS()
-    })
+    this.updateDS()
   }
   handleInvite(user) {
     var buttons = [
@@ -106,11 +99,13 @@ class RCTUnderdark extends Component {
     this.updateDS()
   }
   renderUser(user) {
+    console.log("rendering user begin...")
     console.log(user)
     let mainColor = "black"
     if(user.connected) {
       mainColor = "blue"
     }
+    console.log("end rendering user...")
     return (
       <TouchableOpacity onPress={() => {
           NetworkManager.inviteUser(user.id)
@@ -118,7 +113,7 @@ class RCTUnderdark extends Component {
       <View style={{marginBottom: 15,}}>
         <Text style={{fontSize: 14, fontWeight: "800", color: mainColor}}> Id: {user.id} </Text>
         <Text> PeerType: {user.type} </Text>
-        <Text> Connected: {user.connected} </Text>
+        <Text> Connected: {user.connected.toString()} </Text>
         <Text> Message: {user.message} </Text>
       </View>
       </TouchableOpacity>

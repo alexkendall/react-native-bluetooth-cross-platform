@@ -8,15 +8,14 @@ public class NetworkManager: NSObject, UDTransportDelegate {
   private var links: [UDLink] = [UDLink]()
   private var nearbyUsers: [User] = [User]()
   private var advertiseTimer: NSTimer! = nil
-  private var logTimer: NSTimer! = nil
   private var type: User.PeerType = User.PeerType.OFFLINE
   private var transportConfigured: Bool = false
   public var delegate: NetworkManagerDelegate? = nil
+  private var nodeId: Int64 = 0;
   // MARK: Private Functions
   private func initTransport(kind: String) {
     if !self.transportConfigured {
       let appId: Int32 = 234235
-      let nodeId: Int64
       let queue = dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)
       var buf : Int64 = 0;
       while buf == 0 {
@@ -39,12 +38,6 @@ public class NetworkManager: NSObject, UDTransportDelegate {
       }
       transport = UDUnderdark.configureTransportWithAppId(appId, nodeId: nodeId, delegate: self, queue: queue, kinds: transportKinds)
       self.transportConfigured = true
-      /*
-      dispatch_async(dispatch_get_main_queue(), {
-        self.logTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: #selector(self.log), userInfo: nil, repeats: true)
-        NSRunLoop.mainRunLoop().addTimer(self.logTimer, forMode: NSDefaultRunLoopMode)
-      })
-      */
     }
     transport?.start()
   }
@@ -160,12 +153,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     user.link.sendFrame(msgData)
   }
   @objc func inviteUser(id: String) {
-    var msgStr = "invitation_\(deviceId)"
-    if self.type == .BROWSER {
-      msgStr = "\(msgStr)browser"
-    } else {
-      msgStr = "\(msgStr)advertiserbrowser"
-    }
+    let msgStr = "invitation_\(deviceId)"
     for i in 0..<nearbyUsers.count {
       if nearbyUsers[i].deviceId == id {
         nearbyUsers[i].link.sendFrame(msgStr.dataUsingEncoding(NSUTF8StringEncoding))
@@ -179,6 +167,10 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         nearbyUsers[i].connected = true
         nearbyUsers[i].link.sendFrame(msg)
       }
+    }
+    let user = findUser(userId)
+    if(user != nil) {
+      informAcceptedInvite(user!)
     }
   }
   // MARK: Network Manager Transport Delegate
@@ -201,87 +193,107 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     }
   }
   @objc public func transport(transport: UDTransport!, link: UDLink!, didReceiveFrame frameData: NSData!) {
-    let strData = String(data: frameData, encoding: NSUTF8StringEncoding)!
-    print("Recieved Frame: \(strData)")
+    if(link.nodeId == self.nodeId) {
+      return;
+    }
+    var user: User? = nil
+    let message: String = String(data: frameData, encoding: NSUTF8StringEncoding) ?? ""
+    if containsKeyword(message) {
+      let keyword: String = getKeywordFromMessage(message)
+      let id: String = getDeviceID(message)
+      switch keyword {
+      case "advertiserbrowser_":
+        user = User(inLink: link, inId: id, inConnected: false, peerType: .ADVERTISER_BROWSER)
+        checkForNewUsers(user!)
+        return
+      case "advertiser_":
+        user = User(inLink: link, inId: id, inConnected: false, peerType: .ADVERTISER)
+        checkForNewUsers(user!)
+        return
+      case "browser_":
+        user = User(inLink: link, inId: id, inConnected: false, peerType: .BROWSER)
+        checkForNewUsers(user!)
+        return
+      case "invitation_":
+        user = findUser(id)
+        if user != nil {
+          bridge.eventDispatcher().sendInputEventWithName("receivedInvitation", body: getJSUser(user!, message: "invite"))
+        }
+        return
+      case "accepted_":
+        user = findUser(id)
+        if user != nil {
+          user?.connected = true
+          informConnected(user!)
+          bridge.eventDispatcher().sendInputEventWithName("connectedToUser", body: getJSUser(user!, message: "invite"))
+        }
+        return
+      case "connected_":
+        user = findUser(id)
+        if user != nil {
+          user?.connected = true
+          bridge.eventDispatcher().sendInputEventWithName("connectedToUser", body: getJSUser(user!, message: "invite"))
+        }
+        return
+      default:
+        return
+      }
+    } else {
+      print("Recieved message: \(message)")
+    }
+  }
+  // MARK: Swift Helpers
+  private func checkForNewUsers(user: User) {
     for i in 0..<nearbyUsers.count {
-      if link.nodeId == nearbyUsers[i].link.nodeId {
-        let user = nearbyUsers[i]
-        if user.connected {
-          delegate?.recievedMessageFromUser(strData, user: user)
-          let jsUser = getJSUser(user, message: strData)
-          bridge.eventDispatcher().sendAppEventWithName("messageReceived", body: jsUser)
-        }
+      if nearbyUsers[i].deviceId == user.deviceId && nearbyUsers[i].mode != user.mode {
+        nearbyUsers[i].mode = user.mode;
+        return;
       }
+      return;
     }
-    var id = ""
-    var mode = User.PeerType.OFFLINE
-    if strData.containsString("advertiserbrowser_") {
-      id = strData.stringByReplacingOccurrencesOfString("advertiserbrowser_", withString: "")
-      mode = User.PeerType.ADVERTISER_BROWSER
-    } else if strData.containsString("advertiser_") {
-      id = strData.stringByReplacingOccurrencesOfString("advertiser_", withString: "")
-      mode = User.PeerType.ADVERTISER
-    } else if strData.containsString("browser_") {
-      id = strData.stringByReplacingOccurrencesOfString("browser_", withString: "")
-      mode = User.PeerType.BROWSER
-    } else if strData.containsString("invitation_") {
-      id = strData.stringByReplacingOccurrencesOfString("invitation_", withString: "")
-      if strData.containsString("advertiserbrowser") {
-        mode = User.PeerType.ADVERTISER_BROWSER
-        id = id.stringByReplacingOccurrencesOfString("advertiserbrowser", withString: "")
-      } else {
-        mode = User.PeerType.BROWSER
-         id = id.stringByReplacingOccurrencesOfString("browser", withString: "")
-      }
-      let user = User(inLink: link, inId: id, inConnected: true, peerType: mode)
-      user.logInfo()
-      delegate?.recievedInvitationFromUser(user, invitationHandler: {accept in
-        if accept {
-          self.acceptInvitation(id)
-        }
-      })
-      let jsUser = getJSUser(user, message: "invite")
-      bridge.eventDispatcher().sendAppEventWithName("recievedInvitation", body: jsUser)
-      return
-    } else if strData.containsString("accepted_") {
-      id = strData.stringByReplacingOccurrencesOfString("accepted_", withString: "")
-      if strData.containsString("advertiserbrowser") {
-        mode = User.PeerType.ADVERTISER_BROWSER
-        id = id.stringByReplacingOccurrencesOfString("advertiserbrowser", withString: "")
-      } else {
-        mode = User.PeerType.BROWSER
-        id = id.stringByReplacingOccurrencesOfString("advertiser", withString: "")
-      }
-      let user = User(inLink: link, inId: id, inConnected: true, peerType: mode)
-      let jsUser = getJSUser(user, message: strData)
-      bridge.eventDispatcher().sendAppEventWithName("connectedToUser", body: jsUser)
-      delegate?.connectedToUser(user)
-      for i in 0..<self.nearbyUsers.count {
-        let nbUser = self.nearbyUsers[i]
-        if nbUser.deviceId == id {
-          if nbUser.connected != user.connected {
-            nbUser.connected = true
-          }
-        }
-      }
-      return
-    }
-    let user = User(inLink: link, inId: id, inConnected: false, peerType: mode)
-    for i in 0..<self.nearbyUsers.count {
-      let nbUser = self.nearbyUsers[i]
-      if nbUser.deviceId == id {
-        if nbUser.mode == mode {
-          return
-        }
-        self.nearbyUsers.removeAtIndex(i)
-      }
-    }
-    self.nearbyUsers.append(user)
-    // fire delegate
-    delegate?.detectedUser(user)
-    // notify js
-    let jsUser = getJSUser(user, message: strData)
-    // Only Advertisers are Detectable to User
+    nearbyUsers.append(user)
+    let jsUser = getJSUser(user, message: "newUser");
     bridge.eventDispatcher().sendAppEventWithName("detectedUser", body: jsUser)
+  }
+  private func containsKeyword(message: String) -> Bool {
+    let keywords: [String] = ["advertiserbrowser", "advertiser_", "browser_", "invitation_", "accepted_", "connected_"]
+    for key in keywords {
+      if message.containsString(key) {
+        return true
+      }
+    }
+    return false
+  }
+  private func getDeviceID(message: String) -> String {
+    var parsedMessage = message
+    let keywords: [String] = ["advertiserbrowser", "advertiser_", "browser_", "invitation_", "accepted_", "connected_"]
+    for key in keywords {
+      parsedMessage = parsedMessage.stringByReplacingOccurrencesOfString(key, withString: "")
+    }
+    return parsedMessage
+  }
+  
+  private func getKeywordFromMessage(message: String) -> String {
+    let deviceID = getDeviceID(message)
+    return message.stringByReplacingOccurrencesOfString(deviceID, withString: "")
+  }
+  private func findUser(id: String) -> User? {
+    print("deviceId: \(id)")
+    for user in nearbyUsers {
+      if user.deviceId == id {
+        return user
+      }
+    }
+    return nil
+  }
+  private func informConnected(user: User) {
+    let data = "connected_\(deviceId)".dataUsingEncoding(NSUTF8StringEncoding)
+    user.link.sendFrame(data)
+    
+  }
+  private func informAcceptedInvite(user: User) {
+    let data = "accepted_\(deviceId)".dataUsingEncoding(NSUTF8StringEncoding)
+    user.link.sendFrame(data)
+    
   }
 }

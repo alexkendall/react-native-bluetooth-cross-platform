@@ -44,6 +44,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     private Boolean isRunning = false;
     private String deviceID = UUID.randomUUID().toString();;
     private ReactContext context;
+    private long nodeId = 0;
     // MARK: ReactContextBaseJavaModule
     public NetworkManager(ReactApplicationContext reactContext, Activity inActivity) {
         super(reactContext);
@@ -65,7 +66,6 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
         this.listener = this;
         links = new Vector<Link>();
         nearbyUsers = new Vector<User>();
-        long nodeId = 0;
         while(nodeId == 0) {
             nodeId = new Random().nextLong();
         }
@@ -185,7 +185,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     }
     @ReactMethod
     public void inviteUser(String userId) {
-        byte[] data = "invitation_".concat(deviceID).concat(User.getStringValue(type)).getBytes(Charset.forName("UTF-8"));
+        byte[] data = "invitation_".concat(deviceID).getBytes(Charset.forName("UTF-8"));
         for(int i = 0; i < nearbyUsers.size(); ++i) {
             Log.i("Device Id",nearbyUsers.elementAt(i).deviceId);
             if(nearbyUsers.elementAt(i).deviceId.equals(userId)) {
@@ -193,6 +193,41 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
                 nearbyUsers.elementAt(i).link.sendFrame(data);
             }
         }
+    }
+    @ReactMethod
+    public void acceptInvitation(String userId) {
+        for(int i = 0; i < nearbyUsers.size(); ++i) {
+            Log.i("Device Id",nearbyUsers.elementAt(i).deviceId);
+            if(nearbyUsers.elementAt(i).deviceId.equals(userId)) {;
+                nearbyUsers.elementAt(i).connected = true;
+                informAccepted(nearbyUsers.elementAt(i));
+            }
+        }
+    }
+    // Java Helper Functions
+    private  void informConnected(User user) {
+        byte[] data = "connected_".concat(deviceID).concat(User.getStringValue(type)).getBytes(Charset.forName("UTF-8"));
+        /*
+        for(int i = 0; i < nearbyUsers.size(); ++i)
+            if (nearbyUsers.elementAt(i).deviceId.equals(user.deviceId)) {
+                user.link.sendFrame(data);
+                return;
+            }
+            */
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("connectedToUser", user.getJSUser());
+    }
+    private void informAccepted(User user) {
+        byte[] data = "accepted_".concat(deviceID).concat(User.getStringValue(type)).getBytes(Charset.forName("UTF-8"));
+        /*
+        for(int i = 0; i < nearbyUsers.size(); ++i)
+            if (nearbyUsers.elementAt(i).deviceId.equals(user.deviceId)) {
+                user.link.sendFrame(data);
+                return;
+            }
+            */
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("connectedToUser", user.getJSUser());
     }
     //MARK: TransportListener
     @Override
@@ -207,44 +242,119 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
 
     @Override
     public void transportLinkDisconnected(Transport transport, Link link) {
+        Log.d("NetworkManager", "Link Disconnected");
         for(int i = 0; i < this.links.size(); ++i)
             if (link.getNodeId() == this.links.elementAt(i).getNodeId()) {
                 this.links.removeElementAt(i);
-                return;
             }
-        Log.d("NetworkManager", "Link Disconnected");
+        for(int i = 0; i < this.nearbyUsers.size(); ++i)
+            if(link.getNodeId() == nearbyUsers.elementAt(i).link.getNodeId()) {
+                nearbyUsers.removeElementAt(i);
+                context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit("lostUser", nearbyUsers.elementAt(i).getJSUser());
+            }
     }
 
     @Override
     public void transportLinkDidReceiveFrame(Transport transport, Link link, byte[] frameData) {
-        //Log.d("NetworkManager", "Received frame");
         try {
+            if(link.getNodeId() == this.nodeId) {
+                Log.i("Debug id: ", Long.toString(this.nodeId));
+                return;
+            }
+            User user = null;
             String message = new String(frameData, "UTF-8");
-            String id = "";
-            Boolean connected = false;
-            User.PeerType peerType = User.PeerType.OFFLINE;
-            if(message.contains("advertiserbrowser_")) {
-                peerType = User.PeerType.ADVERTISER_BROWSER;
-                id = message.replace("advertiserbrowser_", "");
-            } else if(message.contains("advertiser_")) {
-                peerType = User.PeerType.ADVERISER;
-                id = message.replace("advertiser_", "");
-            } else if(message.contains("browser_")) {
-                peerType = User.PeerType.BROWSER;
-                id = message.replace("browser_", "");
-            }
-            User user = new User(id, link, connected, peerType);
-            for(int i = 0; i < this.nearbyUsers.size(); ++i) {
-                if(this.nearbyUsers.get(i).link.getNodeId() == link.getNodeId()) {
-                    this.nearbyUsers.removeElementAt(i);
+            Log.i("udark", message);
+            if(containsKeyword(message)) {
+                String id = getDeviceId(message);
+                String keyword = getKeywordFromMessage(message);
+                switch(keyword) {
+                    case "advertiserbrowser_":
+                        user = new User(id, link, false, User.PeerType.ADVERTISER_BROWSER);
+                        checkForNewUser(user);
+                        return;
+                    case "advertiser_":
+                        user = new User(id, link, false, User.PeerType.ADVERISER);
+                        checkForNewUser(user);
+                        return;
+                    case "browser_":
+                        user = new User(id, link, false, User.PeerType.ADVERISER);
+                        checkForNewUser(user);
+                        return;
+                    case "invitation_":
+                        user = findUser(id);
+                        if(user != null) {
+                            context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                        .emit("recievedInvitation", user.getJSUser());
+                        }
+                        return;
+                    case "accepted_":
+                        user = findUser(id);
+                        if(user != null) {
+                            user.connected = true;
+                        }
+                        informConnected(user);
+                        return;
+                    case "connected_":
+                        user = findUser(id);
+                        if(user != null) {
+                            user.connected = true;
+                        }
+                        return;
+                    default:
+                        return;
+
                 }
+            } else {
+                Log.i("message","recieved message");
             }
-            nearbyUsers.add(user);
-            context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit("detectedUser", user.getJSUser());
-            //Log.d("User ID", message);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+    }
+    private void checkForNewUser(User user) {
+        Log.i("NBU", Integer.toString(nearbyUsers.size()));
+        for(int i = 0; i < this.nearbyUsers.size(); ++i) {
+            if(this.nearbyUsers.get(i).deviceId.equals(user.deviceId)) {
+                if(nearbyUsers.get(i).peerType != user.peerType) {
+                    nearbyUsers.elementAt(i).peerType = user.peerType;
+                }
+                return;
+            }
+        }
+        nearbyUsers.add(user);
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("detectedUser", user.getJSUser());
+    }
+    private boolean containsKeyword(String message) {
+        String[] keywords = {"advertiserbrowser", "advertiser_", "browser_", "invitation_", "accepted_", "connected_"};
+        for(int i = 0; i < keywords.length; ++i) {
+            if(message.contains(keywords[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private String getDeviceId(String message) {
+        String[] keywords = {"advertiserbrowser_", "advertiser_", "browser_", "invitation_", "accepted_", "connected_", "advertiser", "browser", "advertiserbrowser"};
+        for(int i = 0; i < keywords.length; ++i) {
+            if(message.contains(keywords[i])) {
+                message = message.replace(keywords[i], "");
+            }
+        }
+        return message;
+    }
+    private  String getKeywordFromMessage(String message) {
+        String deviceId = getDeviceId(message);
+        return message.replace(deviceId, "");
+    }
+
+    private User findUser(String id) {
+        for(int i = 0; i < nearbyUsers.size(); ++i) {
+            if(nearbyUsers.elementAt(i).deviceId.contains(id)) {
+                return nearbyUsers.elementAt(i);
+            }
+        }
+        return null;
     }
 }

@@ -46,7 +46,12 @@ module.exports = {
     (user) =>  callback(user)
     );
   },
-  // to access message -> message.user
+  addPeerLostListener(callback) {
+    NativeAppEventEmitter.addListener(
+    'lostUser',
+    (user) => callback(user)
+    );
+  },
   addReceivedMessageListener(callback) {
     NativeAppEventEmitter.addListener(
       'messageRecieved',
@@ -61,7 +66,7 @@ module.exports = {
   },
   addInviteListener(callback) {
     NativeAppEventEmitter.addListener(
-      'recievedInvitation',
+      'receivedInvitation',
       (user) => callback(user)
     );
   },

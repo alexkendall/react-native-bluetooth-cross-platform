@@ -8,8 +8,8 @@ import {
   NativeModules,
   NativeAppEventEmitter,
   ListView,
-  ActionSheetIOS,
   Dimensions,
+  Alert,
 } from 'react-native';
 var NetworkManager = require('./NetworkManager.js')
 var User = require('./User.js')
@@ -28,6 +28,7 @@ class RCTUnderdark extends Component {
     this.toggleBrowse = this.toggleBrowse.bind(this)
     this.getButtonStyle = this.getButtonStyle.bind(this)
     this.detectedUser = this.detectedUser.bind(this)
+    this.lostUser = this.lostUser.bind(this)
     this.renderUser = this.renderUser.bind(this)
     this.renderMPC = this.renderMPC.bind(this)
     this.updateDS = this.updateDS.bind(this)
@@ -35,13 +36,16 @@ class RCTUnderdark extends Component {
     this.connectedToUser = this.connectedToUser.bind(this)
   }
   updateDS() {
-    let source = [{type: "mpc", advertising: this.state.advertising, browsing: this.state.browsing,}]
-    for(var i = 0; i < this.state.users.length; ++i) {
-      let user = new User(this.state.users[i])
-      source.push(user)
-    }
-    this.setState({
-      ds: this.state.ds.cloneWithRows(source),
+    NetworkManager.getNearbyPeers((peers) => {
+      let source = [{type: "mpc", advertising: this.state.advertising, browsing: this.state.browsing,}]
+      for(var i = 0; i < peers.length; ++i) {
+        let user = new User(peers[i])
+        source.push(user)
+      }
+      this.setState({
+        users: peers,
+        ds: this.state.ds.cloneWithRows(source)
+      })
     })
   }
   componentDidMount() {
@@ -49,39 +53,26 @@ class RCTUnderdark extends Component {
     NetworkManager.addPeerDetectedListener(this.detectedUser)
     NetworkManager.addInviteListener(this.handleInvite)
     NetworkManager.addConnectedListener(this.connectedToUser)
+    NetworkManager.addPeerLostListener(this.lostUser)
   }
   detectedUser(dict) {
-    NetworkManager.getNearbyPeers((peers) => {
-      this.setState({
-        users: peers,
-      })
-    })
     this.updateDS()
   }
   connectedToUser(user) {
-    NetworkManager.getNearbyPeers((peers) => {
-      this.setState({
-        users: peers,
-      })
-    })
+    this.updateDS()
+  }
+  lostUser(user) {
     this.updateDS()
   }
   handleInvite(user) {
-    var buttons = [
-      'Accept',
-      'Cancel',
-    ];
-    ActionSheetIOS.showActionSheetWithOptions({
-      options: buttons,
-      cancelButtonIndex: 1,
-      destructiveButtonIndex: 0,
-    },
-    (buttonIndex) => {
-      if(buttonIndex == 0) {
-        NetworkManager.acceptInvitation(user.id)
-        return
-      }
-    });
+    Alert.alert(
+      'Invite',
+      'User would like to connect',
+      [
+        {text: 'Accept Connection', onPress: () => NetworkManager.acceptInvitation(user.id)},
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+      ]
+    )
   }
   toggleBrowse() {
     if(this.state.browsing) {
@@ -106,10 +97,7 @@ class RCTUnderdark extends Component {
     this.updateDS()
   }
   renderUser(user) {
-    let mainColor = "black"
-    if(user.connected) {
-      mainColor = "blue"
-    }
+    let mainColor = user.connected ? "blue" : "black"
     return (
       <TouchableOpacity onPress={() => {
           NetworkManager.inviteUser(user.id)
@@ -117,11 +105,12 @@ class RCTUnderdark extends Component {
       <View style={{marginBottom: 15,}}>
         <Text style={{fontSize: 14, fontWeight: "800", color: mainColor}}> Id: {user.id} </Text>
         <Text> PeerType: {user.type} </Text>
-        <Text> Connected: {user.connected} </Text>
+        <Text> Connected: {user.connected.toString()} </Text>
         <Text> Message: {user.message} </Text>
       </View>
       </TouchableOpacity>
     )
+    console.log("rendering user end...")
   }
   renderMPC(model) {
     return (
