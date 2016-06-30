@@ -24,6 +24,9 @@ module.exports = {
   inviteUser(userId) {
     NativeManager.inviteUser(userId)
   },
+  sendMessage(message, userId) {
+    NativeManager.sendMessage(message, userId)
+  },
   acceptInvitation(userId) {
     NativeManager.acceptInvitation(userId)
   },

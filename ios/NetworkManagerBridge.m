@@ -20,4 +20,6 @@ RCT_EXTERN_METHOD(getConnectedPeers:(RCTResponseSenderBlock)callback)
 
 RCT_EXTERN_METHOD(getNearbyPeers:(RCTResponseSenderBlock)callback)
 
+RCT_EXTERN_METHOD(sendMessage:(NSString*)message userId:(NSString*)userId)
+
 @end

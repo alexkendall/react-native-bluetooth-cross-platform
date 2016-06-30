@@ -124,6 +124,15 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
 
     // MARK: React Methods
     @ReactMethod
+    public void sendMessage(String message, String id) {
+        User user = findUser(id);
+        if(user != null) {
+            String formattedMessage = id.concat("_").concat(deviceID);
+            byte[] bytes = formattedMessage.getBytes(Charset.forName("UTF-8"));
+            user.link.sendFrame(bytes);
+        }
+    }
+    @ReactMethod
     public void advertise(String kind) {
         initTransport(kind);
         if(this.type == User.PeerType.BROWSER) {
@@ -196,36 +205,23 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     }
     @ReactMethod
     public void acceptInvitation(String userId) {
-        for(int i = 0; i < nearbyUsers.size(); ++i) {
-            Log.i("Device Id",nearbyUsers.elementAt(i).deviceId);
-            if(nearbyUsers.elementAt(i).deviceId.equals(userId)) {;
-                nearbyUsers.elementAt(i).connected = true;
-                informAccepted(nearbyUsers.elementAt(i));
-            }
+        User user = findUser(userId);
+        if(user != null) {
+            informAccepted(user);
+        } else {
+            Log.i("udark", "User not found");
         }
     }
     // Java Helper Functions
     private  void informConnected(User user) {
         byte[] data = "connected_".concat(deviceID).concat(User.getStringValue(type)).getBytes(Charset.forName("UTF-8"));
-        /*
-        for(int i = 0; i < nearbyUsers.size(); ++i)
-            if (nearbyUsers.elementAt(i).deviceId.equals(user.deviceId)) {
-                user.link.sendFrame(data);
-                return;
-            }
-            */
+        user.link.sendFrame(data);
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("connectedToUser", user.getJSUser());
     }
     private void informAccepted(User user) {
         byte[] data = "accepted_".concat(deviceID).concat(User.getStringValue(type)).getBytes(Charset.forName("UTF-8"));
-        /*
-        for(int i = 0; i < nearbyUsers.size(); ++i)
-            if (nearbyUsers.elementAt(i).deviceId.equals(user.deviceId)) {
-                user.link.sendFrame(data);
-                return;
-            }
-            */
+        user.link.sendFrame(data);
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("connectedToUser", user.getJSUser());
     }
@@ -239,10 +235,10 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
         this.links.add(link);
         Log.d("NetworkManager", "Link Connected");
     }
-
     @Override
     public void transportLinkDisconnected(Transport transport, Link link) {
         Log.d("NetworkManager", "Link Disconnected");
+        /*
         for(int i = 0; i < this.links.size(); ++i)
             if (link.getNodeId() == this.links.elementAt(i).getNodeId()) {
                 this.links.removeElementAt(i);
@@ -253,13 +249,12 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                         .emit("lostUser", nearbyUsers.elementAt(i).getJSUser());
             }
+            */
     }
-
     @Override
     public void transportLinkDidReceiveFrame(Transport transport, Link link, byte[] frameData) {
         try {
             if(link.getNodeId() == this.nodeId) {
-                Log.i("Debug id: ", Long.toString(this.nodeId));
                 return;
             }
             User user = null;
@@ -285,15 +280,15 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
                         user = findUser(id);
                         if(user != null) {
                             context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                        .emit("recievedInvitation", user.getJSUser());
+                                        .emit("receivedInvitation", user.getJSUser());
                         }
                         return;
                     case "accepted_":
                         user = findUser(id);
                         if(user != null) {
                             user.connected = true;
+                            informConnected(user);
                         }
-                        informConnected(user);
                         return;
                     case "connected_":
                         user = findUser(id);
@@ -306,7 +301,16 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
 
                 }
             } else {
-                Log.i("message","recieved message");
+                /*
+                WritableMap map = user.getJSUser();
+                map.putString("message", message);
+                context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit("messageRecieved", map);
+                        */
+                String unformattedMessage = getUnformattedMessage(message);
+                if(unformattedMessage != null) {
+                    Log.i("message", unformattedMessage);
+                }
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -347,6 +351,16 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     private  String getKeywordFromMessage(String message) {
         String deviceId = getDeviceId(message);
         return message.replace(deviceId, "");
+    }
+
+    private String getUnformattedMessage(String message) {
+        for(int i = 0; i < message.length(); ++i) {
+            Character c = message.charAt(i);
+            if(c.equals('_')) {
+                return message.substring(0, i);
+            }
+        }
+        return null;
     }
 
     private User findUser(String id) {

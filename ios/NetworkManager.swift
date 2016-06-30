@@ -148,9 +148,12 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     stopTransort()
   }
   // MARK: Communication Implementation
-  @objc func messageUser(message: String, user: User) {
-    let msgData = message.dataUsingEncoding(NSUTF8StringEncoding)
-    user.link.sendFrame(msgData)
+  @objc func messageUser(message: String, id: String) {
+    let msgData = "message_\(deviceId)".dataUsingEncoding(NSUTF8StringEncoding)
+    let user = findUser(id)
+    if user != nil {
+      user?.link.sendFrame(msgData)
+    }
   }
   @objc func inviteUser(id: String) {
     let msgStr = "invitation_\(deviceId)"
@@ -171,6 +174,12 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     let user = findUser(userId)
     if(user != nil) {
       informAcceptedInvite(user!)
+    }
+  }
+  @objc func sendMessage(message: String, userId:String) {
+    if let user = findUser(userId) {
+      let data = "\(message)_\(deviceId)".dataUsingEncoding(NSUTF8StringEncoding)
+      user.link.sendFrame(data)
     }
   }
   // MARK: Network Manager Transport Delegate
@@ -217,29 +226,30 @@ public class NetworkManager: NSObject, UDTransportDelegate {
       case "invitation_":
         user = findUser(id)
         if user != nil {
-          bridge.eventDispatcher().sendInputEventWithName("receivedInvitation", body: getJSUser(user!, message: "invite"))
+          bridge.eventDispatcher().sendAppEventWithName("receivedInvitation", body: getJSUser(user!, message: "invitation"))
         }
         return
       case "accepted_":
         user = findUser(id)
         if user != nil {
-          user?.connected = true
+          user!.connected = true
           informConnected(user!)
-          bridge.eventDispatcher().sendInputEventWithName("connectedToUser", body: getJSUser(user!, message: "invite"))
+          bridge.eventDispatcher().sendAppEventWithName("connectedToUser", body: getJSUser(user!, message: "connected"))
         }
         return
       case "connected_":
         user = findUser(id)
         if user != nil {
           user?.connected = true
-          bridge.eventDispatcher().sendInputEventWithName("connectedToUser", body: getJSUser(user!, message: "invite"))
+          bridge.eventDispatcher().sendAppEventWithName("connectedToUser", body: getJSUser(user!, message: "connected"))
         }
         return
       default:
         return
       }
     } else {
-      print("Recieved message: \(message)")
+      let parsedMessage = getUnformattedMessage(message)
+      bridge.eventDispatcher().sendAppEventWithName("messageRecieved", body: parsedMessage)
     }
   }
   // MARK: Swift Helpers
@@ -277,8 +287,17 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     let deviceID = getDeviceID(message)
     return message.stringByReplacingOccurrencesOfString(deviceID, withString: "")
   }
+  private func getUnformattedMessage(message: String) -> String? {
+    var i = 0;
+    for c in message.characters {
+      if c == "_" {
+        return message.substringToIndex(message.characters.startIndex.advancedBy(i))
+      }
+      i = i + 1;
+    }
+    return nil
+  }
   private func findUser(id: String) -> User? {
-    print("deviceId: \(id)")
     for user in nearbyUsers {
       if user.deviceId == id {
         return user

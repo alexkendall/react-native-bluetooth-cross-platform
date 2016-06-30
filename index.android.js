@@ -10,6 +10,7 @@ import {
   ListView,
   Dimensions,
   Alert,
+  TextInput,
 } from 'react-native';
 var NetworkManager = require('./NetworkManager.js')
 var User = require('./User.js')
@@ -17,12 +18,16 @@ var User = require('./User.js')
 class RCTUnderdark extends Component {
   constructor(props) {
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    let mpcSrc = {renderType: "mpc", advertising: false, browsing: false,}
+    let textSrc = {renderType: "textInput"}
+    let source = [mpcSrc];
     super(props)
     this.state = {
       browsing: false,
       advertising: false,
-      ds: ds.cloneWithRows([{type: "mpc", advertising: false, browsing: false,}]),
+      ds: ds.cloneWithRows(source),
       users: [],
+      text: "",
     }
     this.toggleAdvertise = this.toggleAdvertise.bind(this)
     this.toggleBrowse = this.toggleBrowse.bind(this)
@@ -34,10 +39,13 @@ class RCTUnderdark extends Component {
     this.updateDS = this.updateDS.bind(this)
     this.renderRow = this.renderRow.bind(this)
     this.connectedToUser = this.connectedToUser.bind(this)
+    this.receievedMessage = this.receievedMessage.bind(this)
   }
   updateDS() {
     NetworkManager.getNearbyPeers((peers) => {
-      let source = [{type: "mpc", advertising: this.state.advertising, browsing: this.state.browsing,}]
+      let mpcSrc = {renderType: "mpc", advertising: this.state.advertising, browsing: this.state.browsing,}
+      let textSrc = {renderType: "textInput"}
+      let source = [mpcSrc];
       for(var i = 0; i < peers.length; ++i) {
         let user = new User(peers[i])
         source.push(user)
@@ -54,6 +62,10 @@ class RCTUnderdark extends Component {
     NetworkManager.addInviteListener(this.handleInvite)
     NetworkManager.addConnectedListener(this.connectedToUser)
     NetworkManager.addPeerLostListener(this.lostUser)
+    NetworkManager.addReceivedMessageListener(this.receievedMessage)
+  }
+  receievedMessage(message){
+    console.log(message)
   }
   detectedUser(dict) {
     this.updateDS()
@@ -110,7 +122,6 @@ class RCTUnderdark extends Component {
       </View>
       </TouchableOpacity>
     )
-    console.log("rendering user end...")
   }
   renderMPC(model) {
     return (
@@ -132,11 +143,37 @@ class RCTUnderdark extends Component {
     </View>
     )
   }
+  renderTextInput() {
+    return (
+      <View style={{flexDirection: "row",}}>
+        <TextInput
+          style={{height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, flex: 1,}}
+          onChangeText={(text)=> {
+            this.setState({
+              text: text,
+            })
+          }}
+          />
+        <TouchableOpacity onPress={()=> {
+          NetworkManager.getNearbyPeers((peers)=> {
+            for(var i = 0; i < peers.length; ++i) {
+              NetworkManager.sendMessage(this.state.text, peers[i].id)
+            }
+            })
+          }}>
+          <View style={{height: 40, width: 40, backgroundColor: "#000000",}}>
+          </View>
+        </TouchableOpacity>
+      </View>
+    )
+  }
   renderRow(model){
     if(model.renderType == "user") {
       return this.renderUser(model)
+    } else if(model.renderType == "mpc") {
+      return this.renderMPC(model)
     }
-    return this.renderMPC(model)
+    return this.renderTextInput();
   }
   render() {
     return (
