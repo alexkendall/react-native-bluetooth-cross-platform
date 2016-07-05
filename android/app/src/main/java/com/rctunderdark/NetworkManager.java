@@ -186,6 +186,9 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     }
     @ReactMethod
     public void getNearbyPeers(Callback successCallback) {
+        if(nearbyUsers == null) {
+            return;
+        }
         WritableArray jsArray = Arguments.createArray();
         for(int i = 0; i < nearbyUsers.size(); ++i) {
             jsArray.pushMap(nearbyUsers.elementAt(i).getJSUser());

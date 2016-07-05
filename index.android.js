@@ -11,6 +11,7 @@ import {
   Dimensions,
   Alert,
   TextInput,
+  Image,
 } from 'react-native';
 var NetworkManager = require('./NetworkManager.js')
 var User = require('./User.js')
@@ -20,7 +21,9 @@ class RCTUnderdark extends Component {
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     let mpcSrc = {renderType: "mpc", advertising: false, browsing: false,}
     let textSrc = {renderType: "textInput"}
-    let source = [textSrc, mpcSrc];
+    let msgHeaderSrc = {renderType: "messageHeader"}
+    let mainHeaderSrc = {renderType: "mainHeader"}
+    let source = [mainHeaderSrc, textSrc, mpcSrc, msgHeaderSrc];
     super(props)
     this.state = {
       browsing: false,
@@ -47,11 +50,14 @@ class RCTUnderdark extends Component {
     NetworkManager.getNearbyPeers((peers) => {
       let mpcSrc = {renderType: "mpc", advertising: this.state.advertising, browsing: this.state.browsing,}
       let textSrc = {renderType: "textInput"}
-      let source = [textSrc, mpcSrc];
+      let msgHeaderSrc = {renderType: "messageHeader"}
+      let mainHeaderSrc = {renderType: "mainHeader"}
+      let source = [mainHeaderSrc, textSrc, mpcSrc];
       for(var i = 0; i < peers.length; ++i) {
         let user = new User(peers[i])
         source.push(user)
       }
+      source.push(msgHeaderSrc)
       for(var i = 0; i < this.state.messages.length; ++i) {
         let messageModel = {
           message: this.state.messages[i],
@@ -123,16 +129,20 @@ class RCTUnderdark extends Component {
     this.updateDS()
   }
   renderUser(user) {
-    let mainColor = user.connected ? "blue" : "black"
+    let mainColor = user.connected ? "#0099ff" : "black"
     return (
       <TouchableOpacity onPress={() => {
           NetworkManager.inviteUser(user.id)
         }}>
-      <View style={{marginBottom: 15,}}>
-        <Text style={{fontSize: 14, fontWeight: "800", color: mainColor}}> Id: {user.id} </Text>
-        <Text> PeerType: {user.type} </Text>
-        <Text> Connected: {user.connected.toString()} </Text>
-        <Text> Message: {user.message} </Text>
+      <View style={{marginBottom: 15, marginRight: 15, marginLeft: 15,}}>
+        <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+          <Image style={{height: 50, width: 50,}} source={require('./images/person.png')}/>
+          <Text style={{fontSize: 14, fontWeight: "800", flex: 1, color: mainColor}}> Id: {user.id} </Text>
+        </View>
+        <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+          <Text style={{flex: 1,}}> PeerType: {user.type} </Text>
+          <Text style={{flex: 1,}}> Connected: {user.connected.toString()} </Text>
+        </View>
       </View>
       </TouchableOpacity>
     )
@@ -157,16 +167,39 @@ class RCTUnderdark extends Component {
     </View>
     )
   }
+  renderMainHeader() {
+    return (
+      <View style={{backgroundColor: "black", height: 60, marginBottom: 15, alignItems: "center", justifyContent: "center"}}>
+        <Text style={{color: "white"}}>RCT Underdark</Text>
+      </View>
+    )
+  }
+  renderMessageHeader() {
+    return (
+      <View style={{backgroundColor: "black", height: 30, alignItems: "center", justifyContent: "center", flexDirection: "row"}}>
+        <View style={{flex: 1, height: 30,}}>
+          <Text style={{height: 30, color: "white", flex: 1, alignSelf: "center", justifyContent: "center"}}>Inbox</Text>
+        </View>
+        <View>
+          <TouchableOpacity onPress={()=>{
+            this.clearInbox()
+          }}>
+            <Image source={require('./images/delete.png')} style={{height: 25, width: 25,}}/>
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+  }
   renderTextInput() {
     return (
-      <View style={{flexDirection: "row",}}>
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, flex: 1,}}
-          onChangeText={(text)=> {
-            this.setState({
-              text: text,
-            })
-          }}
+      <View style={{flexDirection: "row", marginRight: 15, marginLeft: 15,}}>
+          <TextInput
+            style={{backgroundColor: "#cccccc", paddingLeft: 10, height: 40, flex: 1, borderColor: 'gray', backgroundColor: "white", borderWidth: 1, borderRadius: 5, marginBottom: 20, marginTop: 5, marginRight: 10, marginLeft: 10,}}
+            onChangeText={(text)=> {
+              this.setState({
+                text: text,
+              })
+            }}
           />
         <TouchableOpacity onPress={()=> {
           NetworkManager.getNearbyPeers((peers)=> {
@@ -175,15 +208,20 @@ class RCTUnderdark extends Component {
             }
             })
           }}>
-          <View style={{height: 40, width: 40, backgroundColor: "#000000", justifyContent: "center", alignItems: "center",}}>
-          <Text style={{color: "white"}}>SEND</Text>
+          <View style={{height: 40, width: 50, borderRadius: 5, backgroundColor: "#000000", justifyContent: "center", alignItems: "center",marginTop: 5}}>
+          <Image style={{height: 30, width: 30,}} source={require('./images/send.png')}/>
           </View>
         </TouchableOpacity>
       </View>
     )
   }
   renderMessage(model) {
-    return (<Text>{model.message.message}</Text>)
+    return (
+      <View style={{flexDirection: "row", marginTop: 20, marginRight: 15, marginLeft: 15,}}>
+        <Image style={{height: 40, width: 40, marginRight: 10}} source={require('./images/user.png')}/>
+        <Text style={{fontSize: 16, flex: 1, marginRight: 15,}}>{model.message.message}</Text>
+      </View>
+    )
   }
   renderRow(model){
     if(model.renderType == "user") {
@@ -192,17 +230,27 @@ class RCTUnderdark extends Component {
       return this.renderMPC(model)
     } else if(model.renderType == "message") {
       return this.renderMessage(model)
+    } else if(model.renderType == "messageHeader") {
+      return this.renderMessageHeader(model)
+    } else if(model.renderType == "mainHeader") {
+      return this.renderMainHeader(model)
     }
     return this.renderTextInput();
   }
   render() {
     return (
-      <ListView
-        dataSource={this.state.ds}
-        renderRow={this.renderRow}
-        contentContainerStyle={{marginRight: 20, marginLeft: 20, marginTop: 30, marginBottom: 20,}}
-      />
+        <ListView
+          dataSource={this.state.ds}
+          renderRow={this.renderRow}
+          contentContainerStyle={{marginBottom: 20,}}
+        />
     );
+  }
+  clearInbox() {
+    this.setState({
+      messages: [],
+    })
+    this.updateDS()
   }
   getButtonStyle(on) {
     if(on) {
@@ -228,11 +276,17 @@ class RCTUnderdark extends Component {
 }
 
 const styles = StyleSheet.create({
+  topContainer: {
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#00aaff",
+  },
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 30,
+    flexDirection: 'column',
   },
   onButton: {
     backgroundColor: "black",

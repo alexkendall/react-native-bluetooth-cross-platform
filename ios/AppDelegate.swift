@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let rootView = RCTRootView(bundleURL: jsLocation, moduleName: "RCTUnderdark", initialProperties: nil, launchOptions: launchOptions)
     rootController.view = rootView
     bridge = rootView.bridge
-    bridge = rootView.bridge
+    window?.backgroundColor = .blackColor()
     window?.makeKeyAndVisible()
     return true
   }

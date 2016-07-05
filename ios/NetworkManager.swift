@@ -204,20 +204,6 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         i += 1
       }
     }
-    /*
-    for i in 0..<links.count {
-      if link.nodeId == links[i].nodeId {
-        links.removeAtIndex(i)
-        break
-      }
-    }
-    for i in 0..<nearbyUsers.count {
-      if nearbyUsers[i].link.nodeId == link.nodeId {
-        nearbyUsers.removeAtIndex(i)
-        return
-      }
-    }
-    */
   }
   @objc public func transport(transport: UDTransport!, link: UDLink!, didReceiveFrame frameData: NSData!) {
     if(link.nodeId == self.nodeId) {
