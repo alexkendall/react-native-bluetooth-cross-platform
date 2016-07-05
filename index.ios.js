@@ -20,7 +20,8 @@ class RCTUnderdark extends Component {
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     let mpcSrc = {renderType: "mpc", advertising: false, browsing: false,}
     let textSrc = {renderType: "textInput"}
-    let source = [textSrc, mpcSrc];
+    let headerSrc = {renderType: "header"}
+    let source = [textSrc, mpcSrc, headerSrc];
     super(props)
     this.state = {
       browsing: false,
@@ -28,6 +29,7 @@ class RCTUnderdark extends Component {
       ds: ds.cloneWithRows(source),
       users: [],
       text: "",
+      messages: [],
     }
     this.toggleAdvertise = this.toggleAdvertise.bind(this)
     this.toggleBrowse = this.toggleBrowse.bind(this)
@@ -40,15 +42,24 @@ class RCTUnderdark extends Component {
     this.renderRow = this.renderRow.bind(this)
     this.connectedToUser = this.connectedToUser.bind(this)
     this.receievedMessage = this.receievedMessage.bind(this)
+    this.renderMessage = this.renderMessage.bind(this)
   }
   updateDS() {
     NetworkManager.getNearbyPeers((peers) => {
       let mpcSrc = {renderType: "mpc", advertising: this.state.advertising, browsing: this.state.browsing,}
       let textSrc = {renderType: "textInput"}
-      let source = [textSrc, mpcSrc];
+      let headerSrc = {renderType: "header"}
+      let source = [textSrc, mpcSrc, headerSrc];
       for(var i = 0; i < peers.length; ++i) {
         let user = new User(peers[i])
         source.push(user)
+      }
+      for(var i = 0; i < this.state.messages.length; ++i) {
+        let messageModel = {
+          message: this.state.messages[i],
+          renderType: "message",
+        }
+        source.push(messageModel)
       }
       this.setState({
         users: peers,
@@ -65,7 +76,12 @@ class RCTUnderdark extends Component {
     NetworkManager.addReceivedMessageListener(this.receievedMessage)
   }
   receievedMessage(message){
-    console.log(message)
+    var messages = this.state.messages
+    messages.push(message)
+    this.setState({
+      messages: messages,
+    })
+    this.updateDS()
   }
   detectedUser(dict) {
     this.updateDS()
@@ -150,16 +166,23 @@ class RCTUnderdark extends Component {
     </View>
     )
   }
+  renderMessageHeader() {
+    return (
+      <View style={{backgroundColor: "black", height: 25, marginRight: -20, marginLeft: -20, alignItems: "center", justifyContent: "center"}}>
+        <Text style={{color: "white"}}>Messages </Text>
+      </View>
+    )
+  }
   renderTextInput() {
     return (
       <View style={{flexDirection: "row",}}>
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, flex: 1,}}
-          onChangeText={(text)=> {
-            this.setState({
-              text: text,
-            })
-          }}
+          <TextInput
+            style={{backgroundColor: "#cccccc", paddingLeft: 10, height: 40, flex: 1, borderColor: 'gray', backgroundColor: "white", borderWidth: 1, borderRadius: 5, marginBottom: 20, marginTop: 5, marginRight: 10, marginLeft: 10,}}
+            onChangeText={(text)=> {
+              this.setState({
+                text: text,
+              })
+            }}
           />
         <TouchableOpacity onPress={()=> {
           NetworkManager.getNearbyPeers((peers)=> {
@@ -168,27 +191,39 @@ class RCTUnderdark extends Component {
             }
             })
           }}>
-          <View style={{height: 40, width: 40, backgroundColor: "#000000",}}>
+          <View style={{height: 40, width: 50, borderRadius: 5, backgroundColor: "#000000", justifyContent: "center", alignItems: "center",marginTop: 5}}>
+          <Text style={{color: "white"}}>SEND</Text>
           </View>
         </TouchableOpacity>
       </View>
     )
+  }
+  renderMessage(model) {
+    return (<Text>{model.message}</Text>)
   }
   renderRow(model){
     if(model.renderType == "user") {
       return this.renderUser(model)
     } else if(model.renderType == "mpc") {
       return this.renderMPC(model)
+    } else if(model.renderType == "message") {
+      return this.renderMessage(model)
+    } else if(model.renderType == "header") {
+      return this.renderMessageHeader(model)
     }
     return this.renderTextInput();
   }
   render() {
     return (
-      <View style={styles.container}>
+      <View>
+        <View style={styles.topContainer}>
+          <Text style={{fontSize: 20, fontWeight: "400"}}>Nearby Peers</Text>
+        </View>
         <ListView
-        dataSource={this.state.ds}
-        renderRow={this.renderRow}
-        />
+          dataSource={this.state.ds}
+          renderRow={this.renderRow}
+          contentContainerStyle={{marginRight: 20, marginLeft: 20, marginTop: 30, marginBottom: 20,}}
+          />
       </View>
     );
   }
@@ -216,11 +251,17 @@ class RCTUnderdark extends Component {
 }
 
 const styles = StyleSheet.create({
+  topContainer: {
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#00aaff",
+  },
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 30,
+    flexDirection: 'column',
   },
   onButton: {
     backgroundColor: "black",

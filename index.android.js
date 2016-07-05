@@ -20,7 +20,7 @@ class RCTUnderdark extends Component {
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     let mpcSrc = {renderType: "mpc", advertising: false, browsing: false,}
     let textSrc = {renderType: "textInput"}
-    let source = [mpcSrc];
+    let source = [textSrc, mpcSrc];
     super(props)
     this.state = {
       browsing: false,
@@ -28,6 +28,7 @@ class RCTUnderdark extends Component {
       ds: ds.cloneWithRows(source),
       users: [],
       text: "",
+      messages: [],
     }
     this.toggleAdvertise = this.toggleAdvertise.bind(this)
     this.toggleBrowse = this.toggleBrowse.bind(this)
@@ -40,15 +41,23 @@ class RCTUnderdark extends Component {
     this.renderRow = this.renderRow.bind(this)
     this.connectedToUser = this.connectedToUser.bind(this)
     this.receievedMessage = this.receievedMessage.bind(this)
+    this.renderMessage = this.renderMessage.bind(this)
   }
   updateDS() {
     NetworkManager.getNearbyPeers((peers) => {
       let mpcSrc = {renderType: "mpc", advertising: this.state.advertising, browsing: this.state.browsing,}
       let textSrc = {renderType: "textInput"}
-      let source = [mpcSrc];
+      let source = [textSrc, mpcSrc];
       for(var i = 0; i < peers.length; ++i) {
         let user = new User(peers[i])
         source.push(user)
+      }
+      for(var i = 0; i < this.state.messages.length; ++i) {
+        let messageModel = {
+          message: this.state.messages[i],
+          renderType: "message",
+        }
+        source.push(messageModel)
       }
       this.setState({
         users: peers,
@@ -65,7 +74,12 @@ class RCTUnderdark extends Component {
     NetworkManager.addReceivedMessageListener(this.receievedMessage)
   }
   receievedMessage(message){
-    console.log(message)
+    var messages = this.state.messages
+    messages.push(message)
+    this.setState({
+      messages: messages,
+    })
+    this.updateDS()
   }
   detectedUser(dict) {
     this.updateDS()
@@ -161,28 +175,33 @@ class RCTUnderdark extends Component {
             }
             })
           }}>
-          <View style={{height: 40, width: 40, backgroundColor: "#000000",}}>
+          <View style={{height: 40, width: 40, backgroundColor: "#000000", justifyContent: "center", alignItems: "center",}}>
+          <Text style={{color: "white"}}>SEND</Text>
           </View>
         </TouchableOpacity>
       </View>
     )
+  }
+  renderMessage(model) {
+    return (<Text>{model.message.message}</Text>)
   }
   renderRow(model){
     if(model.renderType == "user") {
       return this.renderUser(model)
     } else if(model.renderType == "mpc") {
       return this.renderMPC(model)
+    } else if(model.renderType == "message") {
+      return this.renderMessage(model)
     }
     return this.renderTextInput();
   }
   render() {
     return (
-      <View style={styles.container}>
-        <ListView
+      <ListView
         dataSource={this.state.ds}
         renderRow={this.renderRow}
-        />
-      </View>
+        contentContainerStyle={{marginRight: 20, marginLeft: 20, marginTop: 30, marginBottom: 20,}}
+      />
     );
   }
   getButtonStyle(on) {

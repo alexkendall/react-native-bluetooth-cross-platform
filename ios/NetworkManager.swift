@@ -188,6 +188,23 @@ public class NetworkManager: NSObject, UDTransportDelegate {
   }
   
   @objc public func transport(transport: UDTransport!, linkDisconnected link: UDLink!) {
+    var i = 0;
+    while i < links.count {
+      if link.nodeId == links[i].nodeId {
+        links.removeAtIndex(i)
+      } else {
+        i += 1
+      }
+    }
+    i = 0;
+    while i < nearbyUsers.count {
+      if link.nodeId == nearbyUsers[i].link.nodeId {
+        nearbyUsers.removeAtIndex(i)
+      } else {
+        i += 1
+      }
+    }
+    /*
     for i in 0..<links.count {
       if link.nodeId == links[i].nodeId {
         links.removeAtIndex(i)
@@ -200,6 +217,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         return
       }
     }
+    */
   }
   @objc public func transport(transport: UDTransport!, link: UDLink!, didReceiveFrame frameData: NSData!) {
     if(link.nodeId == self.nodeId) {
