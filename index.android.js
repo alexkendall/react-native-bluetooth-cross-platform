@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 var NetworkManager = require('./NetworkManager.js')
 var User = require('./User.js')
+var PeerView = require('./PeerView.js')
 
 class RCTUnderdark extends Component {
   constructor(props) {
@@ -129,24 +130,7 @@ class RCTUnderdark extends Component {
     this.updateDS()
   }
   renderUser(user) {
-    let wifiSource = user.connected ? require('./images/wifi_connected.png') : require('./images/wifi_disconnected.png')
-    return (
-      <TouchableOpacity onPress={() => {
-          NetworkManager.inviteUser(user.id)
-        }}>
-      <View style={{marginBottom: 15, marginLeft: 15, marginRight: 15,}}>
-        <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-          <Image style={{height: 50, width: 50,}} source={require('./images/person.png')}/>
-          <Text style={{fontSize: 14, fontWeight: "700", flex: 1, color: "black"}}>{user.id} </Text>
-          <Image style={{height: 50, width: 50, marginLeft: 10,}} source={wifiSource}/>
-        </View>
-        <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-          <Text style={{flex: 1,}}> PeerType: {user.type} </Text>
-          <Text style={{flex: 1,}}> Connected: {user.connected.toString()} </Text>
-        </View>
-      </View>
-      </TouchableOpacity>
-    )
+    return <PeerView user={user}/>
   }
   renderMPC(model) {
     return (
