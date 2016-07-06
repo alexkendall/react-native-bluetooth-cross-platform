@@ -191,7 +191,9 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
         }
         WritableArray jsArray = Arguments.createArray();
         for(int i = 0; i < nearbyUsers.size(); ++i) {
-            jsArray.pushMap(nearbyUsers.elementAt(i).getJSUser());
+            if(nearbyUsers.elementAt(i).peerType == User.PeerType.ADVERISER || nearbyUsers.elementAt(i).peerType == User.PeerType.ADVERTISER_BROWSER) {
+                jsArray.pushMap(nearbyUsers.elementAt(i).getJSUser());
+            }
         }
         successCallback.invoke(jsArray);
     }
@@ -199,9 +201,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     public void inviteUser(String userId) {
         byte[] data = "invitation_".concat(deviceID).getBytes(Charset.forName("UTF-8"));
         for(int i = 0; i < nearbyUsers.size(); ++i) {
-            Log.i("Device Id",nearbyUsers.elementAt(i).deviceId);
             if(nearbyUsers.elementAt(i).deviceId.equals(userId)) {
-                Log.i("Invite User", userId);
                 nearbyUsers.elementAt(i).link.sendFrame(data);
             }
         }
@@ -211,19 +211,17 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
         User user = findUser(userId);
         if(user != null) {
             informAccepted(user);
-        } else {
-            Log.i("udark", "User not found");
         }
     }
     // Java Helper Functions
     private  void informConnected(User user) {
-        byte[] data = "connected_".concat(deviceID).concat(User.getStringValue(type)).getBytes(Charset.forName("UTF-8"));
+        byte[] data = "connected_".concat(deviceID).getBytes(Charset.forName("UTF-8"));
         user.link.sendFrame(data);
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("connectedToUser", user.getJSUser());
     }
     private void informAccepted(User user) {
-        byte[] data = "accepted_".concat(deviceID).concat(User.getStringValue(type)).getBytes(Charset.forName("UTF-8"));
+        byte[] data = "accepted_".concat(deviceID).getBytes(Charset.forName("UTF-8"));
         user.link.sendFrame(data);
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("connectedToUser", user.getJSUser());
@@ -253,7 +251,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
                 WritableMap map = nearbyUsers.elementAt(i).getJSUser();
                 map.putString("message", "lost peer");
                 context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit("messageRecieved", map);
+                        .emit("lostUser", map);
                 this.nearbyUsers.removeElementAt(i);;
             } else {
                 ++i;

@@ -123,8 +123,10 @@ public class NetworkManager: NSObject, UDTransportDelegate {
   }
   @objc func getNearbyPeers(callback: RCTResponseSenderBlock) {
     var jsUsers = [[String: AnyObject]]()
-    for     i in 0..<self.nearbyUsers.count {
-      jsUsers.append(getJSUser(nearbyUsers[i], message: nil))
+    for i in 0..<self.nearbyUsers.count {
+      if nearbyUsers[i].mode == User.PeerType.ADVERTISER || nearbyUsers[i].mode == User.PeerType.ADVERTISER_BROWSER {
+        jsUsers.append(getJSUser(nearbyUsers[i], message: nil))
+      }
     }
     callback([jsUsers])
   }
@@ -242,6 +244,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         }
         return
       case "connected_":
+        print(deviceId)
         user = findUser(id)
         if user != nil {
           user?.connected = true
@@ -304,6 +307,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
   private func findUser(id: String) -> User? {
     for user in nearbyUsers {
       if user.deviceId == id {
+        print("User: \(user.deviceId)")
         return user
       }
     }

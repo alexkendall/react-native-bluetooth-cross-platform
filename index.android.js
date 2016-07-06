@@ -129,15 +129,16 @@ class RCTUnderdark extends Component {
     this.updateDS()
   }
   renderUser(user) {
-    let mainColor = user.connected ? "#0099ff" : "black"
+    let wifiSource = user.connected ? require('./images/wifi_connected.png') : require('./images/wifi_disconnected.png')
     return (
       <TouchableOpacity onPress={() => {
           NetworkManager.inviteUser(user.id)
         }}>
-      <View style={{marginBottom: 15, marginRight: 15, marginLeft: 15,}}>
+      <View style={{marginBottom: 15, marginLeft: 15, marginRight: 15,}}>
         <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
           <Image style={{height: 50, width: 50,}} source={require('./images/person.png')}/>
-          <Text style={{fontSize: 14, fontWeight: "800", flex: 1, color: mainColor}}> Id: {user.id} </Text>
+          <Text style={{fontSize: 14, fontWeight: "700", flex: 1, color: "black"}}>{user.id} </Text>
+          <Image style={{height: 50, width: 50, marginLeft: 10,}} source={wifiSource}/>
         </View>
         <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
           <Text style={{flex: 1,}}> PeerType: {user.type} </Text>
@@ -177,30 +178,30 @@ class RCTUnderdark extends Component {
   renderMessageHeader() {
     return (
       <View style={{backgroundColor: "black", height: 30, alignItems: "center", justifyContent: "center", flexDirection: "row"}}>
-        <View style={{flex: 1, height: 30,}}>
-          <Text style={{height: 30, color: "white", flex: 1, alignSelf: "center", justifyContent: "center"}}>Inbox</Text>
+        <View style={{flex: 1, height: 30, marginRight: -30, alignItems: "center", justifyContent: "center",}}>
+          <Text style={{color: "white"}}>Messages</Text>
         </View>
-        <View>
-          <TouchableOpacity onPress={()=>{
-            this.clearInbox()
-          }}>
-            <Image source={require('./images/delete.png')} style={{height: 25, width: 25,}}/>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={()=>{
+          this.clearInbox()
+        }}>
+          <View style={{height: 30, width: 30, alignSelf: "flex-end"}}><Image source={require('./images/delete.png')} style={{height: 25, width: 25,}}/></View>
+        </TouchableOpacity>
       </View>
     )
   }
   renderTextInput() {
     return (
       <View style={{flexDirection: "row", marginRight: 15, marginLeft: 15,}}>
+          <View style={{marginTop: 5, marginRight: 10, marginBottom: 15, borderRadius: 5, flex: 1, borderWidth: 0.5, borderColor: "gray", backgroundColor: "white"}}>
           <TextInput
-            style={{backgroundColor: "#cccccc", paddingLeft: 10, height: 40, flex: 1, borderColor: 'gray', backgroundColor: "white", borderWidth: 1, borderRadius: 5, marginBottom: 20, marginTop: 5, marginRight: 10, marginLeft: 10,}}
+            style={{backgroundColor: "#cccccc", height: 40, flex: 1, borderColor: 'gray', backgroundColor: "white", marginRight: 10, marginLeft: 10,}}
             onChangeText={(text)=> {
               this.setState({
                 text: text,
               })
             }}
           />
+          </View>
         <TouchableOpacity onPress={()=> {
           NetworkManager.getNearbyPeers((peers)=> {
             for(var i = 0; i < peers.length; ++i) {

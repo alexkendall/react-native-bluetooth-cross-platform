@@ -137,7 +137,7 @@ class RCTUnderdark extends Component {
   }
   // RENDER METHODS ---------------------------------------------------------------------------------------
   renderUser(user) {
-    let mainColor = user.connected ? "#0099ff" : "black"
+    let wifiSource = user.connected ? require('./images/wifi_connected.png') : require('./images/wifi_disconnected.png')
     return (
       <TouchableOpacity onPress={() => {
           NetworkManager.inviteUser(user.id)
@@ -145,7 +145,8 @@ class RCTUnderdark extends Component {
       <View style={{marginBottom: 15,}}>
         <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
           <Image style={{height: 50, width: 50,}} source={require('./images/person.png')}/>
-          <Text style={{fontSize: 14, fontWeight: "800", flex: 1, color: mainColor}}> Id: {user.id} </Text>
+          <Text style={{fontSize: 14, fontWeight: "700", flex: 1, color: "black"}}>{user.id} </Text>
+          <Image style={{height: 50, width: 50, marginLeft: 10,}} source={wifiSource}/>
         </View>
         <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
           <Text style={{flex: 1,}}> PeerType: {user.type} </Text>
@@ -185,8 +186,8 @@ class RCTUnderdark extends Component {
   renderMessageHeader() {
     return (
       <View style={{backgroundColor: "black", height: 30, marginRight: -20, marginLeft: -20, alignItems: "center", justifyContent: "center", flexDirection: "row"}}>
-        <View style={{flex: 1, height: 30,}}>
-          <Text style={{height: 30, color: "white", flex: 1, alignSelf: "center", justifyContent: "center"}}>Messages</Text>
+        <View style={{flex: 1, height: 30, marginRight: -30, alignItems: "center", justifyContent: "center",}}>
+          <Text style={{color: "white"}}>Messages</Text>
         </View>
         <TouchableOpacity onPress={()=>{
           this.clearInbox()
