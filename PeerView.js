@@ -36,7 +36,11 @@ class PeerView extends React.Component {
         </View>
       </View>
       </TouchableOpacity>
-      <View style={styles.delete}><Text style={{color: "white", fontSize: 20}}>DISCONNECT</Text></View>
+      <TouchableOpacity onPress={()=> {
+        NetworkManager.disconnectFromPeer(user.id)
+      }}>
+        <View style={styles.delete}><Text style={{color: "white", fontSize: 20}}>DISCONNECT</Text></View>
+        </TouchableOpacity>
       </SwipeableViews>
     )
   }

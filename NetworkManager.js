@@ -21,6 +21,9 @@ module.exports = {
   stopBrowsing() {
     NativeManager.stopBrowsing()
   },
+  disconnectFromPeer(peerId) {
+    NativeManager.disconnectFromPeer(peerId)
+  },
   inviteUser(userId) {
     NativeManager.inviteUser(userId)
   },

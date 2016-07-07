@@ -7,22 +7,14 @@ import io.underdark.transport.Transport;
 import io.underdark.transport.TransportKind;
 import io.underdark.transport.TransportListener;
 import android.app.Activity;
-import android.os.Debug;
-import android.provider.Telephony;
 import android.util.Log;
-
-import java.lang.reflect.Array;
 import java.nio.charset.*;
-
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
@@ -213,6 +205,15 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
             informAccepted(user);
         }
     }
+    @ReactMethod
+    public void disconnectFromPeer(String userId) {
+        User user = findUser(userId);
+        if(user != null) {
+            byte[] data = "disconnected_".concat(deviceID).getBytes(Charset.forName("UTF-8"));
+            user.link.sendFrame(data);
+            user.connected = false;
+        }
+    }
     // Java Helper Functions
     private  void informConnected(User user) {
         byte[] data = "connected_".concat(deviceID).getBytes(Charset.forName("UTF-8"));
@@ -303,6 +304,11 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
                             user.connected = true;
                         }
                         return;
+                    case "disconnected_":
+                        user = findUser(id);
+                        if(user != null) {
+                            user.connected = false;
+                        }
                     default:
                         return;
 
@@ -343,7 +349,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
                 .emit("detectedUser", user.getJSUser());
     }
     private boolean containsKeyword(String message) {
-        String[] keywords = {"advertiserbrowser", "advertiser_", "browser_", "invitation_", "accepted_", "connected_"};
+        String[] keywords = {"advertiserbrowser", "advertiser_", "browser_", "invitation_", "accepted_", "connected_", "disconnected_"};
         for(int i = 0; i < keywords.length; ++i) {
             if(message.contains(keywords[i])) {
                 return true;
@@ -352,7 +358,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
         return false;
     }
     private String getDeviceId(String message) {
-        String[] keywords = {"advertiserbrowser_", "advertiser_", "browser_", "invitation_", "accepted_", "connected_", "advertiser", "browser", "advertiserbrowser"};
+        String[] keywords = {"advertiserbrowser_", "advertiser_", "browser_", "invitation_", "accepted_", "connected_", "advertiser", "browser", "advertiserbrowser", "disconnected_"};
         for(int i = 0; i < keywords.length; ++i) {
             if(message.contains(keywords[i])) {
                 message = message.replace(keywords[i], "");

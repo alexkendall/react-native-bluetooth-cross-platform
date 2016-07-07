@@ -1,18 +1,6 @@
 package com.rctunderdark;
-
-import android.util.Log;
-
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.ReadableMapKeySetIterator;
-import com.facebook.react.bridge.ReadableType;
-import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
-
-import java.util.Map;
-import java.util.HashMap;
-
 import io.underdark.transport.Link;
 
 public class User {

@@ -124,9 +124,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
   @objc func getNearbyPeers(callback: RCTResponseSenderBlock) {
     var jsUsers = [[String: AnyObject]]()
     for i in 0..<self.nearbyUsers.count {
-      if nearbyUsers[i].mode == User.PeerType.ADVERTISER || nearbyUsers[i].mode == User.PeerType.ADVERTISER_BROWSER {
-        jsUsers.append(getJSUser(nearbyUsers[i], message: nil))
-      }
+      jsUsers.append(getJSUser(nearbyUsers[i], message: nil))
     }
     callback([jsUsers])
   }
@@ -176,6 +174,12 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     let user = findUser(userId)
     if(user != nil) {
       informAcceptedInvite(user!)
+    }
+  }
+  @objc func disconnectFromPeer(peerId: String) {
+    if let user = findUser(peerId) {
+      let msg = "disconnected_\(deviceId)".dataUsingEncoding(NSUTF8StringEncoding)
+      user.link.sendFrame(msg)
     }
   }
   @objc func sendMessage(message: String, userId:String) {
@@ -251,6 +255,12 @@ public class NetworkManager: NSObject, UDTransportDelegate {
           bridge.eventDispatcher().sendAppEventWithName("connectedToUser", body: getJSUser(user!, message: "connected"))
         }
         return
+      case "disconnected_":
+        user = findUser(id)
+        if user != nil {
+          user?.connected = false
+        }
+        break
       default:
         return
       }
