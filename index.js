@@ -15,8 +15,10 @@ import {
   ActionSheetIOS,
 } from 'react-native';
 var NetworkManager = require('./NetworkManager.js')
-var User = require('./User.js')
+var PeerModel = require('./PeerModel.js')
 var PeerView = require('./PeerView.js')
+var MessageModel = require('./MessageModel.js')
+var MessageView = require('./MessageView.js')
 
 class Underdark extends Component {
   constructor(props) {
@@ -31,20 +33,20 @@ class Underdark extends Component {
       browsing: false,
       advertising: false,
       ds: ds.cloneWithRows(source),
-      users: [],
+      peers: [],
       text: "",
       messages: [],
     }
     this.toggleAdvertise = this.toggleAdvertise.bind(this)
     this.toggleBrowse = this.toggleBrowse.bind(this)
     this.getButtonStyle = this.getButtonStyle.bind(this)
-    this.detectedUser = this.detectedUser.bind(this)
-    this.lostUser = this.lostUser.bind(this)
-    this.renderUser = this.renderUser.bind(this)
+    this.detectedPeer = this.detectedPeer.bind(this)
+    this.lostPeer = this.lostPeer.bind(this)
+    this.renderPeer = this.renderPeer.bind(this)
     this.renderMPC = this.renderMPC.bind(this)
     this.updateDS = this.updateDS.bind(this)
     this.renderRow = this.renderRow.bind(this)
-    this.connectedToUser = this.connectedToUser.bind(this)
+    this.connectedToPeer = this.connectedToPeer.bind(this)
     this.receievedMessage = this.receievedMessage.bind(this)
     this.renderMessage = this.renderMessage.bind(this)
   }
@@ -56,55 +58,51 @@ class Underdark extends Component {
       let mainHeaderSrc = {renderType: "mainHeader"}
       let source = [mainHeaderSrc, textSrc, mpcSrc];
       for(var i = 0; i < peers.length; ++i) {
-        let user = new User(peers[i])
-        source.push(user)
+        let peerModel = new PeerModel(peers[i])
+        source.push(peerModel)
       }
       source.push(msgHeaderSrc)
       for(var i = 0; i < this.state.messages.length; ++i) {
-        let messageModel = {
-          message: this.state.messages[i],
-          renderType: "message",
-        }
-        source.push(messageModel)
+        source.push(this.state.messages[i])
       }
       this.setState({
-        users: peers,
+        peers: peers,
         ds: this.state.ds.cloneWithRows(source)
       })
     })
   }
   componentDidMount() {
     // eventListeners
-    NetworkManager.addPeerDetectedListener(this.detectedUser)
+    NetworkManager.addPeerDetectedListener(this.detectedPeer)
     NetworkManager.addInviteListener(this.handleInvite)
-    NetworkManager.addConnectedListener(this.connectedToUser)
-    NetworkManager.addPeerLostListener(this.lostUser)
+    NetworkManager.addConnectedListener(this.connectedToPeer)
+    NetworkManager.addPeerLostListener(this.lostPeer)
     NetworkManager.addReceivedMessageListener(this.receievedMessage)
   }
   receievedMessage(message){
     var messages = this.state.messages
-    messages.push(message)
+    messages.push(new MessageModel(message))
     this.setState({
       messages: messages,
     })
     this.updateDS()
   }
-  detectedUser(dict) {
+  detectedPeer(dict) {
     this.updateDS()
   }
-  connectedToUser(user) {
+  connectedToPeer(peer) {
     this.updateDS()
   }
-  lostUser(user) {
+  lostPeer(peer) {
     this.updateDS()
   }
-  handleInvite(user) {
+  handleInvite(peer) {
     if(Platform.OS == "android") {
       Alert.alert(
         'Invite',
-        'User would like to connect',
+        'peer would like to connect',
         [
-          {text: 'Accept Connection', onPress: () => NetworkManager.acceptInvitation(user.id)},
+          {text: 'Accept Connection', onPress: () => NetworkManager.acceptInvitation(peer.id)},
           {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
         ]
       )
@@ -121,7 +119,7 @@ class Underdark extends Component {
     },
     (buttonIndex) => {
       if(buttonIndex == 0) {
-        NetworkManager.acceptInvitation(user.id)
+        NetworkManager.acceptInvitation(peer.id)
         return
       }
     });
@@ -148,8 +146,8 @@ class Underdark extends Component {
     })
     this.updateDS()
   }
-  renderUser(user) {
-    return <PeerView user={user}/>
+  renderPeer(peer) {
+    return <PeerView peer={peer}/>
   }
   renderMPC(model) {
     return (
@@ -221,15 +219,12 @@ class Underdark extends Component {
   }
   renderMessage(model) {
     return (
-      <View style={{flexDirection: "row", marginTop: 20, marginRight: 15, marginLeft: 15,}}>
-        <Image style={{height: 40, width: 40, marginRight: 10}} source={require('./images/user.png')}/>
-        <Text style={{fontSize: 16, flex: 1, marginRight: 15,}}>{model.message.message}</Text>
-      </View>
+      <MessageView model={model}/>
     )
   }
   renderRow(model){
-    if(model.renderType == "user") {
-      return this.renderUser(model)
+    if(model.renderType == "peer") {
+      return this.renderPeer(model)
     } else if(model.renderType == "mpc") {
       return this.renderMPC(model)
     } else if(model.renderType == "message") {

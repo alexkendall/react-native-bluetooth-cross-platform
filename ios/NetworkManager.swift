@@ -217,9 +217,9 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     }
     var user: User? = nil
     let message: String = String(data: frameData, encoding: NSUTF8StringEncoding) ?? ""
+    let id: String = getDeviceID(message)
     if containsKeyword(message) {
       let keyword: String = getKeywordFromMessage(message)
-      let id: String = getDeviceID(message)
       switch keyword {
       case "advertiserbrowser_":
         user = User(inLink: link, inId: id, inConnected: false, peerType: .ADVERTISER_BROWSER)
@@ -266,7 +266,12 @@ public class NetworkManager: NSObject, UDTransportDelegate {
       }
     } else {
       let parsedMessage = getUnformattedMessage(message)
-      bridge.eventDispatcher().sendAppEventWithName("messageRecieved", body: parsedMessage)
+      let userId = message.stringByReplacingOccurrencesOfString(parsedMessage!, withString: "").stringByReplacingOccurrencesOfString("_", withString: "")
+      user = findUser(userId)
+      print("Id: \(id)")
+      if user != nil {
+        bridge.eventDispatcher().sendAppEventWithName("messageRecieved", body: getJSUser(user!, message: parsedMessage))
+      }
     }
   }
   // MARK: Swift Helpers
