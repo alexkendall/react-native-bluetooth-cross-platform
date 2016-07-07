@@ -7,6 +7,8 @@ import io.underdark.transport.Transport;
 import io.underdark.transport.TransportKind;
 import io.underdark.transport.TransportListener;
 import android.app.Activity;
+import android.os.Debug;
+import android.provider.Settings;
 import android.util.Log;
 import java.nio.charset.*;
 import com.facebook.react.bridge.Arguments;
@@ -18,9 +20,13 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-
+import android.provider.Settings.Secure;
+import android.bluetooth.BluetoothAdapter;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.database.Cursor;
+import android.provider.ContactsContract.Profile;
 
 public class NetworkManager extends ReactContextBaseJavaModule implements TransportListener {
     // MARK: private variables
@@ -34,7 +40,8 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     private User.PeerType type = User.PeerType.OFFLINE;
     private Timer broadcastTimer;
     private Boolean isRunning = false;
-    private String deviceID = UUID.randomUUID().toString();;
+    private String deviceID = Settings.Secure.getString(getReactApplicationContext().getContentResolver(), Secure.ANDROID_ID);
+    private String displayName = BluetoothAdapter.getDefaultAdapter().getName();
     private ReactContext context;
     private long nodeId = 0;
     // MARK: ReactContextBaseJavaModule
@@ -43,6 +50,15 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
         this.activity = inActivity;
         this.context = reactContext;
         this.listener = this;
+        // get display name of device
+        final String[] SELF_PROJECTION = new String[] { Phone._ID,
+                Phone.DISPLAY_NAME, };
+        Cursor cursor = activity.getContentResolver().query(
+                Profile.CONTENT_URI, SELF_PROJECTION, null, null, null);
+
+        cursor.moveToFirst();
+        displayName = cursor.getString(1);
+
     }
     @Override
     public String getName() {
@@ -107,6 +123,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
                         Link link = links.get(i);
                         link.sendFrame(bytes);
                     }
+                    Log.i("message", displayName);
                 }
             };
             broadcastTimer = new Timer();

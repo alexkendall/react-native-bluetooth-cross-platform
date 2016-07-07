@@ -248,7 +248,6 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         }
         return
       case "connected_":
-        print(deviceId)
         user = findUser(id)
         if user != nil {
           user?.connected = true
@@ -268,7 +267,6 @@ public class NetworkManager: NSObject, UDTransportDelegate {
       let parsedMessage = getUnformattedMessage(message)
       let userId = message.stringByReplacingOccurrencesOfString(parsedMessage!, withString: "").stringByReplacingOccurrencesOfString("_", withString: "")
       user = findUser(userId)
-      print("Id: \(id)")
       if user != nil {
         bridge.eventDispatcher().sendAppEventWithName("messageRecieved", body: getJSUser(user!, message: parsedMessage))
       }
@@ -322,7 +320,6 @@ public class NetworkManager: NSObject, UDTransportDelegate {
   private func findUser(id: String) -> User? {
     for user in nearbyUsers {
       if user.deviceId == id {
-        print("User: \(user.deviceId)")
         return user
       }
     }

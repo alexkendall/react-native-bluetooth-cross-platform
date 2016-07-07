@@ -24,14 +24,14 @@ module.exports = {
   disconnectFromPeer(peerId) {
     NativeManager.disconnectFromPeer(peerId)
   },
-  inviteUser(userId) {
-    NativeManager.inviteUser(userId)
+  inviteUser(peerId) {
+    NativeManager.inviteUser(peerId)
   },
-  sendMessage(message, userId) {
-    NativeManager.sendMessage(message, userId)
+  sendMessage(message, peerId) {
+    NativeManager.sendMessage(message, peerId)
   },
-  acceptInvitation(userId) {
-    NativeManager.acceptInvitation(userId)
+  acceptInvitation(peerId) {
+    NativeManager.acceptInvitation(peerId)
   },
   getNearbyPeers(callback) {
     NativeManager.getNearbyPeers((peers) => {
@@ -44,42 +44,36 @@ module.exports = {
     })
   },
   /*listener callbacks
-  user contains .id (string), type(string), connected(bool), message(string),
+  peer contains .id (string), type(string), connected(bool), message(string),
   */
   addPeerDetectedListener(callback) {
     NativeAppEventEmitter.addListener(
     'detectedUser',
-    (user) =>  callback(user)
+    (peer) =>  callback(peer)
     );
   },
   addPeerLostListener(callback) {
     NativeAppEventEmitter.addListener(
     'lostUser',
-    (user) => callback(user)
+    (peer) => callback(peer)
     );
   },
   addReceivedMessageListener(callback) {
     NativeAppEventEmitter.addListener(
       'messageRecieved',
-      (user) => callback(user)
-    );
-  },
-  addConnectedListener(callback) {
-    NativeAppEventEmitter.addListener(
-      'connectedToUser',
-      (user) => callback(user)
+      (peer) => callback(peer)
     );
   },
   addInviteListener(callback) {
     NativeAppEventEmitter.addListener(
       'receivedInvitation',
-      (user) => callback(user)
+      (peer) => callback(peer)
     );
   },
   addConnectedListener(callback) {
     NativeAppEventEmitter.addListener(
       'connectedToUser',
-      (user) => callback(user)
+      (peer) => callback(peer)
     );
   },
 }

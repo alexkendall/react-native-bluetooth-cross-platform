@@ -15,21 +15,18 @@ class MessageView extends React.Component {
       page: "default",
       message: props.model.message,
       userId: props.model.userId,
+      tag: props.model.tag,
     }
   }
   render() {
     return (
       <SwipeableViews>
-      <TouchableOpacity onPress={() => {
-          NetworkManager.inviteUser(this.state.user.id)
-        }}>
       <View style={styles.default}>
         <Image source={require('./images/user.png')} style={styles.avatar}></Image>
         <Text style={styles.messageText}>{this.state.message}</Text>
       </View>
-      </TouchableOpacity>
       <TouchableOpacity onPress={()=> {
-        this.props.deleteMessage(this)
+        this.props.removeMessage(this.state.tag)
       }}>
         <View style={styles.delete}><Text style={{color: "white", fontSize: 20}}>Delete</Text></View>
         </TouchableOpacity>
@@ -44,6 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    height: 65.0,
   },
   default: {
     marginBottom: 15,

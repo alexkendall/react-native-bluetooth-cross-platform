@@ -28,7 +28,7 @@
 		FAA693B01D1481E100E77DA5 /* Underdark.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA693A61D146E2400E77DA5 /* Underdark.framework */; };
 		FAA693B11D1481E100E77DA5 /* Underdark.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FAA693A61D146E2400E77DA5 /* Underdark.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FAE3480E1D2D51A700A2B625 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAE3480D1D2D51A700A2B625 /* Images.xcassets */; };
-		FAE3481A1D2D527500A2B625 /* iiLogoMainBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = FAE348191D2D527500A2B625 /* iiLogoMainBlack.png */; };
+		FAE3481C1D2EC6CC00A2B625 /* iconLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = FAE3481B1D2EC6CC00A2B625 /* iconLogo.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,7 +143,7 @@
 		FAA693A81D146E8900E77DA5 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		FAA693AA1D146F5000E77DA5 /* NetworkManagerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkManagerBridge.m; sourceTree = "<group>"; };
 		FAE3480D1D2D51A700A2B625 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RCTUnderdark/Images.xcassets; sourceTree = "<group>"; };
-		FAE348191D2D527500A2B625 /* iiLogoMainBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iiLogoMainBlack.png; path = ../../iiLogoMainBlack.png; sourceTree = "<group>"; };
+		FAE3481B1D2EC6CC00A2B625 /* iconLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconLogo.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -253,8 +253,8 @@
 				FAA68E021D133DBB00E77DA5 /* RCTUnderdark-Bridging-Header.h */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
+				FAE3481B1D2EC6CC00A2B625 /* iconLogo.png */,
 				FAE3480D1D2D51A700A2B625 /* Images.xcassets */,
-				FAE348191D2D527500A2B625 /* iiLogoMainBlack.png */,
 			);
 			name = RCTUnderdark;
 			sourceTree = "<group>";
@@ -501,7 +501,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAA693AD1D14813400E77DA5 /* Underdark.framework in Resources */,
-				FAE3481A1D2D527500A2B625 /* iiLogoMainBlack.png in Resources */,
+				FAE3481C1D2EC6CC00A2B625 /* iconLogo.png in Resources */,
 				FAE3480E1D2D51A700A2B625 /* Images.xcassets in Resources */,
 				FAA68E101D13423D00E77DA5 /* main.jsbundle in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,

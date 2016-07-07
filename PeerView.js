@@ -17,6 +17,12 @@ class PeerView extends React.Component {
       peer: props.peer,
     }
   }
+  componentWillReceiveProps(props) {
+    this.setState({
+      page: "default",
+      peer: props.peer,
+    })
+  }
   render() {
     let wifiSource = this.state.peer.connected ? require('./images/wifi_connected.png') : require('./images/wifi_disconnected.png')
     return (

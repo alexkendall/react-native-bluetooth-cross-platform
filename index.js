@@ -49,6 +49,7 @@ class Underdark extends Component {
     this.connectedToPeer = this.connectedToPeer.bind(this)
     this.receievedMessage = this.receievedMessage.bind(this)
     this.renderMessage = this.renderMessage.bind(this)
+    this.removeMessage = this.removeMessage.bind(this)
   }
   updateDS() {
     NetworkManager.getNearbyPeers((peers) => {
@@ -81,16 +82,18 @@ class Underdark extends Component {
   }
   receievedMessage(message){
     var messages = this.state.messages
-    messages.push(new MessageModel(message))
+    messages.push(new MessageModel(message, this.state.messages.length))
     this.setState({
       messages: messages,
     })
     this.updateDS()
   }
+  // event listeners
   detectedPeer(dict) {
     this.updateDS()
   }
   connectedToPeer(peer) {
+    console.log(peer)
     this.updateDS()
   }
   lostPeer(peer) {
@@ -219,8 +222,9 @@ class Underdark extends Component {
   }
   renderMessage(model) {
     return (
-      <MessageView model={model}/>
+      <MessageView model={model} removeMessage={this.removeMessage}/>
     )
+    this.updateDS()
   }
   renderRow(model){
     if(model.renderType == "peer") {
@@ -248,6 +252,14 @@ class Underdark extends Component {
   clearInbox() {
     this.setState({
       messages: [],
+    })
+    this.updateDS()
+  }
+  removeMessage(tag) {
+    let messages = this.state.messages.splice(tag, 1)
+    console.log(messages)
+    this.setState({
+      messages: messages,
     })
     this.updateDS()
   }
