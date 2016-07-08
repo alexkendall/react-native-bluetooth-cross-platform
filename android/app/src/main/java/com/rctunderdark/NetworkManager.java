@@ -123,14 +123,8 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
                 @Override
                 public void run() {
                     isRunning = true;
-                    String broadcast = User.getStringValue(type).concat("_").concat(deviceID);
-                    //Log.d("Broadcast", broadcast);
-                    for(int i = 0; i < links.size(); ++i) {
-                        byte[] bytes = broadcast.getBytes(Charset.forName("UTF-8"));
-                        Link link = links.get(i);
-                        link.sendFrame(bytes);
-                    }
-                    Log.i("message", displayName);
+                    for(int i = 0; i < links.size(); ++i)
+                        sendMessage(User.getStringValue(type), links.elementAt(i));
                 }
             };
             broadcastTimer = new Timer();
@@ -140,12 +134,21 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
 
     // MARK: React Methods
     @ReactMethod
-    public void sendMessage(String message, String id) {
+    private void sendMessage(String message, String id) {
         User user = findUser(id);
         if(user != null) {
-            String formattedMessage = message.concat("_").concat(deviceID);
-            byte[] bytes = formattedMessage.getBytes(Charset.forName("UTF-8"));
-            user.link.sendFrame(bytes);
+            byte[] frame = displayName.concat(displayDelimeter).concat(User.getStringValue(this.type).concat(typeDelimeter).concat(deviceID).concat(deviceDelimeter).concat(message)).getBytes();
+            user.link.sendFrame(frame);
+        }
+    }
+    // MARK: React Methods
+    private void sendMessage(String message, Link link) {
+        byte[] frame = displayName.concat(displayDelimeter).concat(User.getStringValue(this.type).concat(typeDelimeter).concat(deviceID).concat(deviceDelimeter).concat(message)).getBytes();
+        link.sendFrame(frame);
+        try {
+            Log.i("message", new String(frame, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
     }
     @ReactMethod
@@ -215,39 +218,27 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     }
     @ReactMethod
     public void inviteUser(String userId) {
-        byte[] data = "invitation_".concat(deviceID).getBytes(Charset.forName("UTF-8"));
-        for(int i = 0; i < nearbyUsers.size(); ++i) {
-            if(nearbyUsers.elementAt(i).deviceId.equals(userId)) {
-                nearbyUsers.elementAt(i).link.sendFrame(data);
-            }
-        }
+        sendMessage(userId, "invitation");
     }
     @ReactMethod
     public void acceptInvitation(String userId) {
-        User user = findUser(userId);
-        if(user != null) {
-            informAccepted(user);
-        }
+            User user = findUser(userId);
+            if(user != null) {
+                informAccepted(user);
+            }
     }
     @ReactMethod
     public void disconnectFromPeer(String userId) {
-        User user = findUser(userId);
-        if(user != null) {
-            byte[] data = "disconnected_".concat(deviceID).getBytes(Charset.forName("UTF-8"));
-            user.link.sendFrame(data);
-            user.connected = false;
-        }
+        sendMessage(userId, "disconnected");
     }
     // Java Helper Functions
     private  void informConnected(User user) {
-        byte[] data = "connected_".concat(deviceID).getBytes(Charset.forName("UTF-8"));
-        user.link.sendFrame(data);
+        sendMessage(user.deviceId, "connected");
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("connectedToUser", user.getJSUser());
     }
     private void informAccepted(User user) {
-        byte[] data = "accepted_".concat(deviceID).getBytes(Charset.forName("UTF-8"));
-        user.link.sendFrame(data);
+        sendMessage(user.deviceId, "accepted");
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("connectedToUser", user.getJSUser());
     }
@@ -285,77 +276,60 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     }
     @Override
     public void transportLinkDidReceiveFrame(Transport transport, Link link, byte[] frameData) {
-        try {
-            if(link.getNodeId() == this.nodeId) {
+        if (link.getNodeId() == this.nodeId) {
+            return;
+        }
+        String message = getMessage(frameData);
+        String deviceId = getDeviceId(frameData);
+        User.PeerType type = getType(frameData);
+        String displayName = getDisplayName(frameData);
+        User user = null;
+        switch (message) {
+            case "advertiserbrowser":
+                user = new User(deviceId, displayName, link, false, type);
+                checkForNewUser(user);
                 return;
-            }
-            User user = null;
-            String message = new String(frameData, "UTF-8");
-            Log.i("udark", message);
-            if(containsKeyword(message)) {
-                String id = getDeviceId(message);
-                String keyword = getKeywordFromMessage(message);
-                switch(keyword) {
-                    case "advertiserbrowser_":
-                        user = new User(id, link, false, User.PeerType.ADVERTISER_BROWSER);
-                        checkForNewUser(user);
-                        return;
-                    case "advertiser_":
-                        user = new User(id, link, false, User.PeerType.ADVERISER);
-                        checkForNewUser(user);
-                        return;
-                    case "browser_":
-                        user = new User(id, link, false, User.PeerType.ADVERISER);
-                        checkForNewUser(user);
-                        return;
-                    case "invitation_":
-                        user = findUser(id);
-                        if(user != null) {
-                            context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                        .emit("receivedInvitation", user.getJSUser());
-                        }
-                        return;
-                    case "accepted_":
-                        user = findUser(id);
-                        if(user != null) {
-                            user.connected = true;
-                            informConnected(user);
-                        }
-                        return;
-                    case "connected_":
-                        user = findUser(id);
-                        if(user != null) {
-                            user.connected = true;
-                        }
-                        return;
-                    case "disconnected_":
-                        user = findUser(id);
-                        if(user != null) {
-                            user.connected = false;
-                        }
-                    default:
-                        return;
+            case "advertiser":
+                user = new User(deviceId, displayName, link, false, type);
+                checkForNewUser(user);
+                return;
+            case "browser":
+                user = new User(deviceId, displayName, link, false, type);
+                checkForNewUser(user);
+                return;
+            case "invitation_":
+                user = findUser(deviceId);
+                if (user != null) {
+                    context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                .emit("receivedInvitation", user.getJSUser());
+                }
+                return;
+            case "accepted_":
+                user = findUser(deviceId);
+                if (user != null) {
+                    user.connected = true;
+                    informConnected(user);
+                }
+                return;
+            case "connected_":
+                user = findUser(deviceId);
+                if (user != null) {
+                    user.connected = true;
+                }
+                return;
+            case "disconnected_":
+                user = findUser(deviceId);
+                if (user != null) {
+                    user.connected = false;
+                }
+                return;
+            default:
+                user = findUser(deviceId);
+                if (user != null){
+                    context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit("messageRecieved", user.getJSUser());
+                }
 
-                }
-            } else {
-                String unformattedMessage = getUnformattedMessage(message);
-                Log.i("message", unformattedMessage);
-                if(unformattedMessage != null) {
-                    String deviceId = message.replace(unformattedMessage, "").replace("_", "");
-                    user = findUser(deviceId);
-                    Log.i("message", "Device Id: ".concat(deviceId));
-                    message = message.replace(deviceId, "").replace("_", "");
-                    if(user != null) {
-                        Log.i("message", "user is not null");
-                        WritableMap map = user.getJSUser();
-                        map.putString("message", message);
-                        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                .emit("messageRecieved", map);
-                    }
-                }
-            }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         }
     }
     private void checkForNewUser(User user) {
@@ -372,39 +346,6 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("detectedUser", user.getJSUser());
     }
-    private boolean containsKeyword(String message) {
-        String[] keywords = {"advertiserbrowser", "advertiser_", "browser_", "invitation_", "accepted_", "connected_", "disconnected_"};
-        for(int i = 0; i < keywords.length; ++i) {
-            if(message.contains(keywords[i])) {
-                return true;
-            }
-        }
-        return false;
-    }
-    private String getDeviceId(String message) {
-        String[] keywords = {"advertiserbrowser_", "advertiser_", "browser_", "invitation_", "accepted_", "connected_", "advertiser", "browser", "advertiserbrowser", "disconnected_"};
-        for(int i = 0; i < keywords.length; ++i) {
-            if(message.contains(keywords[i])) {
-                message = message.replace(keywords[i], "");
-            }
-        }
-        return message;
-    }
-    private  String getKeywordFromMessage(String message) {
-        String deviceId = getDeviceId(message);
-        return message.replace(deviceId, "");
-    }
-
-    private String getUnformattedMessage(String message) {
-        for(int i = 0; i < message.length(); ++i) {
-            Character c = message.charAt(i);
-            if(c.equals('_')) {
-                return message.substring(0, i);
-            }
-        }
-        return null;
-    }
-
     private User findUser(String id) {
         for (int i = 0; i < nearbyUsers.size(); ++i) {
             if (nearbyUsers.elementAt(i).deviceId.contains(id)) {
@@ -414,11 +355,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
         return null;
     }
 
-    private void sendMessage(String message, User user) {
-        byte[] frame = displayName.concat(displayDelimeter).concat(User.getStringValue(this.type).concat(typeDelimeter).concat(deviceID).concat(deviceDelimeter).concat(message)).getBytes();
-        user.link.sendFrame(frame);
-    }
-    private String getDisplayName(byte[] frame) throws UnsupportedEncodingException {
+    private String getDisplayName(byte[] frame) {
         try {
             String str = new String(frame, "UTF-8");
             int displayEnd = displayName.indexOf(displayDelimeter);

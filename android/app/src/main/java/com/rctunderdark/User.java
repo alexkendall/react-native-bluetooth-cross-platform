@@ -6,17 +6,19 @@ import io.underdark.transport.Link;
 public class User {
     // public variables
     public String deviceId;
+    public String displayName;
     public Link link;
     public Boolean connected = false;
     public PeerType peerType;
     enum PeerType {ADVERISER, ADVERTISER_BROWSER, BROWSER, OFFLINE};
 
     // constructor
-    User(String id, Link inLink, Boolean inConnected, PeerType inType) {
+    User(String id, String inName, Link inLink, Boolean inConnected, PeerType inType) {
         this.deviceId = id;
         this.link = inLink;
         this.connected = inConnected;
         this.peerType = inType;
+        this.displayName = inName;
     }
 
     public WritableMap getJSUser() {
@@ -24,6 +26,7 @@ public class User {
         map.putString("id", deviceId);
         map.putString("type", getStringValue(peerType));
         map.putBoolean("connected", connected);
+        map.putString("name", displayName);
         return map;
     }
     public static String getStringValue(PeerType type) {
