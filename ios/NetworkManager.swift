@@ -81,14 +81,6 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     advertiseTimer.invalidate()
     advertiseTimer = nil
   }
-  func getJSUser(user: User, message: String?) -> [String: AnyObject] {
-    var obj = [String: AnyObject]()
-    obj["connected"] = user.connected
-    obj["id"] = user.deviceId
-    obj["message"] = message ?? ""
-    obj["type"] = user.mode.rawValue
-    return obj
-  }
   //  MARK: Underdark Browser
   @objc func browse(kind: String) -> Void {
     if self.type == .ADVERTISER {
@@ -114,8 +106,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
       for i in 0..<nearbyUsers.count {
         if nearbyUsers[i].connected {
           let connectedUser = nearbyUsers[i]
-          let obj = getJSUser(connectedUser, message: nil)
-          connectedPeers.append(obj)
+          connectedPeers.append(connectedUser.getJSUser(nil))
         }
       }
     }
@@ -124,7 +115,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
   @objc func getNearbyPeers(callback: RCTResponseSenderBlock) {
     var jsUsers = [[String: AnyObject]]()
     for i in 0..<self.nearbyUsers.count {
-      jsUsers.append(getJSUser(nearbyUsers[i], message: nil))
+      jsUsers.append(nearbyUsers[i].getJSUser(nil))
     }
     callback([jsUsers])
   }
@@ -205,6 +196,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     i = 0;
     while i < nearbyUsers.count {
       if link.nodeId == nearbyUsers[i].link.nodeId {
+        bridge.eventDispatcher().sendAppEventWithName("lostUser", body: nearbyUsers[i].getJSUser("lost peer"))
         nearbyUsers.removeAtIndex(i)
       } else {
         i += 1
@@ -236,7 +228,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
       case "invitation_":
         user = findUser(id)
         if user != nil {
-          bridge.eventDispatcher().sendAppEventWithName("receivedInvitation", body: getJSUser(user!, message: "invitation"))
+          bridge.eventDispatcher().sendAppEventWithName("receivedInvitation", body: user!.getJSUser("invitation"))
         }
         return
       case "accepted_":
@@ -244,14 +236,14 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         if user != nil {
           user!.connected = true
           informConnected(user!)
-          bridge.eventDispatcher().sendAppEventWithName("connectedToUser", body: getJSUser(user!, message: "connected"))
+          bridge.eventDispatcher().sendAppEventWithName("connectedToUser", body: user!.getJSUser("connected"))
         }
         return
       case "connected_":
         user = findUser(id)
         if user != nil {
           user?.connected = true
-          bridge.eventDispatcher().sendAppEventWithName("connectedToUser", body: getJSUser(user!, message: "connected"))
+          bridge.eventDispatcher().sendAppEventWithName("connectedToUser", body: user?.getJSUser("connected"))
         }
         return
       case "disconnected_":
@@ -268,7 +260,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
       let userId = message.stringByReplacingOccurrencesOfString(parsedMessage!, withString: "").stringByReplacingOccurrencesOfString("_", withString: "")
       user = findUser(userId)
       if user != nil {
-        bridge.eventDispatcher().sendAppEventWithName("messageRecieved", body: getJSUser(user!, message: parsedMessage))
+        bridge.eventDispatcher().sendAppEventWithName("messageRecieved", body: user?.getJSUser(parsedMessage))
       }
     }
   }
@@ -282,8 +274,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
       return;
     }
     nearbyUsers.append(user)
-    let jsUser = getJSUser(user, message: "newUser");
-    bridge.eventDispatcher().sendAppEventWithName("detectedUser", body: jsUser)
+    bridge.eventDispatcher().sendAppEventWithName("detectedUser", body: user.getJSUser("new user"))
   }
   private func containsKeyword(message: String) -> Bool {
     let keywords: [String] = ["advertiserbrowser", "advertiser_", "browser_", "invitation_", "accepted_", "connected_"]

@@ -23,7 +23,14 @@ public class User: NSObject {
     case ADVERTISER_BROWSER = "advertiserbrowser"
     case OFFLINE = "offline"
   }
-  
+  func getJSUser(message: String?)->[String: AnyObject] {
+    var obj = [String: AnyObject]()
+    obj["connected"] = self.connected
+    obj["id"] = self.deviceId
+    obj["message"] = message ?? ""
+    obj["type"] = self.mode.rawValue
+    return obj
+  }
   func logInfo() {
     print("Link \(link)\nDeviceID: \(deviceId)")
   }
