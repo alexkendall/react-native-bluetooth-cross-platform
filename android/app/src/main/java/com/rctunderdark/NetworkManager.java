@@ -44,6 +44,13 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     private String displayName = BluetoothAdapter.getDefaultAdapter().getName();
     private ReactContext context;
     private long nodeId = 0;
+
+
+    // delimiters
+    private String displayDelimeter = "$%#";
+    private String typeDelimeter = "%$#";
+    private String deviceDelimeter = "$#%";
+
     // MARK: ReactContextBaseJavaModule
     public NetworkManager(ReactApplicationContext reactContext, Activity inActivity) {
         super(reactContext);
@@ -399,10 +406,58 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     }
 
     private User findUser(String id) {
-        for(int i = 0; i < nearbyUsers.size(); ++i) {
-            if(nearbyUsers.elementAt(i).deviceId.contains(id)) {
+        for (int i = 0; i < nearbyUsers.size(); ++i) {
+            if (nearbyUsers.elementAt(i).deviceId.contains(id)) {
                 return nearbyUsers.elementAt(i);
             }
+        }
+        return null;
+    }
+
+    private void sendMessage(String message, User user) {
+        byte[] frame = displayName.concat(displayDelimeter).concat(User.getStringValue(this.type).concat(typeDelimeter).concat(deviceID).concat(deviceDelimeter).concat(message)).getBytes();
+        user.link.sendFrame(frame);
+    }
+    private String getDisplayName(byte[] frame) throws UnsupportedEncodingException {
+        try {
+            String str = new String(frame, "UTF-8");
+            int displayEnd = displayName.indexOf(displayDelimeter);
+            return str.substring(0, displayEnd);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private  User.PeerType getType(byte[] frame) {
+        try {
+            String str = new String(frame, "UTF-8");
+            int typeStart = displayName.indexOf(displayDelimeter);
+            int typeEnd = displayName.indexOf(typeDelimeter);
+            String strType = str.substring(typeStart, typeEnd);
+            return User.getPeerValue(strType);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private String getDeviceId(byte[] frame) {
+        try {
+            String str = new String(frame, "UTF-8");
+            int displayStart = displayName.indexOf(typeDelimeter);
+            int displayEnd = displayName.indexOf(deviceDelimeter);
+            return str.substring(displayStart, displayEnd);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private String getMessage(byte[] frame) {
+        try {
+            String str = new String(frame, "UTF-8");
+            int messageStart = displayName.indexOf(deviceDelimeter);
+            return str.substring(messageStart, str.toCharArray().length - 1);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
         return null;
     }

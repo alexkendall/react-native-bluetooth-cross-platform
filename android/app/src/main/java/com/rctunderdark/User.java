@@ -26,9 +26,8 @@ public class User {
         map.putBoolean("connected", connected);
         return map;
     }
-
     public static String getStringValue(PeerType type) {
-        switch(type) {
+        switch (type) {
             case ADVERISER:
                 return "advertiser";
             case ADVERTISER_BROWSER:
@@ -39,6 +38,20 @@ public class User {
                 return "offline";
             default:
                 return "";
+        }
+    }
+    public static PeerType getPeerValue(String type) {
+        switch (type) {
+            case "advertiser":
+                return PeerType.ADVERISER;
+            case "advertiserbrowser":
+                return PeerType.ADVERTISER_BROWSER;
+            case "browser":
+                return PeerType.BROWSER;
+            case "offline":
+                return PeerType.BROWSER;
+            default:
+                return PeerType.OFFLINE;
         }
     }
 }
