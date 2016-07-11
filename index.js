@@ -90,6 +90,7 @@ class Underdark extends Component {
   }
   // event listeners
   detectedPeer(dict) {
+    console.log("detected peer")
     this.updateDS()
   }
   connectedToPeer(peer) {
@@ -103,7 +104,7 @@ class Underdark extends Component {
     if(Platform.OS == "android") {
       Alert.alert(
         'Invite',
-        'peer would like to connect',
+        peer.name + ' would like to connect',
         [
           {text: 'Accept Connection', onPress: () => NetworkManager.acceptInvitation(peer.id)},
           {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
@@ -196,7 +197,7 @@ class Underdark extends Component {
   renderTextInput() {
     return (
       <View style={{flexDirection: "row", marginRight: 15, marginLeft: 15,}}>
-          <View style={{marginTop: 5, marginRight: 10, marginBottom: 15, borderRadius: 5, flex: 1, borderWidth: 0.5, borderColor: "gray", backgroundColor: "white"}}>
+          <View style={{marginTop: 5, marginRight: 10, marginBottom: 15, borderRadius: 5, flex: 1, borderWidth: 1, borderColor: "gray", backgroundColor: "white"}}>
           <TextInput
             style={{backgroundColor: "#cccccc", height: 40, flex: 1, borderColor: 'gray', backgroundColor: "white", marginRight: 10, marginLeft: 10,}}
             onChangeText={(text)=> {

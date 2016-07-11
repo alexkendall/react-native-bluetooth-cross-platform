@@ -168,31 +168,34 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     }
   }
   @objc public func transport(transport: UDTransport!, link: UDLink!, didReceiveFrame frameData: NSData!) {
-    if(link.nodeId == self.nodeId) {
-      return;
+    if link.nodeId == self.nodeId {
+      return
     }
-    let displayName = getDisplayName(frameData) ?? ""
     let id = getDeviceId(frameData) ?? ""
-    print(id)
+    if id == self.deviceId {
+      return
+    }
     let message = getMessage(frameData) ?? ""
+    let name = getDisplayName(frameData) ?? ""
     var user: User? = nil
       switch message {
       case "advertiserbrowser":
-        user = User(inLink: link, inId: id, inConnected: false, peerType: .ADVERTISER_BROWSER, name: displayName)
+        user = User(inLink: link, inId: id, inConnected: false, peerType: .ADVERTISER_BROWSER, name: name)
         checkForNewUsers(user!)
         return
       case "advertiser":
-        user = User(inLink: link, inId: id, inConnected: false, peerType: .ADVERTISER, name: displayName)
+        user = User(inLink: link, inId: id, inConnected: false, peerType: .ADVERTISER, name: name)
         checkForNewUsers(user!)
         return
       case "browser":
-        user = User(inLink: link, inId: id, inConnected: false, peerType: .BROWSER, name: displayName)
+        user = User(inLink: link, inId: id, inConnected: false, peerType: .BROWSER, name: name)
         checkForNewUsers(user!)
         return
       case "invitation":
         user = findUser(id)
         if user != nil {
           bridge.eventDispatcher().sendAppEventWithName("receivedInvitation", body: user!.getJSUser("invitation"))
+          print("recieved invitation from: \(user!.displayName)")
         }
         return
       case "accepted":
@@ -214,6 +217,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         user = findUser(id)
         if user != nil {
           user?.connected = false
+          bridge.eventDispatcher().sendAppEventWithName("lostUser", body: user!.getJSUser("lost peer"))
         }
         break
       default:
@@ -286,7 +290,6 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     let str: String = String(data: frameData, encoding: NSUTF8StringEncoding) ?? ""
     if let endIndex: Int = str.getIndexOf(displayDelimeter) {
       let displayName = str.substringWithRange(str.startIndex..<str.startIndex.advancedBy(endIndex))
-      print("Display Name: \(displayName)")
       return displayName
     }
     return nil

@@ -36,6 +36,7 @@ module.exports = {
   getNearbyPeers(callback) {
     NativeManager.getNearbyPeers((peers) => {
       callback(peers)
+      console.log(peers)
     })
   },
   getConnectedPeers(callback) {

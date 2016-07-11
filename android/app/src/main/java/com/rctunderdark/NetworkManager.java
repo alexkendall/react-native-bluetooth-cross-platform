@@ -141,7 +141,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
             user.link.sendFrame(frame);
         }
     }
-    // MARK: React Methods
+
     private void sendMessage(String message, Link link) {
         byte[] frame = displayName.concat(displayDelimeter).concat(User.getStringValue(this.type).concat(typeDelimeter).concat(deviceID).concat(deviceDelimeter).concat(message)).getBytes();
         link.sendFrame(frame);
@@ -210,15 +210,14 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
         }
         WritableArray jsArray = Arguments.createArray();
         for(int i = 0; i < nearbyUsers.size(); ++i) {
-            if(nearbyUsers.elementAt(i).peerType == User.PeerType.ADVERISER || nearbyUsers.elementAt(i).peerType == User.PeerType.ADVERTISER_BROWSER) {
-                jsArray.pushMap(nearbyUsers.elementAt(i).getJSUser());
-            }
+            jsArray.pushMap(nearbyUsers.elementAt(i).getJSUser());
         }
+        //Log.i("nearby", "nearby peers size: ".concat(Integer.toString(nearbyUsers.size())));
         successCallback.invoke(jsArray);
     }
     @ReactMethod
     public void inviteUser(String userId) {
-        sendMessage(userId, "invitation");
+        sendMessage("invitation", userId);
     }
     @ReactMethod
     public void acceptInvitation(String userId) {
@@ -229,19 +228,30 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     }
     @ReactMethod
     public void disconnectFromPeer(String userId) {
-        sendMessage(userId, "disconnected");
+        User user = findUser(userId);
+        if(user != null) {
+            sendMessage("disconnected", userId);
+            user.connected = false;
+            WritableMap map = user.getJSUser();
+            map.putString("message", "lost peer");
+            context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit("lostUser", map);
+        }
+
     }
     // Java Helper Functions
     private  void informConnected(User user) {
-        sendMessage(user.deviceId, "connected");
+        sendMessage("connected", user.deviceId);
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("connectedToUser", user.getJSUser());
+        user.connected = true;
     }
     private void informAccepted(User user) {
-        sendMessage(user.deviceId, "accepted");
+        sendMessage("accepted", user.deviceId);
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("connectedToUser", user.getJSUser());
-    }
+        user.connected = true;
+}
     //MARK: TransportListener
     @Override
     public void transportNeedsActivity(Transport transport, ActivityCallback callback) {
@@ -280,67 +290,67 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
             return;
         }
         String message = getMessage(frameData);
-        String deviceId = getDeviceId(frameData);
+        String id = getDeviceId(frameData);
+        if(id.equals(this.deviceID)) {
+            return;
+        }
         User.PeerType type = getType(frameData);
         String displayName = getDisplayName(frameData);
         User user = null;
         switch (message) {
             case "advertiserbrowser":
-                user = new User(deviceId, displayName, link, false, type);
+                user = new User(id, displayName, link, false, type);
                 checkForNewUser(user);
                 return;
             case "advertiser":
-                user = new User(deviceId, displayName, link, false, type);
+                user = new User(id, displayName, link, false, type);
                 checkForNewUser(user);
                 return;
             case "browser":
-                user = new User(deviceId, displayName, link, false, type);
+                user = new User(id, displayName, link, false, type);
                 checkForNewUser(user);
                 return;
-            case "invitation_":
-                user = findUser(deviceId);
+            case "invitation":
+                user = findUser(id);
                 if (user != null) {
                     context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                                 .emit("receivedInvitation", user.getJSUser());
                 }
                 return;
-            case "accepted_":
-                user = findUser(deviceId);
+            case "accepted":
+                user = findUser(id);
                 if (user != null) {
                     user.connected = true;
                     informConnected(user);
                 }
                 return;
-            case "connected_":
-                user = findUser(deviceId);
+            case "connected":
+                user = findUser(id);
                 if (user != null) {
                     user.connected = true;
                 }
                 return;
-            case "disconnected_":
-                user = findUser(deviceId);
+            case "disconnected":
+                user = findUser(id);
                 if (user != null) {
                     user.connected = false;
                 }
+                WritableMap map = user.getJSUser();
+                map.putString("message", "lost peer");
+                context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit("lostUser", map);
                 return;
             default:
-                user = findUser(deviceId);
+                user = findUser(id);
                 if (user != null){
                     context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                         .emit("messageRecieved", user.getJSUser());
                 }
-
         }
     }
     private void checkForNewUser(User user) {
-        Log.i("NBU", Integer.toString(nearbyUsers.size()));
-        for(int i = 0; i < this.nearbyUsers.size(); ++i) {
-            if(this.nearbyUsers.get(i).deviceId.equals(user.deviceId)) {
-                if(nearbyUsers.get(i).peerType != user.peerType) {
-                    nearbyUsers.elementAt(i).peerType = user.peerType;
-                }
-                return;
-            }
+        if(findUser(user.deviceId) != null) {
+            return;
         }
         nearbyUsers.add(user);
         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
@@ -358,7 +368,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     private String getDisplayName(byte[] frame) {
         try {
             String str = new String(frame, "UTF-8");
-            int displayEnd = displayName.indexOf(displayDelimeter);
+            int displayEnd = str.indexOf(displayDelimeter);
             return str.substring(0, displayEnd);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -368,8 +378,8 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     private  User.PeerType getType(byte[] frame) {
         try {
             String str = new String(frame, "UTF-8");
-            int typeStart = displayName.indexOf(displayDelimeter);
-            int typeEnd = displayName.indexOf(typeDelimeter);
+            int typeStart = str.indexOf(displayDelimeter);
+            int typeEnd = str.indexOf(typeDelimeter);
             String strType = str.substring(typeStart, typeEnd);
             return User.getPeerValue(strType);
         } catch (UnsupportedEncodingException e) {
@@ -380,8 +390,8 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     private String getDeviceId(byte[] frame) {
         try {
             String str = new String(frame, "UTF-8");
-            int displayStart = displayName.indexOf(typeDelimeter);
-            int displayEnd = displayName.indexOf(deviceDelimeter);
+            int displayStart = str.indexOf(typeDelimeter) + deviceDelimeter.length();
+            int displayEnd = str.indexOf(deviceDelimeter);
             return str.substring(displayStart, displayEnd);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -391,8 +401,11 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     private String getMessage(byte[] frame) {
         try {
             String str = new String(frame, "UTF-8");
-            int messageStart = displayName.indexOf(deviceDelimeter);
-            return str.substring(messageStart, str.toCharArray().length - 1);
+            int messageStart = str.indexOf(deviceDelimeter);
+            if(messageStart != -1) {
+                return str.substring(messageStart + deviceDelimeter.length(), str.toCharArray().length);
+            }
+            return "index out of range";
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

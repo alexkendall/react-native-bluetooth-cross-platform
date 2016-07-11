@@ -29,6 +29,7 @@ class PeerView extends React.Component {
       <SwipeableViews>
       <TouchableOpacity onPress={() => {
           NetworkManager.inviteUser(this.state.peer.id)
+          console.log("should invite peer with id " + this.state.peer.id)
         }}>
       <View style={{marginBottom: 15, marginLeft: 15, marginRight: 15,}}>
         <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
