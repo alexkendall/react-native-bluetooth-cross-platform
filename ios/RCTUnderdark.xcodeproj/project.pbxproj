@@ -29,6 +29,7 @@
 		FAA693B11D1481E100E77DA5 /* Underdark.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FAA693A61D146E2400E77DA5 /* Underdark.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FAE3480E1D2D51A700A2B625 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAE3480D1D2D51A700A2B625 /* Images.xcassets */; };
 		FAE3481C1D2EC6CC00A2B625 /* iconLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = FAE3481B1D2EC6CC00A2B625 /* iconLogo.png */; };
+		FAE3481E1D3023B300A2B625 /* ParseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE3481D1D3023B300A2B625 /* ParseExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -144,6 +145,7 @@
 		FAA693AA1D146F5000E77DA5 /* NetworkManagerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkManagerBridge.m; sourceTree = "<group>"; };
 		FAE3480D1D2D51A700A2B625 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RCTUnderdark/Images.xcassets; sourceTree = "<group>"; };
 		FAE3481B1D2EC6CC00A2B625 /* iconLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconLogo.png; sourceTree = "<group>"; };
+		FAE3481D1D3023B300A2B625 /* ParseExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,6 +249,7 @@
 			children = (
 				FAA68E031D133DBB00E77DA5 /* AppDelegate.swift */,
 				FAA693A81D146E8900E77DA5 /* NetworkManager.swift */,
+				FAE3481D1D3023B300A2B625 /* ParseExtensions.swift */,
 				FA1385111D188167002FA29A /* NetworkDelegate.swift */,
 				FA1384F91D183C3E002FA29A /* User.swift */,
 				FAA693AA1D146F5000E77DA5 /* NetworkManagerBridge.m */,
@@ -537,6 +540,7 @@
 				FAA693AB1D146F5000E77DA5 /* NetworkManagerBridge.m in Sources */,
 				FAA693A91D146E8900E77DA5 /* NetworkManager.swift in Sources */,
 				FAA68E041D133DBB00E77DA5 /* AppDelegate.swift in Sources */,
+				FAE3481E1D3023B300A2B625 /* ParseExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

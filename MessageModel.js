@@ -4,6 +4,7 @@ class MessageModel {
     this.message = dictionary.message
     this.renderType = "message"
     this.tag = tag 
+    this.name = dictionary.name
   }
 }
 

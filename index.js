@@ -80,13 +80,17 @@ class Underdark extends Component {
     NetworkManager.addPeerLostListener(this.lostPeer)
     NetworkManager.addReceivedMessageListener(this.receievedMessage)
   }
-  receievedMessage(message){
+  receievedMessage(message) {
+
+    /*
     var messages = this.state.messages
     messages.push(new MessageModel(message, this.state.messages.length))
     this.setState({
       messages: messages,
     })
     this.updateDS()
+    */
+    console.log(message)
   }
   // event listeners
   detectedPeer(dict) {
