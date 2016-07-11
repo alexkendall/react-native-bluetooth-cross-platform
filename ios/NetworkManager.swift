@@ -219,7 +219,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
       default:
         user = findUser(id)
         if user != nil {
-          bridge.eventDispatcher().sendAppEventWithName("messageRecieved", body: user?.getJSUser(message))
+          bridge.eventDispatcher().sendAppEventWithName("messageReceived", body: user?.getJSUser(message))
         }
         return
       }
@@ -304,7 +304,6 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     let str: String = String(data: frameData, encoding: NSUTF8StringEncoding) ?? ""
     if let startIndex: Int = str.getIndexOf(typeDelimeter) {
       if let endIndex: Int = str.getIndexOf(deviceDelimeter) {
-        print("START INDEX: \(startIndex) END INDEX: \(endIndex)")
         let deviceId = str.substringWithRange(str.startIndex.advancedBy(startIndex).advancedBy(typeDelimeter.characters.count)..<str.startIndex.advancedBy(endIndex))
         return deviceId
       }

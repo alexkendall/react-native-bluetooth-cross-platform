@@ -60,7 +60,7 @@ module.exports = {
   },
   addReceivedMessageListener(callback) {
     NativeAppEventEmitter.addListener(
-      'messageRecieved',
+      'messageReceived',
       (peer) => callback(peer)
     );
   },
