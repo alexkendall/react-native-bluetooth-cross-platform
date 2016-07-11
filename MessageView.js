@@ -37,20 +37,18 @@ class MessageView extends React.Component {
 
 const styles = StyleSheet.create({
   delete: {
-    backgroundColor: "#EE0000",
+    backgroundColor: "#536DFE",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     height: 65.0,
   },
   default: {
-    marginBottom: 15,
-    marginLeft: 15,
-    marginRight: 15,
-    marginTop: 10,
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
+    backgroundColor: "white",
+    height: 65.0,
   },
   avatar: {
     height: 40,

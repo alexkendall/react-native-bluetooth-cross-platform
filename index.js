@@ -178,7 +178,7 @@ class Underdark extends Component {
   renderMainHeader() {
     return (
       <View style={{backgroundColor: "black", height: 60, marginBottom: 15, alignItems: "center", justifyContent: "center"}}>
-        <Text style={{color: "white"}}>RCT Underdark</Text>
+        <Text style={{color: "white", fontSize: 20,}}>RCT UNDERDARK</Text>
       </View>
     )
   }
@@ -248,7 +248,7 @@ class Underdark extends Component {
         <ListView
           dataSource={this.state.ds}
           renderRow={this.renderRow}
-          contentContainerStyle={{marginBottom: 20,}}
+          contentContainerStyle={{marginBottom: 20}}
         />
     );
   }
@@ -309,6 +309,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 30,
     flexDirection: 'column',
+    backgroundColor: "#ff4802"
   },
   onButton: {
     backgroundColor: "black",
