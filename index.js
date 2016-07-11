@@ -47,7 +47,7 @@ class Underdark extends Component {
     this.updateDS = this.updateDS.bind(this)
     this.renderRow = this.renderRow.bind(this)
     this.connectedToPeer = this.connectedToPeer.bind(this)
-    this.receievedMessage = this.receievedMessage.bind(this)
+    this.receivedMessage = this.receivedMessage.bind(this)
     this.renderMessage = this.renderMessage.bind(this)
     this.removeMessage = this.removeMessage.bind(this)
   }
@@ -78,9 +78,11 @@ class Underdark extends Component {
     NetworkManager.addInviteListener(this.handleInvite)
     NetworkManager.addConnectedListener(this.connectedToPeer)
     NetworkManager.addPeerLostListener(this.lostPeer)
-    NetworkManager.addReceivedMessageListener(this.receievedMessage)
+    NetworkManager.addReceivedMessageListener(this.receivedMessage)
   }
-  receievedMessage(message) {
+  receivedMessage(message) {
+    console.log("message recieved")
+    console.log(message)
     var messages = this.state.messages
     messages.push(new MessageModel(message, this.state.messages.length))
     this.setState({
@@ -257,10 +259,18 @@ class Underdark extends Component {
     this.updateDS()
   }
   removeMessage(tag) {
-    let messages = this.state.messages.splice(tag, 1)
-    console.log(messages)
+    var newMessages = []
+    for(var i = 0; i < this.state.messages.length; ++i) {
+      let message = this.state.messages[i]
+      if(message.tag != tag) {
+        if(message.tag > tag) {
+          message.tag = message.tag - 1
+        }
+        newMessages.push(message)
+      }
+    }
     this.setState({
-      messages: messages,
+      messages: newMessages,
     })
     this.updateDS()
   }

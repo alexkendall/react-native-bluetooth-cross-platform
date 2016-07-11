@@ -1,16 +1,13 @@
 package com.rctunderdark;
 import org.w3c.dom.Node;
-
 import io.underdark.*;
 import io.underdark.transport.Link;
 import io.underdark.transport.Transport;
 import io.underdark.transport.TransportKind;
 import io.underdark.transport.TransportListener;
 import android.app.Activity;
-import android.os.Debug;
 import android.provider.Settings;
 import android.util.Log;
-import java.nio.charset.*;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -64,7 +61,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
                 Profile.CONTENT_URI, SELF_PROJECTION, null, null, null);
 
         cursor.moveToFirst();
-        displayName = cursor.getString(1);
+        displayName = cursor.getString(1).concat("'s ").concat(android.os.Build.MODEL);
 
     }
     @Override
@@ -134,7 +131,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
 
     // MARK: React Methods
     @ReactMethod
-    private void sendMessage(String message, String id) {
+    public void sendMessage(String message, String id) {
         User user = findUser(id);
         if(user != null) {
             byte[] frame = displayName.concat(displayDelimeter).concat(User.getStringValue(this.type).concat(typeDelimeter).concat(deviceID).concat(deviceDelimeter).concat(message)).getBytes();
@@ -343,8 +340,10 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
             default:
                 user = findUser(id);
                 if (user != null){
+                    WritableMap messageMap = user.getJSUser();
+                    messageMap.putString("message", message);
                     context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit("messageRecieved", user.getJSUser());
+                        .emit("messageReceived", messageMap);
                 }
         }
     }
