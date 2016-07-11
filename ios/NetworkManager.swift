@@ -140,8 +140,13 @@ public class NetworkManager: NSObject, UDTransportDelegate {
       sendMessage("accepted", userId: userId)
     }
   }
-  @objc func disconnectFromPeer(peerId: String) {
-      sendMessage("disconnected_", userId: peerId)
+  @objc public func disconnectFromPeer(peerId: String) {
+    let user = findUser(peerId)
+    if user != nil {
+      sendMessage("disconnected", userId: peerId)
+      user?.connected = false
+      bridge.eventDispatcher().sendAppEventWithName("lostUser", body: user!.getJSUser("lost peer"))
+      }
   }
   // MARK: Network Manager Transport Delegate
   @objc public func transport(transport: UDTransport!, linkConnected link: UDLink!) {

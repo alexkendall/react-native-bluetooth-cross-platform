@@ -24,6 +24,6 @@ RCT_EXTERN_METHOD(getNearbyPeers:(RCTResponseSenderBlock)callback)
 
 RCT_EXTERN_METHOD(sendMessage:(NSString*)message userId:(NSString*)userId)
 
-RCT_EXTERN_METHOD(disconnectFromPeer(peerId: String))
+RCT_EXTERN_METHOD(disconnectFromPeer:(NSString*)peerId);
 
 @end
