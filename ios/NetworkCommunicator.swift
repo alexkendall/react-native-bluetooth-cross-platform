@@ -106,8 +106,11 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
   public func informConnected(user: User) {
     sendMessage("connected", link: user.link)
   }
-  public func informDisonnected(user: User) {
+  public func informDisonnected(user: User) {r
     sendMessage("disconnected", link: user.link)
+    user.connected = false
+    bridge.eventDispatcher().sendAppEventWithName("lostUser", body: user.getJSUser("lost peer"))
+    
   }
   public func informAcceptedInvite(user: User) {
     sendMessage("accepted", link: user.link)

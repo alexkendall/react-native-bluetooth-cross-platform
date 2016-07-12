@@ -81,7 +81,7 @@ public class NetworkManager: NSObject, ReactNearby {
   @objc public func disconnectFromPeer(peerId: String) {
     let user = NetworkCommunicator.sharedInstance.findUser(peerId)
     if(user != nil) {
-      user!.connected = true
+      user!.connected = false
       NetworkCommunicator.sharedInstance.informDisonnected(user!)
     }
   }
