@@ -19,7 +19,6 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		FA1384FA1D183C3E002FA29A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1384F91D183C3E002FA29A /* User.swift */; };
-		FA1385121D188167002FA29A /* NetworkDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1385111D188167002FA29A /* NetworkDelegate.swift */; };
 		FAA68E041D133DBB00E77DA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA68E031D133DBB00E77DA5 /* AppDelegate.swift */; };
 		FAA68E101D13423D00E77DA5 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = FAA68E0F1D13423D00E77DA5 /* main.jsbundle */; };
 		FAA693A91D146E8900E77DA5 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA693A81D146E8900E77DA5 /* NetworkManager.swift */; };
@@ -30,6 +29,11 @@
 		FAE3480E1D2D51A700A2B625 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAE3480D1D2D51A700A2B625 /* Images.xcassets */; };
 		FAE3481C1D2EC6CC00A2B625 /* iconLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = FAE3481B1D2EC6CC00A2B625 /* iconLogo.png */; };
 		FAE3481E1D3023B300A2B625 /* ParseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE3481D1D3023B300A2B625 /* ParseExtensions.swift */; };
+		FAE8AEC21D355C8100CE2039 /* ReactNearbyProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8AEC11D355C8100CE2039 /* ReactNearbyProtocol.swift */; };
+		FAE8AECE1D355EA500CE2039 /* NetworkCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8AECD1D355EA500CE2039 /* NetworkCommunicator.swift */; };
+		FAE8AED01D35631000CE2039 /* MessageEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8AECF1D35631000CE2039 /* MessageEncoder.swift */; };
+		FAE8AED21D35631900CE2039 /* MessageDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8AED11D35631900CE2039 /* MessageDecoder.swift */; };
+		FAFDE58B1D35680F004D238C /* TransportHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFDE58A1D35680F004D238C /* TransportHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,7 +140,6 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		FA1384F91D183C3E002FA29A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		FA1385111D188167002FA29A /* NetworkDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkDelegate.swift; sourceTree = "<group>"; };
 		FAA68E021D133DBB00E77DA5 /* RCTUnderdark-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTUnderdark-Bridging-Header.h"; sourceTree = "<group>"; };
 		FAA68E031D133DBB00E77DA5 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAA68E0F1D13423D00E77DA5 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -146,6 +149,11 @@
 		FAE3480D1D2D51A700A2B625 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RCTUnderdark/Images.xcassets; sourceTree = "<group>"; };
 		FAE3481B1D2EC6CC00A2B625 /* iconLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconLogo.png; sourceTree = "<group>"; };
 		FAE3481D1D3023B300A2B625 /* ParseExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseExtensions.swift; sourceTree = "<group>"; };
+		FAE8AEC11D355C8100CE2039 /* ReactNearbyProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactNearbyProtocol.swift; sourceTree = "<group>"; };
+		FAE8AECD1D355EA500CE2039 /* NetworkCommunicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkCommunicator.swift; sourceTree = "<group>"; };
+		FAE8AECF1D35631000CE2039 /* MessageEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageEncoder.swift; sourceTree = "<group>"; };
+		FAE8AED11D35631900CE2039 /* MessageDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDecoder.swift; sourceTree = "<group>"; };
+		FAFDE58A1D35680F004D238C /* TransportHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransportHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -249,8 +257,12 @@
 			children = (
 				FAA68E031D133DBB00E77DA5 /* AppDelegate.swift */,
 				FAA693A81D146E8900E77DA5 /* NetworkManager.swift */,
+				FAE8AECD1D355EA500CE2039 /* NetworkCommunicator.swift */,
+				FAFDE58A1D35680F004D238C /* TransportHandler.swift */,
+				FAE8AECF1D35631000CE2039 /* MessageEncoder.swift */,
+				FAE8AED11D35631900CE2039 /* MessageDecoder.swift */,
 				FAE3481D1D3023B300A2B625 /* ParseExtensions.swift */,
-				FA1385111D188167002FA29A /* NetworkDelegate.swift */,
+				FAE8AEC11D355C8100CE2039 /* ReactNearbyProtocol.swift */,
 				FA1384F91D183C3E002FA29A /* User.swift */,
 				FAA693AA1D146F5000E77DA5 /* NetworkManagerBridge.m */,
 				FAA68E021D133DBB00E77DA5 /* RCTUnderdark-Bridging-Header.h */,
@@ -535,10 +547,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAFDE58B1D35680F004D238C /* TransportHandler.swift in Sources */,
 				FA1384FA1D183C3E002FA29A /* User.swift in Sources */,
-				FA1385121D188167002FA29A /* NetworkDelegate.swift in Sources */,
+				FAE8AED21D35631900CE2039 /* MessageDecoder.swift in Sources */,
+				FAE8AEC21D355C8100CE2039 /* ReactNearbyProtocol.swift in Sources */,
 				FAA693AB1D146F5000E77DA5 /* NetworkManagerBridge.m in Sources */,
+				FAE8AECE1D355EA500CE2039 /* NetworkCommunicator.swift in Sources */,
 				FAA693A91D146E8900E77DA5 /* NetworkManager.swift in Sources */,
+				FAE8AED01D35631000CE2039 /* MessageEncoder.swift in Sources */,
 				FAA68E041D133DBB00E77DA5 /* AppDelegate.swift in Sources */,
 				FAE3481E1D3023B300A2B625 /* ParseExtensions.swift in Sources */,
 			);
