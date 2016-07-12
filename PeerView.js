@@ -39,7 +39,7 @@ class PeerView extends React.Component {
         </View>
         <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
           <Text style={{flex: 1,}}> PeerType: {this.state.peer.type} </Text>
-          <Text style={{flex: 1, alignSelf: "flex-end", justifyContent:"flex-end"}}> Connected: {this.state.peer.connected.toString()} </Text>
+          <Text style={{flex: 1, alignSelf: "flex-end", justifyContent:"flex-end", textAlign: "right",}}> Connected: {this.state.peer.connected.toString()} </Text>
         </View>
       </View>
       </TouchableOpacity>
