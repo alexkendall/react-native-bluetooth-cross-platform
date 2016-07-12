@@ -11,20 +11,18 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="iiLogoMainBlack.png" translatesAutoresizingMaskIntoConstraints="NO" id="fUw-Vs-SSo">
-                    <rect key="frame" x="162" y="221" width="158" height="39"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="TLX-5L-elQ">
+                    <rect key="frame" x="115" y="115" width="250" height="250"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="39" id="Cer-64-ers"/>
-                        <constraint firstAttribute="width" constant="158" id="VFv-4Q-fHU"/>
-                        <constraint firstAttribute="width" constant="158" id="j1p-1n-Urt"/>
-                        <constraint firstAttribute="height" constant="39" id="ubv-xR-ptp"/>
+                        <constraint firstAttribute="width" constant="250" id="JWe-gD-b0u"/>
+                        <constraint firstAttribute="height" constant="250" id="Znq-YP-FbX"/>
                     </constraints>
                 </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="fUw-Vs-SSo" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="lze-N2-jCD"/>
-                <constraint firstItem="fUw-Vs-SSo" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="v35-je-gJR"/>
+                <constraint firstItem="TLX-5L-elQ" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Di2-1h-fRX"/>
+                <constraint firstItem="TLX-5L-elQ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="HZ6-3z-pfz"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -32,6 +30,6 @@
         </view>
     </objects>
     <resources>
-        <image name="iiLogoMainBlack.png" width="297" height="78"/>
+        <image name="iconLogo.png" width="792" height="792"/>
     </resources>
 </document>
