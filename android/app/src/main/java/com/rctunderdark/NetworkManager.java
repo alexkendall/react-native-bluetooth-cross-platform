@@ -7,7 +7,6 @@ import io.underdark.transport.TransportKind;
 import io.underdark.transport.TransportListener;
 import android.app.Activity;
 import android.provider.Settings;
-import android.util.Log;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -25,7 +24,7 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.database.Cursor;
 import android.provider.ContactsContract.Profile;
 
-public class NetworkManager extends ReactContextBaseJavaModule implements TransportListener {
+public class NetworkManager extends ReactContextBaseJavaModule implements ReactNearbyUtility {
     // MARK: private variables
     private boolean transportConfigured = false;
     private Node node;
@@ -41,7 +40,6 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
     private String displayName = BluetoothAdapter.getDefaultAdapter().getName();
     private ReactContext context;
     private long nodeId = 0;
-
 
     // delimiters
     private String displayDelimeter = "$%#";
@@ -129,7 +127,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
         }
     }
 
-    // MARK: React Methods
+    // MARK: React Nearby Utility Methods
     @ReactMethod
     public void sendMessage(String message, String id) {
         User user = findUser(id);
@@ -143,7 +141,6 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
         byte[] frame = displayName.concat(displayDelimeter).concat(User.getStringValue(this.type).concat(typeDelimeter).concat(deviceID).concat(deviceDelimeter).concat(message)).getBytes();
         link.sendFrame(frame);
         try {
-            Log.i("message", new String(frame, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -209,13 +206,13 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
         for(int i = 0; i < nearbyUsers.size(); ++i) {
             jsArray.pushMap(nearbyUsers.elementAt(i).getJSUser());
         }
-        //Log.i("nearby", "nearby peers size: ".concat(Integer.toString(nearbyUsers.size())));
         successCallback.invoke(jsArray);
     }
     @ReactMethod
     public void inviteUser(String userId) {
         sendMessage("invitation", userId);
     }
+
     @ReactMethod
     public void acceptInvitation(String userId) {
             User user = findUser(userId);
@@ -236,19 +233,6 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
         }
 
     }
-    // Java Helper Functions
-    private  void informConnected(User user) {
-        sendMessage("connected", user.deviceId);
-        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit("connectedToUser", user.getJSUser());
-        user.connected = true;
-    }
-    private void informAccepted(User user) {
-        sendMessage("accepted", user.deviceId);
-        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit("connectedToUser", user.getJSUser());
-        user.connected = true;
-}
     //MARK: TransportListener
     @Override
     public void transportNeedsActivity(Transport transport, ActivityCallback callback) {
@@ -347,6 +331,7 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
                 }
         }
     }
+
     private void checkForNewUser(User user) {
         if(findUser(user.deviceId) != null) {
             return;
@@ -409,5 +394,19 @@ public class NetworkManager extends ReactContextBaseJavaModule implements Transp
             e.printStackTrace();
         }
         return null;
+    }
+
+    // Java Helper Functions
+    private  void informConnected(User user) {
+        sendMessage("connected", user.deviceId);
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("connectedToUser", user.getJSUser());
+        user.connected = true;
+    }
+    private void informAccepted(User user) {
+        sendMessage("accepted", user.deviceId);
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("connectedToUser", user.getJSUser());
+        user.connected = true;
     }
 }

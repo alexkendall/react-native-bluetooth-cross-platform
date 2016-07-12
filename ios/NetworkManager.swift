@@ -200,7 +200,6 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         user = findUser(id)
         if user != nil {
           bridge.eventDispatcher().sendAppEventWithName("receivedInvitation", body: user!.getJSUser("invitation"))
-          print("recieved invitation from: \(user!.displayName)")
         }
         return
       case "accepted":
@@ -265,7 +264,6 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     return nil
   }
   private func findUser(id: String) -> User? {
-    print("find user id: \(id)")
     for user in nearbyUsers {
       if user.deviceId == id {
         return user
