@@ -17,7 +17,6 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
     self.type = inType
     initTimer()
   }
-  
   func initTimer() {
     dispatch_async(dispatch_get_main_queue(), {
       if self.advertiseTimer == nil {
@@ -106,7 +105,7 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
   public func informConnected(user: User) {
     sendMessage("connected", link: user.link)
   }
-  public func informDisonnected(user: User) {r
+  public func informDisonnected(user: User) {
     sendMessage("disconnected", link: user.link)
     user.connected = false
     bridge.eventDispatcher().sendAppEventWithName("lostUser", body: user.getJSUser("lost peer"))
@@ -119,7 +118,6 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
     sendMessage("invitation", link: user.link)
   }
   public func broadcastType() {
-    print("Broadcasting type: \(self.type)")
     for i in 0..<links.count {
       sendMessage(self.type.rawValue, link: links[i])
       }

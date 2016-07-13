@@ -3,9 +3,7 @@ package com.rctunderdark;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactMethod;
 
-import io.underdark.transport.TransportListener;
-
-public interface ReactNearbyUtility extends TransportListener {
+public interface ReactNearbyInterface {
     @ReactMethod
     public void sendMessage(String message, String id);
 

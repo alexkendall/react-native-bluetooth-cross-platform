@@ -81,8 +81,6 @@ class Underdark extends Component {
     NetworkManager.addReceivedMessageListener(this.receivedMessage)
   }
   receivedMessage(message) {
-    console.log("message recieved")
-    console.log(message)
     var messages = this.state.messages
     messages.push(new MessageModel(message, this.state.messages.length))
     this.setState({
@@ -92,11 +90,9 @@ class Underdark extends Component {
   }
   // event listeners
   detectedPeer(dict) {
-    console.log("detected peer")
     this.updateDS()
   }
   connectedToPeer(peer) {
-    console.log(peer)
     this.updateDS()
   }
   lostPeer(peer) {
@@ -109,7 +105,7 @@ class Underdark extends Component {
         peer.name + ' would like to connect',
         [
           {text: 'Accept Connection', onPress: () => NetworkManager.acceptInvitation(peer.id)},
-          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+          {text: 'Cancel', onPress: () => {}, style: 'cancel'},
         ]
       )
       return
