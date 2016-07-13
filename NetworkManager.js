@@ -44,7 +44,7 @@ module.exports = {
     })
   },
   /*listener callbacks
-  peer contains .id (string), type(string), connected(bool), message(string),
+  peer contains .id (string), type(string), connected(bool), message(string), display name(string)
   */
   addPeerDetectedListener(callback) {
     NativeAppEventEmitter.addListener(
