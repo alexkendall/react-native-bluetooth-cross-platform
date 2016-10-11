@@ -4,3 +4,8 @@ Cross-Platform React Native Component for Bluetooth &amp; WiFi. Share data over 
 # Manual Installation
 
 # Usage
+
+```
+import BluetoothCP from "react-native-bluetooth-cross-platform"
+
+```
