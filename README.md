@@ -1,6 +1,9 @@
 # RCTUnderdark
 Cross-Platform React Native Component for Bluetooth &amp; WiFi. Share data over bluetooth between Android and iOS devices.
 
+## Contributions
+If you would like to contribute to this repository, please do fork the project and submit a PR.
+
 ## Manual Installation
 1. Download as zip file and unzip.
 2. Drag project folder to node-modules
