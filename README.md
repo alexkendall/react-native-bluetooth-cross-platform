@@ -10,13 +10,13 @@ Cross-Platform React Native Component for Bluetooth &amp; WiFi. Share data over 
 ```
 import BluetoothCP from "react-native-bluetooth-cross-platform"
 ```
-## Advertise
+## Advertise To Become Visible to Other Peers
 Advertise takes one argument which can be one of "WIFI", "BT", or "WIFI-BT". Likewise, the WIFI option advertises this device over WI-FI, BT advertises this device over bluetooth, and WIFI-BT advertises this device over both WI-FI and bluetooth channels. (Default is WIFI-BT)
 
 **Example: advertise over WIFI**
 BluetoothCP.advertise("WIFI")
 
-## Browse
+## Browse Peers in the Area
 Browse takes one argument which can be one of "WIFI", "BT", or "WIFI-BT". Likewise, the WIFI option browses devices over WI-FI, BT browses devices over bluetooth, and WIFI-BT broswes devices over both WI-FI and bluetooth channels. (Default is WIFI-BT)
 
 **Example: browse over bluetooth**
