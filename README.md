@@ -54,6 +54,3 @@ You may access both peers in the area and those connected to this user through t
 getNearbyPeers(callback)
 getConnectedPeers(callback)
 ```
-
-
-```
