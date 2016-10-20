@@ -1,4 +1,4 @@
-# RCTUnderdark
+# react-native-bluetooth-cross-platform
 Cross-Platform React Native Component for Bluetooth &amp; WiFi. Share data over bluetooth between Android and iOS devices.
 
 ## Contributions
