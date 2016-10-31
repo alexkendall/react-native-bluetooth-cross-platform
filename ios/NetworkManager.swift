@@ -2,11 +2,11 @@ import Foundation
 import Underdark
 
 @objc(NetworkManager)
-public class NetworkManager: NSObject, ReactNearby {
-  private var type: User.PeerType = User.PeerType.OFFLINE
+open class NetworkManager: NSObject, ReactNearby {
+  fileprivate var type: User.PeerType = User.PeerType.OFFLINE
 
   //  MARK: REACT NEARBY UTILITY PROTOCOOL
-  @objc public func advertise(kind: String) -> Void {
+  @objc open func advertise(_ kind: String) -> Void {
     if self.type == .BROWSER {
       self.type = .ADVERTISER_BROWSER
       NetworkCommunicator.sharedInstance.initTransport("WIFI-BT", inType: .ADVERTISER_BROWSER)
@@ -16,7 +16,7 @@ public class NetworkManager: NSObject, ReactNearby {
     }
   }
   
-  @objc public func stopAdvertising() {
+  @objc open func stopAdvertising() {
     if self.type == .ADVERTISER_BROWSER {
       self.type = .BROWSER
       NetworkCommunicator.sharedInstance.initTransport("WIFI-BT", inType: .BROWSER)
@@ -25,7 +25,7 @@ public class NetworkManager: NSObject, ReactNearby {
     self.type = .OFFLINE
     NetworkCommunicator.sharedInstance.stopTransport()
   }
-  @objc public func browse(kind: String) -> Void {
+  @objc open func browse(_ kind: String) -> Void {
     if self.type == .ADVERTISER {
       self.type = .ADVERTISER_BROWSER
       NetworkCommunicator.sharedInstance.initTransport("WIFI-BT", inType: .ADVERTISER_BROWSER)
@@ -35,7 +35,7 @@ public class NetworkManager: NSObject, ReactNearby {
     }
   }
   
-  @objc public func stopBrowsing() {
+  @objc open func stopBrowsing() {
     if self.type == .ADVERTISER_BROWSER {
       self.type = .ADVERTISER
       NetworkCommunicator.sharedInstance.initTransport("WIFI-BT", inType: .ADVERTISER)
@@ -44,7 +44,7 @@ public class NetworkManager: NSObject, ReactNearby {
     self.type = .OFFLINE
     NetworkCommunicator.sharedInstance.stopTransport()
   }
-  @objc public func getConnectedPeers(callback: RCTResponseSenderBlock) {
+  @objc open func getConnectedPeers(_ callback: RCTResponseSenderBlock) {
     var connectedPeers = [[String: AnyObject]]()
     let nearbyUsers = NetworkCommunicator.sharedInstance.nearbyUsers
     if self.type == .BROWSER || self.type == .ADVERTISER_BROWSER {
@@ -56,7 +56,7 @@ public class NetworkManager: NSObject, ReactNearby {
     }
     callback([connectedPeers])
   }
-  @objc public func getNearbyPeers(callback: RCTResponseSenderBlock) {
+  @objc open func getNearbyPeers(_ callback: RCTResponseSenderBlock) {
     var jsUsers = [[String: AnyObject]]()
     let nearbyUsers = NetworkCommunicator.sharedInstance.nearbyUsers
     for user in nearbyUsers {
@@ -64,28 +64,28 @@ public class NetworkManager: NSObject, ReactNearby {
     }
     callback([jsUsers])
   }
-  @objc public func inviteUser(id: String) {
+  @objc open func inviteUser(_ id: String) {
     let user = NetworkCommunicator.sharedInstance.findUser(id)
     if(user != nil) {
       user!.connected = true
-      NetworkCommunicator.sharedInstance.inviteUser(user!)
+      NetworkCommunicator.sharedInstance.inviteUser(user: user!)
     }
   }
-  @objc public func acceptInvitation(userId: String) {
+  @objc open func acceptInvitation(_ userId: String) {
     let user = NetworkCommunicator.sharedInstance.findUser(userId)
     if(user != nil) {
       user!.connected = true
-      NetworkCommunicator.sharedInstance.informAcceptedInvite(user!)
+      NetworkCommunicator.sharedInstance.informAcceptedInvite(user: user!)
     }
   }
-  @objc public func disconnectFromPeer(peerId: String) {
+  @objc open func disconnectFromPeer(_ peerId: String) {
     let user = NetworkCommunicator.sharedInstance.findUser(peerId)
     if(user != nil) {
       user!.connected = false
-      NetworkCommunicator.sharedInstance.informDisonnected(user!)
+      NetworkCommunicator.sharedInstance.informDisonnected(user: user!)
     }
   }
-  @objc public func sendMessage(message: String, userId:String) {
-    NetworkCommunicator.sharedInstance.sendMessage(message, userId: userId)
+  @objc open func sendMessage(_ message: String, userId:String) {
+    NetworkCommunicator.sharedInstance.sendMessage(message: message, userId: userId)
   }
 }

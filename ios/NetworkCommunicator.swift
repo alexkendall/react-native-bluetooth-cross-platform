@@ -1,32 +1,32 @@
 import Foundation
 
-public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecoder {
+open class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecoder {
   
   // delimiters
-  private var displayDelimeter: String = "$%#";
-  private var typeDelimeter: String = "%$#";
-  private var deviceDelimeter: String = "$#%";
-  private var advertiseTimer: NSTimer? = nil
-  private let deviceId: String = UIDevice.currentDevice().identifierForVendor?.UUIDString ?? ""
-  private let displayName: String = UIDevice.currentDevice().name
-  private var type: User.PeerType = User.PeerType.OFFLINE
+  fileprivate var displayDelimeter: String = "$%#";
+  fileprivate var typeDelimeter: String = "%$#";
+  fileprivate var deviceDelimeter: String = "$#%";
+  fileprivate var advertiseTimer: Timer? = nil
+  fileprivate let deviceId: String = UIDevice.current.identifierForVendor?.uuidString ?? ""
+  fileprivate let displayName: String = UIDevice.current.name
+  fileprivate var type: User.PeerType = User.PeerType.OFFLINE
   static let sharedInstance = NetworkCommunicator()
   
-  override public func initTransport(kind: String, inType: User.PeerType) {
+  override open func initTransport(_ kind: String, inType: User.PeerType) {
     super.initTransport(kind, inType: inType)
     self.type = inType
     initTimer()
   }
   func initTimer() {
-    dispatch_async(dispatch_get_main_queue(), {
+    DispatchQueue.main.async(execute: {
       if self.advertiseTimer == nil {
-        self.advertiseTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: #selector(self.broadcastType), userInfo: nil, repeats: true)
-        NSRunLoop.mainRunLoop().addTimer(self.advertiseTimer!, forMode: NSDefaultRunLoopMode)
+        self.advertiseTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.broadcastType), userInfo: nil, repeats: true)
+        RunLoop.main.add(self.advertiseTimer!, forMode: RunLoopMode.defaultRunLoopMode)
       }
     })
   }
   
-  public override func stopTransport() {
+  open override func stopTransport() {
     if advertiseTimer != nil {
       advertiseTimer?.invalidate()
       advertiseTimer = nil
@@ -34,11 +34,11 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
   }
   
   // HANDLE RECIEVING NEW FRAME
-  override public func transport(transport: UDTransport!, link: UDLink!, didReceiveFrame frameData: NSData!) {
+  override open func transport(_ transport: UDTransport!, link: UDLink!, didReceiveFrame frameData: Data!) {
     super.transport(transport, link: link, didReceiveFrame: frameData);
-    let message = getMessage(frameData) ?? ""
-    let name = getDisplayName(frameData) ?? ""
-    let id = getDeviceId(frameData) ?? ""
+    let message = getMessage(frameData: frameData) ?? ""
+    let name = getDisplayName(frameData: frameData) ?? ""
+    let id = getDeviceId(frameData: frameData) ?? ""
     var user: User? = nil
     
     switch message {
@@ -57,110 +57,113 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
     case "invitation":
       user = findUser(id)
       if user != nil {
-        bridge.eventDispatcher().sendAppEventWithName("receivedInvitation", body: user!.getJSUser("invitation"))
+        bridge.eventDispatcher().sendAppEvent(withName: "receivedInvitation", body: user!.getJSUser("invitation"))
       }
       return
     case "accepted":
       user = findUser(id)
       if user != nil {
         user!.connected = true
-        informConnected(user!)
-        bridge.eventDispatcher().sendAppEventWithName("connectedToUser", body: user!.getJSUser("connected"))
+        informConnected(user: user!)
+        bridge.eventDispatcher().sendAppEvent(withName: "connectedToUser", body: user!.getJSUser("connected"))
       }
       return
     case "connected":
       user = findUser(id)
       if user != nil {
         user?.connected = true
-        bridge.eventDispatcher().sendAppEventWithName("connectedToUser", body: user?.getJSUser("connected"))
+        bridge.eventDispatcher().sendAppEvent(withName: "connectedToUser", body: user?.getJSUser("connected"))
       }
       return
     case "disconnected":
       user = findUser(id)
       if user != nil {
         user?.connected = false
-        bridge.eventDispatcher().sendAppEventWithName("lostUser", body: user!.getJSUser("lost peer"))
+        bridge.eventDispatcher().sendAppEvent(withName: "lostUser", body: user!.getJSUser("lost peer"))
       }
       break
     default:
       user = findUser(id)
       if user != nil {
-        bridge.eventDispatcher().sendAppEventWithName("messageReceived", body: user?.getJSUser(message))
+        bridge.eventDispatcher().sendAppEvent(withName: "messageReceived", body: user?.getJSUser(message))
       }
       return
     }
   }
   
   // MARK: MESSAGE ENCODER PROTOCOOL
-  public func sendMessage(message: String, userId:String) {
+  open func sendMessage(message: String, userId:String) {
     if let user = findUser(userId) {
-      let data = "\(displayName)\(displayDelimeter)\(self.type.rawValue)\(typeDelimeter)\(deviceId)\(deviceDelimeter)\(message)".dataUsingEncoding(NSUTF8StringEncoding)
+      let data = "\(displayName)\(displayDelimeter)\(self.type.rawValue)\(typeDelimeter)\(deviceId)\(deviceDelimeter)\(message)".data(using: String.Encoding.utf8)
       user.link.sendFrame(data)
     }
   }
-  public func sendMessage(message: String, link:UDLink) {
-    let data = "\(displayName)\(displayDelimeter)\(self.type.rawValue)\(typeDelimeter)\(deviceId)\(deviceDelimeter)\(message)".dataUsingEncoding(NSUTF8StringEncoding)
+  open func sendMessage(message: String, link:UDLink) {
+    let data = "\(displayName)\(displayDelimeter)\(self.type.rawValue)\(typeDelimeter)\(deviceId)\(deviceDelimeter)\(message)".data(using: String.Encoding.utf8)
     link.sendFrame(data)
   }
-  public func informConnected(user: User) {
-    sendMessage("connected", link: user.link)
+  open func informConnected(user: User) {
+    self.sendMessage(message: "connected", link: user.link)
   }
-  public func informDisonnected(user: User) {
-    sendMessage("disconnected", link: user.link)
+  open func informDisonnected(user: User) {
+    sendMessage(message: "disconnected", link: user.link)
     user.connected = false
-    bridge.eventDispatcher().sendAppEventWithName("lostUser", body: user.getJSUser("lost peer"))
+    bridge.eventDispatcher().sendAppEvent(withName: "lostUser", body: user.getJSUser("lost peer"))
     
   }
-  public func informAcceptedInvite(user: User) {
-    sendMessage("accepted", link: user.link)
+  open func informAcceptedInvite(user: User) {
+    sendMessage(message: "accepted", link: user.link)
   }
-  public func inviteUser(user: User) {
-    sendMessage("invitation", link: user.link)
+  open func inviteUser(user: User) {
+    sendMessage(message: "invitation", link: user.link)
   }
-  public func broadcastType() {
+  open func broadcastType() {
     for i in 0..<links.count {
-      sendMessage(self.type.rawValue, link: links[i])
-      }
+      sendMessage(message: self.type.rawValue, link: links[i])
     }
+  }
   // MARK: MESSAGE DECODER PROTOCOOL
-  public func getDisplayName(frameData: NSData)-> String? {
-    let str: String = String(data: frameData, encoding: NSUTF8StringEncoding) ?? ""
+  open func getDisplayName(frameData: Data)-> String? {
+    let str: String = String(data: frameData, encoding: String.Encoding.utf8) ?? ""
     if let endIndex: Int = str.getIndexOf(displayDelimeter) {
-      let displayName = str.substringWithRange(str.startIndex..<str.startIndex.advancedBy(endIndex))
+      let displayName = str.substring(with: str.startIndex..<str.characters.index(str.startIndex, offsetBy: endIndex))
       return displayName
     }
     return nil
   }
-  public func getType(frameData: NSData)-> String? {
-    let str: String = String(data: frameData, encoding: NSUTF8StringEncoding) ?? ""
+  open func getType(frameData: Data)-> String? {
+    let str: String = String(data: frameData, encoding: String.Encoding.utf8) ?? ""
     if let startIndex: Int = str.getIndexOf(displayDelimeter) {
       if let endIndex: Int = str.getIndexOf(typeDelimeter) {
-        return str.substringWithRange(str.startIndex.advancedBy(startIndex)..<str.startIndex.advancedBy(endIndex))
+        return str.substring(with: str.characters.index(str.startIndex, offsetBy: startIndex)..<str.characters.index(str.startIndex, offsetBy: endIndex))
       }
     }
     return nil
   }
-  public func getDeviceId(frameData: NSData)-> String? {
-    let str: String = String(data: frameData, encoding: NSUTF8StringEncoding) ?? ""
+  open func getDeviceId(frameData: Data)-> String? {
+    let str: String = String(data: frameData, encoding: String.Encoding.utf8) ?? ""
     if let startIndex: Int = str.getIndexOf(typeDelimeter) {
       if let endIndex: Int = str.getIndexOf(deviceDelimeter) {
-        let deviceId = str.substringWithRange(str.startIndex.advancedBy(startIndex).advancedBy(typeDelimeter.characters.count)..<str.startIndex.advancedBy(endIndex))
+        let start = str.index(str.startIndex, offsetBy: startIndex)
+        let end = str.index(str.startIndex, offsetBy: endIndex)
+        let deviceId = str.substring(with: start..<end)
         return deviceId
       }
     }
     return nil
   }
-  public func getMessage(frameData: NSData)-> String? {
-    let str: String = String(data: frameData, encoding: NSUTF8StringEncoding) ?? ""
+  open func getMessage(frameData: Data)-> String? {
+    let str: String = String(data: frameData, encoding: String.Encoding.utf8) ?? ""
     if let startIndex: Int = str.getIndexOf(deviceDelimeter) {
-      let message = str.substringWithRange(str.startIndex.advancedBy(startIndex).advancedBy(deviceDelimeter.characters.count)..<str.endIndex)
+      let start = str.index(str.startIndex, offsetBy: startIndex)
+      let message = str.substring(with: start..<str.endIndex)
       return message
     }
     return nil
   }
   
   // MARK: Utility functions
-  public func findUser(id: String) -> User? {
+  open func findUser(_ id: String) -> User? {
     for user in nearbyUsers {
       if user.deviceId == id {
         return user
@@ -168,7 +171,7 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
     }
     return nil
   }
-  private func checkForNewUsers(user: User) {
+  fileprivate func checkForNewUsers(_ user: User) {
     for i in 0..<nearbyUsers.count {
       if nearbyUsers[i].deviceId == user.deviceId && nearbyUsers[i].mode != user.mode {
         nearbyUsers[i].mode = user.mode;
@@ -177,6 +180,6 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
       return;
     }
     nearbyUsers.append(user)
-    bridge.eventDispatcher().sendAppEventWithName("detectedUser", body: user.getJSUser("new user"))
+    bridge.eventDispatcher().sendAppEvent(withName: "detectedUser", body: user.getJSUser("new user"))
   }
 }

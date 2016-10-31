@@ -1,9 +1,9 @@
 import Foundation
 
 public protocol MessageDecoder {
-  func getDisplayName(frameData: NSData)-> String?
-  func getType(frameData: NSData)-> String?
-  func getDeviceId(frameData: NSData)-> String?
-  func getMessage(frameData: NSData)-> String?
+  func getDisplayName(frameData: Data)-> String?
+  func getType(frameData: Data)-> String?
+  func getDeviceId(frameData: Data)-> String?
+  func getMessage(frameData: Data)-> String?
 
 }

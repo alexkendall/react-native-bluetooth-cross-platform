@@ -15,6 +15,7 @@ const React = {name: 'React'};
 const ReactNative = {name: 'ReactNative'};
 const platform = {name: 'Platform'};
 const os = {name: 'OS'};
+const select = {name: 'select'};
 const requirePattern = {name: 'require'};
 
 const env = {name: 'env'};
@@ -27,12 +28,15 @@ const importMap = new Map([['ReactNative', 'react-native']]);
 
 const isGlobal = (binding) => !binding;
 
-const isToplevelBinding = (binding) => isGlobal(binding) || !binding.scope.parent;
+const isToplevelBinding = (binding, isWrappedModule) =>
+  isGlobal(binding) ||
+  !binding.scope.parent ||
+  isWrappedModule && !binding.scope.parent.parent;
 
 const isRequireCall = (node, dependencyId, scope) =>
   t.isCallExpression(node) &&
   t.isIdentifier(node.callee, requirePattern) &&
-  t.isStringLiteral(node.arguments[0], t.stringLiteral(dependencyId));
+  checkRequireArgs(node.arguments, dependencyId);
 
 const isImport = (node, scope, patterns) =>
   patterns.some(pattern => {
@@ -40,21 +44,25 @@ const isImport = (node, scope, patterns) =>
     return isRequireCall(node, importName, scope);
   });
 
-function isImportOrGlobal(node, scope, patterns) {
+function isImportOrGlobal(node, scope, patterns, isWrappedModule) {
   const identifier = patterns.find(pattern => t.isIdentifier(node, pattern));
-  return identifier && isToplevelBinding(scope.getBinding(identifier.name)) ||
-         isImport(node, scope, patterns);
+  return (
+    identifier &&
+    isToplevelBinding(scope.getBinding(identifier.name), isWrappedModule) ||
+    isImport(node, scope, patterns)
+  );
 }
 
-const isPlatformOS = (node, scope) =>
+const isPlatformOS = (node, scope, isWrappedModule) =>
   t.isIdentifier(node.property, os) &&
-  isImportOrGlobal(node.object, scope, [platform]);
+  isImportOrGlobal(node.object, scope, [platform], isWrappedModule);
 
-const isReactPlatformOS = (node, scope) =>
+const isReactPlatformOS = (node, scope, isWrappedModule) =>
   t.isIdentifier(node.property, os) &&
   t.isMemberExpression(node.object) &&
   t.isIdentifier(node.object.property, platform) &&
-  isImportOrGlobal(node.object.object, scope, [React, ReactNative]);
+  isImportOrGlobal(
+    node.object.object, scope, [React, ReactNative], isWrappedModule);
 
 const isProcessEnvNodeEnv = (node, scope) =>
   t.isIdentifier(node.property, nodeEnv) &&
@@ -63,10 +71,29 @@ const isProcessEnvNodeEnv = (node, scope) =>
   t.isIdentifier(node.object.object, processId) &&
   isGlobal(scope.getBinding(processId.name));
 
+const isPlatformSelect = (node, scope, isWrappedModule) =>
+  t.isMemberExpression(node.callee) &&
+  t.isIdentifier(node.callee.object, platform) &&
+  t.isIdentifier(node.callee.property, select) &&
+  isImportOrGlobal(node.callee.object, scope, [platform], isWrappedModule);
+
+const isReactPlatformSelect = (node, scope, isWrappedModule) =>
+  t.isMemberExpression(node.callee) &&
+  t.isIdentifier(node.callee.property, select) &&
+  t.isMemberExpression(node.callee.object) &&
+  t.isIdentifier(node.callee.object.property, platform) &&
+  isImportOrGlobal(
+    node.callee.object.object, scope, [React, ReactNative], isWrappedModule);
+
 const isDev = (node, parent, scope) =>
   t.isIdentifier(node, dev) &&
   isGlobal(scope.getBinding(dev.name)) &&
   !(t.isMemberExpression(parent));
+
+function findProperty(objectExpression, key) {
+  const property = objectExpression.properties.find(p => p.key.name === key);
+  return property ? property.value : t.identifier('undefined');
+}
 
 const inlinePlugin = {
   visitor: {
@@ -78,18 +105,45 @@ const inlinePlugin = {
     MemberExpression(path, state) {
       const node = path.node;
       const scope = path.scope;
+      const opts = state.opts;
 
-      if (isPlatformOS(node, scope) || isReactPlatformOS(node, scope)) {
-        path.replaceWith(t.stringLiteral(state.opts.platform));
+      if (
+        isPlatformOS(node, scope, opts.isWrapped) ||
+        isReactPlatformOS(node, scope, opts.isWrapped)
+      ) {
+        path.replaceWith(t.stringLiteral(opts.platform));
       } else if (isProcessEnvNodeEnv(node, scope)) {
         path.replaceWith(
-          t.stringLiteral(state.opts.dev ? 'development' : 'production'));
+          t.stringLiteral(opts.dev ? 'development' : 'production'));
       }
     },
+    CallExpression(path, state) {
+      const node = path.node;
+      const scope = path.scope;
+      const arg = node.arguments[0];
+      const opts = state.opts;
+
+      if (
+        isPlatformSelect(node, scope, opts.isWrapped) ||
+        isReactPlatformSelect(node, scope, opts.isWrapped)
+      ) {
+        const replacement = t.isObjectExpression(arg)
+          ? findProperty(arg, opts.platform)
+          : node;
+
+        path.replaceWith(replacement);
+      }
+    }
   },
 };
 
 const plugin = () => inlinePlugin;
+
+function checkRequireArgs(args, dependencyId) {
+  const pattern = t.stringLiteral(dependencyId);
+  return t.isStringLiteral(args[0], pattern) ||
+         t.isNumericLiteral(args[0]) && t.isStringLiteral(args[1], pattern);
+}
 
 function inline(filename, transformResult, options) {
   const code = transformResult.code;
@@ -109,4 +163,5 @@ function inline(filename, transformResult, options) {
       : babel.transform(code, babelOptions);
 }
 
+inline.plugin = inlinePlugin;
 module.exports = inline;

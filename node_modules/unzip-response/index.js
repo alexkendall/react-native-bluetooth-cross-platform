@@ -15,6 +15,15 @@ module.exports = function (res) {
 		unzip.statusMessage = res.statusMessage;
 		unzip.socket = res.socket;
 
+		unzip.once('error', function (err) {
+			if (err.code === 'Z_BUF_ERROR') {
+				res.emit('end');
+				return;
+			}
+
+			res.emit('error', err);
+		});
+
 		res.on('close', function () {
 			unzip.emit('close');
 		});

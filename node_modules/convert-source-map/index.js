@@ -24,7 +24,7 @@ function readFromFileMap(sm, dir) {
 
   // for some odd reason //# .. captures in 1 and /* .. */ in 2
   var filename = r[1] || r[2];
-  var filepath = path.join(dir, filename);
+  var filepath = path.resolve(dir, filename);
 
   try {
     return fs.readFileSync(filepath, 'utf8');

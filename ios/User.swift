@@ -1,7 +1,7 @@
 import Foundation
 import Underdark
 
-public class User: NSObject {
+open class User: NSObject {
   var link: UDLink!
   var deviceId: String = ""
   var connected: Bool = false
@@ -24,13 +24,13 @@ public class User: NSObject {
     case ADVERTISER_BROWSER = "advertiserbrowser"
     case OFFLINE = "offline"
   }
-  func getJSUser(message: String?)->[String: AnyObject] {
+  func getJSUser(_ message: String?)->[String: AnyObject] {
     var obj = [String: AnyObject]()
-    obj["connected"] = self.connected
-    obj["id"] = self.deviceId
-    obj["message"] = message ?? ""
-    obj["type"] = self.mode.rawValue
-    obj["name"] = self.displayName
+    obj["connected"] = self.connected as AnyObject?
+    obj["id"] = self.deviceId as AnyObject?
+    obj["message"] = message as AnyObject?? ?? "" as AnyObject?
+    obj["type"] = self.mode.rawValue as AnyObject?
+    obj["name"] = self.displayName as AnyObject?
     return obj
   }
   func logInfo() {

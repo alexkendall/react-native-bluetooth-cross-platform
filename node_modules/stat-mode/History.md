@@ -1,3 +1,9 @@
+0.2.2 / 2016-09-05
+==================
+
+* [[`764f2420ef`](https://github.com/TooTallNate/stat-mode/commit/764f2420ef)] - Rename `define()` to `_define()` (#6) (CxRes)
+* [[`ba5a88d6e4`](https://github.com/TooTallNate/stat-mode/commit/ba5a88d6e4)] - **package**: update "mocha" to v3.0.2 (Nathan Rajlich)
+* [[`e8a4a487ab`](https://github.com/TooTallNate/stat-mode/commit/e8a4a487ab)] - **travis**: test lots more node versions (Nathan Rajlich)
 
 0.2.1 / 2015-04-06
 ==================

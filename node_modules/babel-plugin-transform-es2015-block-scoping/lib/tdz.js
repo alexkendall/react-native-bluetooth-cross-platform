@@ -29,7 +29,6 @@ function isReference(node, scope, state) {
   var declared = state.letReferences[node.name];
   if (!declared) return false;
 
-  // declared node is different in this scope
   return scope.getBindingIdentifier(node.name) === declared;
 }
 
@@ -53,7 +52,6 @@ var visitor = exports.visitor = {
     if (status === "maybe") {
       var assert = buildTDZAssert(node, state.file);
 
-      // add tdzThis to parent variable declarator so it's exploded
       bindingPath.parent._tdzThis = true;
 
       path.skip();

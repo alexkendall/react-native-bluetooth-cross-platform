@@ -25,7 +25,7 @@ module.exports = function (filepath, contents) {
   var actual = fs.readFileSync(path.resolve(filepath));
 
   if (!(contents instanceof Buffer)) {
-    contents = new Buffer(contents, 'utf8');
+    contents = new Buffer(contents || '', 'utf8');
   }
 
   // We convert each Buffer contents to an hexadecimal string first, and then compare

@@ -171,7 +171,7 @@ Mode.prototype.isSocket = function (v) {
   return this._checkModeProperty(S_IFSOCK, v);
 };
 
-define(Mode.prototype, 'setuid',
+_define(Mode.prototype, 'setuid',
   function () {
     return Boolean(this.stat.mode & S_ISUID);
   },
@@ -184,7 +184,7 @@ define(Mode.prototype, 'setuid',
   }
 );
 
-define(Mode.prototype, 'setgid',
+_define(Mode.prototype, 'setgid',
   function () {
     return Boolean(this.stat.mode & S_ISGID);
   },
@@ -197,7 +197,7 @@ define(Mode.prototype, 'setgid',
   }
 );
 
-define(Mode.prototype, 'sticky',
+_define(Mode.prototype, 'sticky',
   function () {
     return Boolean(this.stat.mode & S_ISVTX);
   },
@@ -211,7 +211,7 @@ define(Mode.prototype, 'sticky',
 );
 
 function Owner (stat) {
-  define(this, 'read',
+  _define(this, 'read',
     function () {
       return Boolean(stat.mode & S_IRUSR);
     },
@@ -223,7 +223,7 @@ function Owner (stat) {
       }
     }
   );
-  define(this, 'write',
+  _define(this, 'write',
     function () {
       return Boolean(stat.mode & S_IWUSR);
     },
@@ -235,7 +235,7 @@ function Owner (stat) {
       }
     }
   );
-  define(this, 'execute',
+  _define(this, 'execute',
     function () {
       return Boolean(stat.mode & S_IXUSR);
     },
@@ -250,7 +250,7 @@ function Owner (stat) {
 }
 
 function Group (stat) {
-  define(this, 'read',
+  _define(this, 'read',
     function () {
       return Boolean(stat.mode & S_IRGRP);
     },
@@ -262,7 +262,7 @@ function Group (stat) {
       }
     }
   );
-  define(this, 'write',
+  _define(this, 'write',
     function () {
       return Boolean(stat.mode & S_IWGRP);
     },
@@ -274,7 +274,7 @@ function Group (stat) {
       }
     }
   );
-  define(this, 'execute',
+  _define(this, 'execute',
     function () {
       return Boolean(stat.mode & S_IXGRP);
     },
@@ -289,7 +289,7 @@ function Group (stat) {
 }
 
 function Others (stat) {
-  define(this, 'read',
+  _define(this, 'read',
     function () {
       return Boolean(stat.mode & S_IROTH);
     },
@@ -301,7 +301,7 @@ function Others (stat) {
       }
     }
   );
-  define(this, 'write',
+  _define(this, 'write',
     function () {
       return Boolean(stat.mode & S_IWOTH);
     },
@@ -313,7 +313,7 @@ function Others (stat) {
       }
     }
   );
-  define(this, 'execute',
+  _define(this, 'execute',
     function () {
       return Boolean(stat.mode & S_IXOTH);
     },
@@ -327,7 +327,7 @@ function Others (stat) {
   );
 }
 
-function define (obj, name, get, set) {
+function _define (obj, name, get, set) {
   Object.defineProperty(obj, name, {
     enumerable: true,
     configurable: true,

@@ -1,14 +1,8 @@
 declare function moment(): moment.Moment;
 declare function moment(date: number): moment.Moment;
 declare function moment(date: number[]): moment.Moment;
-declare function moment(date: string, format?: string, strict?: boolean): moment.Moment;
-declare function moment(date: string, format?: string, language?: string, strict?: boolean): moment.Moment;
-declare function moment(date: string, formats: string[], strict?: boolean): moment.Moment;
-declare function moment(date: string, formats: string[], language?: string, strict?: boolean): moment.Moment;
-declare function moment(date: string, specialFormat: () => void, strict?: boolean): moment.Moment;
-declare function moment(date: string, specialFormat: () => void, language?: string, strict?: boolean): moment.Moment;
-declare function moment(date: string, formatsIncludingSpecial: any[], strict?: boolean): moment.Moment;
-declare function moment(date: string, formatsIncludingSpecial: any[], language?: string, strict?: boolean): moment.Moment;
+declare function moment(date: string, format?: moment.MomentFormatSpecification, strict?: boolean): moment.Moment;
+declare function moment(date: string, format?: moment.MomentFormatSpecification, language?: string, strict?: boolean): moment.Moment;
 declare function moment(date: Date): moment.Moment;
 declare function moment(date: moment.Moment): moment.Moment;
 declare function moment(date: Object): moment.Moment;
@@ -55,17 +49,20 @@ declare namespace moment {
     days(): number;
     asDays(): number;
 
+    weeks(): number;
+    asWeeks(): number;
+
     months(): number;
     asMonths(): number;
 
     years(): number;
     asYears(): number;
 
-    add(n: number, p: string): Duration;
+    add(n: number, p: UnitOfTime): Duration;
     add(n: number): Duration;
     add(d: Duration): Duration;
 
-    subtract(n: number, p: string): Duration;
+    subtract(n: number, p: UnitOfTime): Duration;
     subtract(n: number): Duration;
     subtract(d: Duration): Duration;
 
@@ -174,18 +171,18 @@ declare namespace moment {
   }
 
   interface MomentParsingFlags {
-     empty: boolean;
-     unusedTokens: string[];
-     unusedInput: string[];
-     overflow: number;
-     charsLeftOver: number;
-     nullInput: boolean;
-     invalidMonth?: string;
-     invalidFormat: boolean;
-     userInvalidated: boolean;
-     iso: boolean;
-     parsedDateParts: any[];
-     meridiem?: string;
+    empty: boolean;
+    unusedTokens: string[];
+    unusedInput: string[];
+    overflow: number;
+    charsLeftOver: number;
+    nullInput: boolean;
+    invalidMonth?: string;
+    invalidFormat: boolean;
+    userInvalidated: boolean;
+    iso: boolean;
+    parsedDateParts: any[];
+    meridiem?: string;
   }
 
   interface BaseMomentLanguage {
@@ -198,10 +195,45 @@ declare namespace moment {
     meridiem?: (hour: number, minute: number, isLowercase: boolean) => string;
     calendar?: MomentCalendar;
     ordinal?: (num: number) => string;
+    week?: MomentLanguageWeek;
   }
 
   interface MomentLanguage extends BaseMomentLanguage {
     longDateFormat?: MomentLongDateFormat;
+  }
+
+  interface MomentLanguageWeek {
+    dow?: number;
+    doy?: number;
+  }
+
+  interface MomentBuiltinFormat {
+    __momentBuiltinFormatBrand: any;
+  }
+
+  type MomentFormatSpecification = string | MomentBuiltinFormat | (string | MomentBuiltinFormat)[];
+
+  type UnitOfTime = ("year" | "years" | "y" |
+              "quarter" | "quarters" | "Q" |
+              "month" | "months" | "M" |
+              "week" | "weeks" | "w" |
+              "date" | "dates" | "d" |
+              "day" | "days" |
+              "hour" | "hours" | "h" |
+              "minute" | "minutes" | "m" |
+              "second" | "seconds" | "s" |
+              "millisecond" | "milliseconds" | "ms");
+
+  interface MomentCreationData {
+    input?: string;
+    format?: string;
+    locale?: MomentLocale;
+    isUTC: boolean;
+    strict: boolean;
+  }
+
+  interface MomentLocale  {
+    // Details about the locale structure are not in the documentation so they are omitted here.
   }
 
   interface Moment {
@@ -210,8 +242,8 @@ declare namespace moment {
 
     fromNow(withoutSuffix?: boolean): string;
 
-    startOf(unitOfTime: string): Moment;
-    endOf(unitOfTime: string): Moment;
+    startOf(unitOfTime: UnitOfTime): Moment;
+    endOf(unitOfTime: UnitOfTime): Moment;
 
     /**
     * Mutates the original moment by adding time. (deprecated in 2.8.0)
@@ -219,21 +251,21 @@ declare namespace moment {
     * @param unitOfTime the unit of time you want to add (eg "years" / "hours" etc)
     * @param amount the amount you want to add
     */
-    add(unitOfTime: string, amount: number): Moment;
+    add(unitOfTime: UnitOfTime, amount: number): Moment;
     /**
     * Mutates the original moment by adding time.
     *
     * @param amount the amount you want to add
     * @param unitOfTime the unit of time you want to add (eg "years" / "hours" etc)
     */
-    add(amount: number, unitOfTime: string): Moment;
+    add(amount: number, unitOfTime: UnitOfTime): Moment;
     /**
     * Mutates the original moment by adding time. Note that the order of arguments can be flipped.
     *
     * @param amount the amount you want to add
     * @param unitOfTime the unit of time you want to add (eg "years" / "hours" etc)
     */
-    add(amount: string, unitOfTime: string): Moment;
+    add(amount: string, unitOfTime: UnitOfTime): Moment;
     /**
     * Mutates the original moment by adding time.
     *
@@ -253,21 +285,21 @@ declare namespace moment {
     * @param unitOfTime the unit of time you want to subtract (eg "years" / "hours" etc)
     * @param amount the amount you want to subtract
     */
-    subtract(unitOfTime: string, amount: number): Moment;
+    subtract(unitOfTime: UnitOfTime, amount: number): Moment;
     /**
     * Mutates the original moment by subtracting time.
     *
     * @param unitOfTime the unit of time you want to subtract (eg "years" / "hours" etc)
     * @param amount the amount you want to subtract
     */
-    subtract(amount: number, unitOfTime: string): Moment;
+    subtract(amount: number, unitOfTime: UnitOfTime): Moment;
     /**
     * Mutates the original moment by subtracting time. Note that the order of arguments can be flipped.
     *
     * @param amount the amount you want to add
     * @param unitOfTime the unit of time you want to subtract (eg "years" / "hours" etc)
     */
-    subtract(amount: string, unitOfTime: string): Moment;
+    subtract(amount: string, unitOfTime: UnitOfTime): Moment;
     /**
     * Mutates the original moment by subtracting time.
     *
@@ -299,6 +331,7 @@ declare namespace moment {
     isValid(): boolean;
     invalidAt(): number;
 
+    creationData(): MomentCreationData;
     parsingFlags(): MomentParsingFlags;
 
     year(y: number): Moment;
@@ -333,6 +366,7 @@ declare namespace moment {
     weekday(d: number): Moment;
     isoWeekday(): number;
     isoWeekday(d: number): Moment;
+    isoWeekday(d: string): Moment;
     weekYear(): number;
     weekYear(d: number): Moment;
     isoWeekYear(): number;
@@ -355,8 +389,8 @@ declare namespace moment {
     toNow(withoutPrefix?: boolean): string;
 
     diff(b: Moment): number;
-    diff(b: Moment, unitOfTime: string): number;
-    diff(b: Moment, unitOfTime: string, round: boolean): number;
+    diff(b: Moment, unitOfTime: UnitOfTime): number;
+    diff(b: Moment, unitOfTime: UnitOfTime, precise: boolean): number;
 
     toArray(): number[];
     toDate(): Date;
@@ -381,6 +415,9 @@ declare namespace moment {
     isAfter(b: Moment | string | number | Date | number[], granularity?: string): boolean;
 
     isSame(b: Moment | string | number | Date | number[], granularity?: string): boolean;
+    isSameOrAfter(b: Moment | string | number | Date | number[], granularity?: string): boolean;
+    isSameOrBefore(b: Moment | string | number | Date | number[], granularity?: string): boolean;
+
     isBetween(a: Moment | string | number | Date | number[], b: Moment | string | number | Date | number[], granularity?: string, inclusivity?: string): boolean;
 
     // Deprecated as of 2.8.0.
@@ -392,9 +429,14 @@ declare namespace moment {
     locale(reset: boolean): Moment;
     locale(): string;
 
+    locales(): string[];
+
     localeData(language: string): Moment;
     localeData(reset: boolean): Moment;
     localeData(): MomentLanguage;
+
+    defineLocale(language: string, locale: MomentLanguage): MomentLanguage;
+    updateLocale(language: string, locale: MomentLanguage): MomentLanguage;
 
     // Deprecated as of 2.7.0.
     max(date: Moment | string | number | Date | any[]): Moment;
@@ -404,8 +446,8 @@ declare namespace moment {
     min(date: Moment | string | number | Date | any[]): Moment;
     min(date: string, format: string): Moment;
 
-    get(unit: string): number;
-    set(unit: string, value: number): Moment;
+    get(unit: UnitOfTime): number;
+    set(unit: UnitOfTime, value: number): Moment;
     set(objectLiteral: MomentInput): Moment;
 
     /*This returns an object containing year, month, day-of-month, hour, minute, seconds, milliseconds.*/
@@ -431,10 +473,10 @@ declare namespace moment {
 
   export function invalid(parsingFlags?: Object): Moment;
   export function isMoment(): boolean;
-  export function isMoment(m: any): boolean;
-  export function isDate(m: any): boolean;
+  export function isMoment(m: any): m is Moment;
+  export function isDate(m: any): m is Date;
   export function isDuration(): boolean;
-  export function isDuration(d: any): boolean;
+  export function isDuration(d: any): d is Duration;
 
   // Deprecated in 2.8.0.
   export function lang(language?: string): string;
@@ -446,6 +488,8 @@ declare namespace moment {
 
   export function localeData(language?: string): MomentLanguageData;
 
+  export function updateLocale(language: string, locale: MomentLanguage): MomentLanguage;
+
   export var longDateFormat: any;
   export var relativeTime: any;
   export var meridiem: (hour: number, minute: number, isLowercase: boolean) => string;
@@ -453,7 +497,7 @@ declare namespace moment {
   export var ordinal: (num: number) => string;
 
   export function duration(milliseconds: Number): Duration;
-  export function duration(num: Number, unitOfTime: string): Duration;
+  export function duration(num: Number, unitOfTime: UnitOfTime): Duration;
   export function duration(input: MomentInput): Duration;
   export function duration(object: any): Duration;
   export function duration(): Duration;
@@ -500,13 +544,17 @@ declare namespace moment {
   export function normalizeUnits(unit: string): string;
   export function relativeTimeThreshold(threshold: string): number | boolean;
   export function relativeTimeThreshold(threshold: string, limit: number): boolean;
+  export function relativeTimeRounding(fn: (num: number) => number): boolean;
+  export function relativeTimeRounding(): (num: number) => number;
+  export function calendarFormat(m: Moment, now: Moment): string;
 
   /**
   * Constant used to enable explicit ISO_8601 format parsing.
   */
-  export function ISO_8601(): void;
+  export var ISO_8601: MomentBuiltinFormat;
 
   export var defaultFormat: string;
+  export var defaultFormatUtc: string;
 }
 
 export = moment;
