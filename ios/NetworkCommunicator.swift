@@ -1,16 +1,16 @@
 import Foundation
 
-open class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecoder {
+@objc (NetworkCommunicator)
+public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecoder {
   
   // delimiters
-  fileprivate var displayDelimeter: String = "$%#";
-  fileprivate var typeDelimeter: String = "%$#";
-  fileprivate var deviceDelimeter: String = "$#%";
-  fileprivate var advertiseTimer: Timer? = nil
-  fileprivate let deviceId: String = UIDevice.current.identifierForVendor?.uuidString ?? ""
-  fileprivate let displayName: String = UIDevice.current.name
-  fileprivate var type: User.PeerType = User.PeerType.OFFLINE
-  static let sharedInstance = NetworkCommunicator()
+  private var displayDelimeter: String = "$%#";
+  private var typeDelimeter: String = "%$#";
+  private var deviceDelimeter: String = "$#%";
+  private var advertiseTimer: Timer? = nil
+  private let deviceId: String = UIDevice.current.identifierForVendor?.uuidString ?? ""
+  private let displayName: String = UIDevice.current.name
+  private var type: User.PeerType = User.PeerType.OFFLINE
   
   override open func initTransport(_ kind: String, inType: User.PeerType) {
     super.initTransport(kind, inType: inType)
@@ -34,9 +34,10 @@ open class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecoder
   }
   
   // HANDLE RECIEVING NEW FRAME
-  override open func transport(_ transport: UDTransport!, link: UDLink!, didReceiveFrame frameData: Data!) {
+  override open func transport(_ transport: UDTransport, link: UDLink, didReceiveFrame frameData: Data) {
     super.transport(transport, link: link, didReceiveFrame: frameData);
     let message = getMessage(frameData: frameData) ?? ""
+    print(message)
     let name = getDisplayName(frameData: frameData) ?? ""
     let id = getDeviceId(frameData: frameData) ?? ""
     var user: User? = nil
@@ -57,7 +58,7 @@ open class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecoder
     case "invitation":
       user = findUser(id)
       if user != nil {
-        bridge.eventDispatcher().sendAppEvent(withName: "receivedInvitation", body: user!.getJSUser("invitation"))
+        self.sendEvent(withName: "receivedInvitation", body: user!.getJSUser("invitation"))
       }
       return
     case "accepted":
@@ -65,27 +66,27 @@ open class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecoder
       if user != nil {
         user!.connected = true
         informConnected(user: user!)
-        bridge.eventDispatcher().sendAppEvent(withName: "connectedToUser", body: user!.getJSUser("connected"))
+        self.sendEvent(withName: "connectedToUser", body: user!.getJSUser("connected"))
       }
       return
     case "connected":
       user = findUser(id)
       if user != nil {
         user?.connected = true
-        bridge.eventDispatcher().sendAppEvent(withName: "connectedToUser", body: user?.getJSUser("connected"))
+        self.sendEvent(withName: "connectedToUser", body: user?.getJSUser("connected"))
       }
       return
     case "disconnected":
       user = findUser(id)
       if user != nil {
         user?.connected = false
-        bridge.eventDispatcher().sendAppEvent(withName: "lostUser", body: user!.getJSUser("lost peer"))
+        self.sendEvent(withName: "lostUser", body: user!.getJSUser("lost peer"))
       }
       break
     default:
       user = findUser(id)
       if user != nil {
-        bridge.eventDispatcher().sendAppEvent(withName: "messageReceived", body: user?.getJSUser(message))
+        self.sendEvent(withName: "messageReceived", body: user?.getJSUser(message))
       }
       return
     }
@@ -95,12 +96,12 @@ open class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecoder
   open func sendMessage(message: String, userId:String) {
     if let user = findUser(userId) {
       let data = "\(displayName)\(displayDelimeter)\(self.type.rawValue)\(typeDelimeter)\(deviceId)\(deviceDelimeter)\(message)".data(using: String.Encoding.utf8)
-      user.link.sendFrame(data)
+      user.link.sendFrame(data!)
     }
   }
   open func sendMessage(message: String, link:UDLink) {
     let data = "\(displayName)\(displayDelimeter)\(self.type.rawValue)\(typeDelimeter)\(deviceId)\(deviceDelimeter)\(message)".data(using: String.Encoding.utf8)
-    link.sendFrame(data)
+    link.sendFrame(data!)
   }
   open func informConnected(user: User) {
     self.sendMessage(message: "connected", link: user.link)
@@ -108,7 +109,7 @@ open class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecoder
   open func informDisonnected(user: User) {
     sendMessage(message: "disconnected", link: user.link)
     user.connected = false
-    bridge.eventDispatcher().sendAppEvent(withName: "lostUser", body: user.getJSUser("lost peer"))
+    self.sendEvent(withName: "lostUser", body: user.getJSUser("lost peer"))
     
   }
   open func informAcceptedInvite(user: User) {
@@ -144,8 +145,8 @@ open class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecoder
     let str: String = String(data: frameData, encoding: String.Encoding.utf8) ?? ""
     if let startIndex: Int = str.getIndexOf(typeDelimeter) {
       if let endIndex: Int = str.getIndexOf(deviceDelimeter) {
-        let start = str.index(str.startIndex, offsetBy: startIndex)
-        let end = str.index(str.startIndex, offsetBy: endIndex)
+        let start = str.index(str.startIndex, offsetBy: startIndex + typeDelimeter.characters.count)
+        let end = str.index(str.startIndex, offsetBy: endIndex + deviceDelimeter.characters.count)
         let deviceId = str.substring(with: start..<end)
         return deviceId
       }
@@ -155,8 +156,9 @@ open class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecoder
   open func getMessage(frameData: Data)-> String? {
     let str: String = String(data: frameData, encoding: String.Encoding.utf8) ?? ""
     if let startIndex: Int = str.getIndexOf(deviceDelimeter) {
-      let start = str.index(str.startIndex, offsetBy: startIndex)
+      let start = str.index(str.startIndex, offsetBy: startIndex + deviceDelimeter.characters.count)
       let message = str.substring(with: start..<str.endIndex)
+      print(message)
       return message
     }
     return nil
@@ -180,6 +182,10 @@ open class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecoder
       return;
     }
     nearbyUsers.append(user)
-    bridge.eventDispatcher().sendAppEvent(withName: "detectedUser", body: user.getJSUser("new user"))
+    self.sendEvent(withName: "detectedUser", body: user.getJSUser("new user"))
+  }
+  
+  override open func supportedEvents() -> [String]! {
+    return ["lostUser","detectedUser", "messageReceived", "connectedToUser", "receivedInvitation"]
   }
 }

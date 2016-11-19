@@ -1,18 +1,18 @@
 import Foundation
 
-open class TransportHandler: NSObject, UDTransportDelegate {
+open class TransportHandler: RCTEventEmitter, UDTransportDelegate {
   
   // delimiterse
-  fileprivate var type: User.PeerType = User.PeerType.OFFLINE
-  fileprivate var transportConfigured: Bool = false
-  fileprivate var transport: UDTransport? = nil
-  fileprivate var advertiseTimer: Timer? = nil
-  fileprivate var nodeId: Int64 = 0
+  private var type: User.PeerType = User.PeerType.OFFLINE
+  private var transportConfigured: Bool = false
+  private var transport: UDTransport? = nil
+  private var advertiseTimer: Timer? = nil
+  private var nodeId: Int64 = 0
   internal var links = [UDLink]()
   internal var nearbyUsers = [User]()
   
   // MARK: START TRANSPORT
-  open func initTransport(_ kind: String, inType: User.PeerType) {
+  public func initTransport(_ kind: String, inType: User.PeerType) {
     if !self.transportConfigured {
       let appId: Int32 = 234235
       let queue = DispatchQueue.global(qos: DispatchQoS.QoSClass.background)
@@ -35,7 +35,8 @@ open class TransportHandler: NSObject, UDTransportDelegate {
         transportKinds.append(UDTransportKind.bluetooth.rawValue as AnyObject)
         transportKinds.append(UDTransportKind.wifi.rawValue as AnyObject)
       }
-      transport = UDUnderdark.configureTransport(withAppId: appId, nodeId: nodeId, delegate: self, queue: queue, kinds: transportKinds)
+      transport = UDUnderdark.configureTransport(withAppId: appId, nodeId: nodeId, queue: queue, kinds: transportKinds)
+      transport?.delegate = self
       self.transportConfigured = true
     }
     transport?.start()
@@ -46,11 +47,11 @@ open class TransportHandler: NSObject, UDTransportDelegate {
   }
   
   // MARK: TRansport delegate
-  open func transport(_ transport: UDTransport!, linkConnected link: UDLink!) {
+  public func transport(_ transport: UDTransport, linkConnected link: UDLink) {
     links.append(link)
   }
   
-  open func transport(_ transport: UDTransport!, linkDisconnected link: UDLink!) {
+  public func transport(_ transport: UDTransport, linkDisconnected link: UDLink) {
     var i = 0;
     while i < links.count {
       if link.nodeId == links[i].nodeId {
@@ -62,15 +63,19 @@ open class TransportHandler: NSObject, UDTransportDelegate {
     i = 0;
     while i < nearbyUsers.count {
       if link.nodeId == nearbyUsers[i].link.nodeId {
-        bridge.eventDispatcher().sendAppEvent(withName: "lostUser", body: nearbyUsers[i].getJSUser("lost peer"))
+        self.sendEvent(withName: "lostUser", body:  nearbyUsers[i].getJSUser("lost peer"))
         nearbyUsers.remove(at: i)
       } else {
         i += 1
       }
     }
   }
-  open func transport(_ transport: UDTransport!, link: UDLink!, didReceiveFrame frameData: Data!) {
+  public func transport(_ transport: UDTransport, link: UDLink, didReceiveFrame frameData: Data) {
     // handle this in network communicatorwith proper encoder and decoder functionality
+  }
+  
+  override open func supportedEvents() -> [String]! {
+    return ["lostUser","detectedUser", "messageReceived", "connectedToUser", "receivedInvitation"]
   }
   
 }

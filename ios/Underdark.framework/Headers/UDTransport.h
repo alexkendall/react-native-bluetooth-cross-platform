@@ -1,18 +1,23 @@
-//
-//  UDTransport.h
-//  Solidarity
-//
-//  Created by Virl on 14/02/15.
-//  Copyright (c) 2015 Glint. All rights reserved.
-//
-
-#ifndef Underdark_UDTransport_h
-#define Underdark_UDTransport_h
+/*
+ * Copyright (c) 2016 Vladimir L. Shabanov <virlof@gmail.com>
+ *
+ * Licensed under the Underdark License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://underdark.io/LICENSE.txt
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #import "UDLink.h"
 
-extern NSString* UDBluetoothRequiredNotification;
-extern NSString* UDBeaconDetectedNotification;
+extern NSString* _Nonnull UDBluetoothRequiredNotification;
+extern NSString* _Nonnull UDBeaconDetectedNotification;
 
 /**
  * Abstract transport protocol, which can aggregate multiple
@@ -35,7 +40,7 @@ extern NSString* UDBeaconDetectedNotification;
  * @param transport transport instance that discovered the device
  * @param link connection object to discovered device
  */
-- (void) transport:(id<UDTransport>)transport linkConnected:(id<UDLink>)link;
+- (void) transport:(nonnull id<UDTransport>)transport linkConnected:(nonnull id<UDLink>)link;
 
 /**
  * Called when connection to device is closed explicitly from either side
@@ -43,7 +48,7 @@ extern NSString* UDBeaconDetectedNotification;
  * @param transport transport instance that lost the device
  * @param link connection object to disconnected device
  */
-- (void) transport:(id<UDTransport>)transport linkDisconnected:(id<UDLink>)link;
+- (void) transport:(nonnull id<UDTransport>)transport linkDisconnected:(nonnull id<UDLink>)link;
 
 /**
  * Called when new data frame is received from remote device.
@@ -52,11 +57,14 @@ extern NSString* UDBeaconDetectedNotification;
  * @param frameData frame data received from remote device
  * @see [UDLink sendFrame:]
  */
-- (void) transport:(id<UDTransport>)transport link:(id<UDLink>)link didReceiveFrame:(NSData*)frameData;
+- (void) transport:(nonnull id<UDTransport>)transport link:(nonnull id<UDLink>)link didReceiveFrame:(nonnull NSData*)frameData;
 
 @end
 
 @protocol UDTransport <NSObject>
+
+@property (nonatomic, weak, nullable) id<UDTransportDelegate> delegate;
+@property (nonatomic, readonly, nonnull) dispatch_queue_t queue;
 
 /**
  * Starts underlying network advertising and discovery.
@@ -75,4 +83,3 @@ extern NSString* UDBeaconDetectedNotification;
 
 @end
 
-#endif

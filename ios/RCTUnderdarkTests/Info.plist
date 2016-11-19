@@ -24,6 +24,10 @@
 	<string>1</string>
 	<key>UILaunchStoryboardName</key>
 	<string>Splash</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location Is Necessary For Bluetooth Proximity</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Measures Proximity</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -38,5 +42,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

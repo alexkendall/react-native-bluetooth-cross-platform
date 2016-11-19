@@ -19,13 +19,15 @@
 		4668031A1DC6EB4300E93B81 /* Splash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 466803191DC6EB4300E93B81 /* Splash.storyboard */; };
 		466803611DC7918200E93B81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466803601DC7918200E93B81 /* AppDelegate.swift */; };
 		466803A71DC7939700E93B81 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 466803A61DC7939700E93B81 /* main.jsbundle */; };
+		46C25CC51DDD416700E3310C /* ProtocolBuffers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46C25CC41DDD416700E3310C /* ProtocolBuffers.framework */; };
+		46C25CC61DDD417100E3310C /* ProtocolBuffers.framework in Underdark & Dependencies */ = {isa = PBXBuildFile; fileRef = 46C25CC41DDD416700E3310C /* ProtocolBuffers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		FA1384FA1D183C3E002FA29A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1384F91D183C3E002FA29A /* User.swift */; };
 		FAA693A91D146E8900E77DA5 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA693A81D146E8900E77DA5 /* NetworkManager.swift */; };
-		FAA693AB1D146F5000E77DA5 /* NetworkManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA693AA1D146F5000E77DA5 /* NetworkManagerBridge.m */; };
+		FAA693AB1D146F5000E77DA5 /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA693AA1D146F5000E77DA5 /* NetworkManager.m */; };
 		FAA693AD1D14813400E77DA5 /* Underdark.framework in Resources */ = {isa = PBXBuildFile; fileRef = FAA693A61D146E2400E77DA5 /* Underdark.framework */; };
 		FAA693B01D1481E100E77DA5 /* Underdark.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAA693A61D146E2400E77DA5 /* Underdark.framework */; };
-		FAA693B11D1481E100E77DA5 /* Underdark.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FAA693A61D146E2400E77DA5 /* Underdark.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FAA693B11D1481E100E77DA5 /* Underdark.framework in Underdark & Dependencies */ = {isa = PBXBuildFile; fileRef = FAA693A61D146E2400E77DA5 /* Underdark.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FAE3481E1D3023B300A2B625 /* ParseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE3481D1D3023B300A2B625 /* ParseExtensions.swift */; };
 		FAE8AEC21D355C8100CE2039 /* ReactNearbyProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8AEC11D355C8100CE2039 /* ReactNearbyProtocol.swift */; };
 		FAE8AECE1D355EA500CE2039 /* NetworkCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8AECD1D355EA500CE2039 /* NetworkCommunicator.swift */; };
@@ -157,15 +159,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		FAA68F7D1D1345A900E77DA5 /* Embed Frameworks */ = {
+		FAA68F7D1D1345A900E77DA5 /* Underdark & Dependencies */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FAA693B11D1481E100E77DA5 /* Underdark.framework in Embed Frameworks */,
+				46C25CC61DDD417100E3310C /* ProtocolBuffers.framework in Underdark & Dependencies */,
+				FAA693B11D1481E100E77DA5 /* Underdark.framework in Underdark & Dependencies */,
 			);
-			name = "Embed Frameworks";
+			name = "Underdark & Dependencies";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -185,13 +188,14 @@
 		466803191DC6EB4300E93B81 /* Splash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Splash.storyboard; sourceTree = "<group>"; };
 		466803601DC7918200E93B81 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		466803A61DC7939700E93B81 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		46C25CC41DDD416700E3310C /* ProtocolBuffers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ProtocolBuffers.framework; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		FA1384F91D183C3E002FA29A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FAA68E021D133DBB00E77DA5 /* RCTUnderdark-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTUnderdark-Bridging-Header.h"; sourceTree = "<group>"; };
 		FAA693A61D146E2400E77DA5 /* Underdark.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Underdark.framework; sourceTree = "<group>"; };
 		FAA693A81D146E8900E77DA5 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
-		FAA693AA1D146F5000E77DA5 /* NetworkManagerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkManagerBridge.m; sourceTree = "<group>"; };
+		FAA693AA1D146F5000E77DA5 /* NetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkManager.m; sourceTree = "<group>"; };
 		FAE3481D1D3023B300A2B625 /* ParseExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseExtensions.swift; sourceTree = "<group>"; };
 		FAE8AEC11D355C8100CE2039 /* ReactNearbyProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactNearbyProtocol.swift; sourceTree = "<group>"; };
 		FAE8AECD1D355EA500CE2039 /* NetworkCommunicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkCommunicator.swift; sourceTree = "<group>"; };
@@ -205,6 +209,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46C25CC51DDD416700E3310C /* ProtocolBuffers.framework in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
@@ -306,6 +311,7 @@
 				466803A61DC7939700E93B81 /* main.jsbundle */,
 				466803601DC7918200E93B81 /* AppDelegate.swift */,
 				FAA693A81D146E8900E77DA5 /* NetworkManager.swift */,
+				FAA693AA1D146F5000E77DA5 /* NetworkManager.m */,
 				FAE8AECD1D355EA500CE2039 /* NetworkCommunicator.swift */,
 				FAFDE58A1D35680F004D238C /* TransportHandler.swift */,
 				FAE8AECF1D35631000CE2039 /* MessageEncoder.swift */,
@@ -313,7 +319,6 @@
 				FAE3481D1D3023B300A2B625 /* ParseExtensions.swift */,
 				FAE8AEC11D355C8100CE2039 /* ReactNearbyProtocol.swift */,
 				FA1384F91D183C3E002FA29A /* User.swift */,
-				FAA693AA1D146F5000E77DA5 /* NetworkManagerBridge.m */,
 				FAA68E021D133DBB00E77DA5 /* RCTUnderdark-Bridging-Header.h */,
 				466803191DC6EB4300E93B81 /* Splash.storyboard */,
 			);
@@ -327,6 +332,14 @@
 				466802C61DC6747C00E93B81 /* libReact-tvOS.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		46C25CB21DDD416600E3310C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				46C25CC41DDD416700E3310C /* ProtocolBuffers.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
@@ -372,6 +385,7 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* RCTUnderdarkTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
+				46C25CB21DDD416600E3310C /* Frameworks */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -404,7 +418,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				FAA68F7D1D1345A900E77DA5 /* Embed Frameworks */,
+				FAA68F7D1D1345A900E77DA5 /* Underdark & Dependencies */,
 			);
 			buildRules = (
 			);
@@ -422,7 +436,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
@@ -654,7 +668,7 @@
 				FA1384FA1D183C3E002FA29A /* User.swift in Sources */,
 				FAE8AED21D35631900CE2039 /* MessageDecoder.swift in Sources */,
 				FAE8AEC21D355C8100CE2039 /* ReactNearbyProtocol.swift in Sources */,
-				FAA693AB1D146F5000E77DA5 /* NetworkManagerBridge.m in Sources */,
+				FAA693AB1D146F5000E77DA5 /* NetworkManager.m in Sources */,
 				FAE8AECE1D355EA500CE2039 /* NetworkCommunicator.swift in Sources */,
 				FAA693A91D146E8900E77DA5 /* NetworkManager.swift in Sources */,
 				FAE8AED01D35631000CE2039 /* MessageEncoder.swift in Sources */,
@@ -741,8 +755,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -751,6 +767,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -788,8 +805,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -797,6 +816,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -811,6 +831,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
