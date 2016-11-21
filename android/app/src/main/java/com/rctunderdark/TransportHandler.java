@@ -1,15 +1,18 @@
 package com.rctunderdark;
-import io.underdark.*;
-import io.underdark.transport.Link;
-import io.underdark.transport.Transport;
-import io.underdark.transport.TransportKind;
-import io.underdark.transport.TransportListener;
-import android.app.Activity;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import java.util.*;
+
+import java.util.EnumSet;
+import java.util.Random;
+import java.util.Vector;
+
+import io.underdark.Underdark;
+import io.underdark.transport.Link;
+import io.underdark.transport.Transport;
+import io.underdark.transport.TransportKind;
+import io.underdark.transport.TransportListener;
 
 public class TransportHandler implements TransportListener {
     // MARK: private variables
@@ -17,14 +20,12 @@ public class TransportHandler implements TransportListener {
     private Transport transport;
     protected Vector<Link> links;
     protected Vector<User> nearbyUsers;
-    private Activity activity;
     private TransportListener listener;
     protected ReactContext context;
     private long nodeId = 0;
 
     // MARK: ReactContextBaseJavaModule
-    public TransportHandler(ReactApplicationContext reactContext, Activity inActivity) {
-        this.activity = inActivity;
+    public TransportHandler(ReactApplicationContext reactContext) {
         this.context = reactContext;
         this.listener = this;
     }
@@ -58,7 +59,7 @@ public class TransportHandler implements TransportListener {
                 nodeId,
                 this,
                 null,
-                activity.getApplicationContext(),
+                context,
                 kinds
         );
         this.transportConfigured = true;

@@ -1,18 +1,19 @@
 package com.rctunderdark;
 
-import android.app.Activity;
-import com.facebook.react.bridge.ReactApplicationContext;
-import io.underdark.transport.Link;
-import io.underdark.transport.Transport;
-
-import java.io.UnsupportedEncodingException;
-import com.facebook.react.modules.core.*;
+import android.bluetooth.BluetoothAdapter;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
-import android.bluetooth.BluetoothAdapter;
+
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
+
+import java.io.UnsupportedEncodingException;
 import java.util.Timer;
 import java.util.TimerTask;
-import com.facebook.react.bridge.WritableMap;
+
+import io.underdark.transport.Link;
+import io.underdark.transport.Transport;
 
 public class NetworkCommunicator extends TransportHandler implements MessageDecoder, MessageEncoder {
 
@@ -27,8 +28,8 @@ public class NetworkCommunicator extends TransportHandler implements MessageDeco
     private User.PeerType type = User.PeerType.OFFLINE;
 
     // INITIALIAZATION
-    public NetworkCommunicator(ReactApplicationContext reactContext, Activity inActivity) {
-        super(reactContext, inActivity);
+    public NetworkCommunicator(ReactApplicationContext reactContext) {
+        super(reactContext);
     }
 
     @Override

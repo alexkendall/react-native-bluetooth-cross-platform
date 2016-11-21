@@ -1,12 +1,12 @@
 package com.rctunderdark;
-import android.app.Activity;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableArray;
-import java.util.*;
+
+import java.util.Vector;
 
 public class NetworkManager extends ReactContextBaseJavaModule implements ReactNearbyInterface {
     // MARK: private variables
@@ -14,9 +14,9 @@ public class NetworkManager extends ReactContextBaseJavaModule implements ReactN
     private  NetworkCommunicator networkCommunicator;
 
     // MARK: ReactContextBaseJavaModule
-    public NetworkManager(ReactApplicationContext reactContext, Activity inActivity) {
+    public NetworkManager(ReactApplicationContext reactContext) {
         super(reactContext);
-        this.networkCommunicator = new NetworkCommunicator(reactContext, inActivity);
+        this.networkCommunicator = new NetworkCommunicator(reactContext);
     }
     @Override
     public String getName() {

@@ -145,9 +145,8 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
     let str: String = String(data: frameData, encoding: String.Encoding.utf8) ?? ""
     if let startIndex: Int = str.getIndexOf(typeDelimeter) {
       if let endIndex: Int = str.getIndexOf(deviceDelimeter) {
-        let start = str.index(str.startIndex, offsetBy: startIndex + typeDelimeter.characters.count)
-        let end = str.index(str.startIndex, offsetBy: endIndex + deviceDelimeter.characters.count)
-        let deviceId = str.substring(with: start..<end)
+
+        
         return deviceId
       }
     }

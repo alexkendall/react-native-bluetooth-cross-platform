@@ -15,14 +15,10 @@ import java.util.List;
 public class NetworkManagerPackage implements ReactPackage {
     private Activity mCurrentActivity;
 
-    public NetworkManagerPackage(Activity activity) {
-        mCurrentActivity = activity;
-    }
-
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         return Arrays.<NativeModule>asList(
-                new NetworkManager(reactContext, mCurrentActivity)
+                new NetworkManager(reactContext)
         );
     }
 
