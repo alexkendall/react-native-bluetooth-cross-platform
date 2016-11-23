@@ -6,7 +6,9 @@ If you would like to contribute to this repository, please do fork the project a
 
 ## Manual Installation(iOS)
 1.) npm install --save react-native-bluetooth-cross-platform
+
 2.) add './node_modules/react-native-bluetooth-cross-platform/ios/react-native-bluetooth-cross-platform' to the project as a group
+
 3.) Add a new copy files phase in Build Settings. Set destination to 'Frameworks' and drag Underdark.framework and ProtocoolBuffers.framework from the added group to the Copy Files area.
 
 ## Manual Installation(Android)
