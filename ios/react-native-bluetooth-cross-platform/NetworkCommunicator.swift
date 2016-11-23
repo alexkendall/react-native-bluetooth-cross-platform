@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 @objc (NetworkCommunicator)
 public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecoder {
@@ -37,7 +38,6 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
   override open func transport(_ transport: UDTransport, link: UDLink, didReceiveFrame frameData: Data) {
     super.transport(transport, link: link, didReceiveFrame: frameData);
     let message = getMessage(frameData: frameData) ?? ""
-    print(message)
     let name = getDisplayName(frameData: frameData) ?? ""
     let id = getDeviceId(frameData: frameData) ?? ""
     var user: User? = nil
@@ -157,7 +157,6 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
     if let startIndex: Int = str.getIndexOf(deviceDelimeter) {
       let start = str.index(str.startIndex, offsetBy: startIndex + deviceDelimeter.characters.count)
       let message = str.substring(with: start..<str.endIndex)
-      print(message)
       return message
     }
     return nil

@@ -1,4 +1,5 @@
 import Foundation
+import Underdark
 
 public protocol MessageEncoder {
   func sendMessage(message: String, userId:String)
