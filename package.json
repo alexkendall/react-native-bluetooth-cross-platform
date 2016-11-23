@@ -1,14 +1,30 @@
 {
-  "name": "RCTUnderdark",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start"
+  "name": "react-native-bluetooth-cross-platform",
+  "version": "0.0.2",
+  "private": false,
+  "description": "Cross-platform bluetooth and wi-fi nearby proximity framework.",
+  "author": "Alex Harrison alexkendall.harrison@gmail.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexkendall/react-native-bluetooth-cross-platform"
   },
-  "dependencies": {
-    "react": "15.3.2",
-    "react-motion": "^0.4.4",
-    "react-native": "0.37.0",
-    "react-swipeable-views": "^0.6.3"
-  }
+  "main": "index.js",
+  "keywords": [
+    "react",
+    "native",
+    "bluetooth",
+    "wi-fi",
+    "android",
+    "ios",
+    "cross-platform"
+  ],
+  "tags": [
+    "react",
+    "native",
+    "bluetooth",
+    "wi-fi",
+    "android",
+    "ios",
+    "cross-platform"
+  ]
 }

@@ -4,14 +4,40 @@ Cross-Platform React Native Component for Bluetooth &amp; WiFi. Share data over 
 ## Contributions
 If you would like to contribute to this repository, please do fork the project and submit a PR.
 
-## Manual Installation
-1. Download as zip file and unzip.
-2. Drag project folder to node-modules
-3. Import project to libraries and copy static library into build Phases
+## Manual Installation(iOS)
+1.) npm install --save react-native-bluetooth-cross-platform
+2.) add './node_modules/react-native-bluetooth-cross-platform/ios/react-native-bluetooth-cross-platform' to the project as a group
+3.) Add a new copy files phase in Build Settings. Set destination to 'Frameworks' and drag Underdark.framework and ProtocoolBuffers.framework from the added group to the Copy Files area.
+
+## Manual Installation(Android)
+1.) npm install --save react-native-bluetooth-cross-platform
+
+2.) Under your project level build.gradle under repositories add the underdark dependency
+```
+    repositories {
+		...
+        maven {
+            url 'https://dl.bintray.com/underdark/android/'
+        }
+    }
+```
+
+3.) Under MainApplication.java add the following import to the top of the file:
+```
+import com.rctunderdark.NetworkManagerPackage;
+```
+and under getPackages add the NetworkManagerPackage:
+```
+protected List<ReactPackage> getPackages() {
+      return Arrays.<ReactPackage>asList(
+          new MainReactPackage(),..., new NetworkManagerPackage()
+      );
+    }
+```
 
 # Usage
 ```
-import BluetoothCP from "react-native-bluetooth-cross-platform"
+let BluetoothCP = require("react-native-bluetooth-cross-platform")
 ```
 ## Advertise To Become Visible to Other Peers
 Advertise takes one argument which can be one of "WIFI", "BT", or "WIFI-BT". Likewise, the WIFI option advertises this device over WI-FI, BT advertises this device over bluetooth, and WIFI-BT advertises this device over both WI-FI and bluetooth channels. (Default is WIFI-BT)
