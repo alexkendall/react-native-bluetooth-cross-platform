@@ -9,6 +9,30 @@ If you would like to contribute to this repository, please do fork the project a
 2. add './node_modules/react-native-bluetooth-cross-platform/ios/react-native-bluetooth-cross-platform' to the project as a group
 3. Add a new copy files phase in Build Settings. Set destination to 'Frameworks' and drag Underdark.framework and ProtocoolBuffers.framework from the added group to the Copy Files area.
 
+## Manual Installation(Android)
+1. npm install --save react-native-bluetooth-cross-platform
+2. Under your project level build.gradle under repositories add the underdark dependency
+```
+    repositories {
+		...
+        maven {
+            url 'https://dl.bintray.com/underdark/android/'
+        }
+    }
+```
+3. Under MainApplication.java add the following import to the top of the file:
+```
+import com.rctunderdark.NetworkManagerPackage;
+```
+and under getPackages add the NetworkManagerPackage:
+```
+protected List<ReactPackage> getPackages() {
+      return Arrays.<ReactPackage>asList(
+          new MainReactPackage(),..., new NetworkManagerPackage()
+      );
+    }
+```
+
 # Usage
 ```
 let BluetoothCP = require("react-native-bluetooth-cross-platform")
