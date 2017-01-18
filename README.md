@@ -36,7 +36,15 @@ project(':react-native-bluetooth-cross-platform').projectDir = new File(rootProj
     }
 ```
 
-4.) Under MainApplication.java add the following import to the top of the file:
+4.) Under your app level build.gradle, add the following: 
+```
+dependencies {
+    ...
+    compile project(':react-native-bluetooth-cross-platform')
+}
+```
+
+5.) Under MainApplication.java add the following import to the top of the file:
 ```
 import com.rctunderdark.NetworkManagerPackage;
 ```
