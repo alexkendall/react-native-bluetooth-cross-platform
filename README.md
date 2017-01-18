@@ -20,7 +20,13 @@ If you would like to contribute to this repository, please do fork the project a
 ## Manual Installation(Android)
 1.) npm install --save react-native-bluetooth-cross-platform
 
-2.) Under your project level build.gradle under repositories add the underdark dependency
+2.) Under settings.gradle, add the following:
+```
+include ':react-native-bluetooth-cross-platform'
+project(':react-native-bluetooth-cross-platform').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-bluetooth-cross-platform/android')
+```
+
+3.) Under your project level build.gradle under repositories add the underdark dependency
 ```
     repositories {
 		...
@@ -30,7 +36,7 @@ If you would like to contribute to this repository, please do fork the project a
     }
 ```
 
-3.) Under MainApplication.java add the following import to the top of the file:
+4.) Under MainApplication.java add the following import to the top of the file:
 ```
 import com.rctunderdark.NetworkManagerPackage;
 ```
