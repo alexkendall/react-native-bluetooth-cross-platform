@@ -7,9 +7,15 @@ If you would like to contribute to this repository, please do fork the project a
 ## Manual Installation(iOS)
 1.) npm install --save react-native-bluetooth-cross-platform  
 
-2.) add './node_modules/react-native-bluetooth-cross-platform/ios/react-native-bluetooth-cross-platform' to the project as a group  
+2.) add files in './node_modules/react-native-bluetooth-cross-platform/ios/react-native-bluetooth-cross-platform' to project. When XCode asks to create bridging header, click YES. Delete the bridging header XCode generates for you.
 
-3.) Add a new copy files phase in Build Settings. Set destination to 'Frameworks' and drag Underdark.framework and ProtocoolBuffers.framework from the added group to the Copy Files area.  
+3.) In the project's' Build Settings, set bridging header to '$SRCROOT/../node_modules/react-native-bluetooth-cross-platform/ios/react-native-bluetooth-cross-platform/Bridge.h'
+
+4.) Add 'Underdark' and 'ProtocolBuffers' to Link Binary With Libraries Build Phase
+
+5.) Add a new copy files phase in Build Settings. Set destination to 'Frameworks' and drag 'Underdark' and 'ProtocolBuffers' from the added group to the Copy Files area.
+
+6.) Under Framework Search Paths in the project's' Build Settings, add '$(SRCROOT)/../../react-native-bluetooth-cross-platform/ios/react-native-bluetooth-cross-platform/' and set to recursive.
 
 ## Manual Installation(Android)
 1.) npm install --save react-native-bluetooth-cross-platform
