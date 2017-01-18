@@ -5,5 +5,4 @@ public protocol MessageDecoder {
   func getType(frameData: Data)-> String?
   func getDeviceId(frameData: Data)-> String?
   func getMessage(frameData: Data)-> String?
-
 }
