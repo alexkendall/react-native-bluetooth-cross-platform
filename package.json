@@ -1,6 +1,6 @@
 {
   "name": "react-native-bluetooth-cross-platform",
-  "version": "0.0.4",
+  "version": "0.0.8",
   "private": false,
   "description": "Cross-platform bluetooth and wi-fi nearby proximity framework.",
   "author": "Alex Harrison alexkendall.harrison@gmail.com",
