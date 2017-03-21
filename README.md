@@ -6,5 +6,12 @@ A Cross-Platform React Native Component for Bluetooth and WiFi. Share data over 
 
 If you would like to contribute to this repository, please do fork the project and submit a PR.
 
+## Documentation
+
+* [Introduction](README.md)
+* [iOS Installation](ios-installation.md)
+* [Android Installation](android-installation.md)
+* [SDK](sdk.md)
+
 
 
