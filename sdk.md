@@ -24,6 +24,8 @@ BluetoothCP.advertise\("BT"\)
 
 There are several listeners that can be added to monitor events concerning peers in the area. Add the following callbacks to achieve full functionality. For simplicity, I attempted to mimic Apple's Mutipeer Connectivity API as closely as possible.
 
+##### Subscribing
+
 ```
 addPeerDetectedListener(callback)
 addPeerLostListener(callback)
@@ -44,6 +46,28 @@ User {
     type // one of ADVERTISER, BROWSER, OR ADVERTISER_BROWSER
     connected // boolean determining whether or not that user is connected to this user
     display name // the peers display name
+}
+```
+
+##### Unsubscribing
+
+Simply registering a reference to each listener will allow you to keep track of them and unsubscribe later.
+
+```
+componentDidMount() {
+    this.listener1 = addPeerDetectedListener(callback)
+    this.listener2 = addPeerLostListener(callback)
+    this.listener3 = addReceivedMessageListener(callback)
+    this.listener4 = addInviteListener(callback)
+    this.listener5 = addConnectedListener(callback)
+}
+
+componentWillUnmount() {
+    this.listener1.remove()
+    this.listener2.remove()
+    this.listener3.remove()
+    this.listener4.remove()
+    this.listener5.remove()
 }
 ```
 
