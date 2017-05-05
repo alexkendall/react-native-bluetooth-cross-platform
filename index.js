@@ -48,31 +48,31 @@ class NetworkManager {
   peer contains .id (string), type(string), connected(bool), message(string), display name(string)
   */
   addPeerDetectedListener(callback) {
-    NativeEmitter.addListener(
+    return NativeEmitter.addListener(
     'detectedUser',
     (peer) =>  callback(peer)
     )
   }
   addPeerLostListener(callback) {
-    NativeEmitter.addListener(
+    return NativeEmitter.addListener(
     'lostUser',
     (peer) => callback(peer)
     )
   }
   addReceivedMessageListener(callback) {
-    NativeEmitter.addListener(
+    return NativeEmitter.addListener(
       'messageReceived',
       (peer) => callback(peer)
     );
   }
   addInviteListener(callback) {
-    NativeEmitter.addListener(
+    return NativeEmitter.addListener(
       'receivedInvitation',
       (peer) => callback(peer)
     )
   }
   addConnectedListener(callback) {
-    NativeEmitter.addListener(
+    return NativeEmitter.addListener(
       'connectedToUser',
       (peer) => callback(peer)
     )
