@@ -11,7 +11,7 @@ If you would like to contribute to this repository, please do fork the project a
 * [Introduction](README.md)
 * [iOS Installation](ios-installation.md)
 * [Android Installation](android-installation.md)
-* [AP](sdk.md)
+* [SDK](sdk.md)
 
 
 

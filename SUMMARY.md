@@ -3,5 +3,5 @@
 * [Introduction](README.md)
 * [iOS Installation](ios-installation.md)
 * [Android Installation](android-installation.md)
-* [API](sdk.md)
+* [SDK](sdk.md)
 
