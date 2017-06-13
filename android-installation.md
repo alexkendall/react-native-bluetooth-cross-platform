@@ -12,8 +12,13 @@ project(':react-native-bluetooth-cross-platform').projectDir = new File(rootProj
 3.\) Under your project level build.gradle under repositories add the underdark dependency
 
 ```
-    repositories {
-        ...
+repositories {
+        mavenLocal()
+        jcenter()
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url "$rootDir/../node_modules/react-native/android"
+        }
         maven {
             url 'https://dl.bintray.com/underdark/android/'
         }
