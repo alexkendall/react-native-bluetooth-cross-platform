@@ -13,16 +13,16 @@ project(':react-native-bluetooth-cross-platform').projectDir = new File(rootProj
 
 ```
 repositories {
-        mavenLocal()
-        jcenter()
-        maven {
-            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-            url "$rootDir/../node_modules/react-native/android"
-        }
-        maven {
-            url 'https://dl.bintray.com/underdark/android/'
-        }
+    mavenLocal()
+    jcenter()
+    maven {
+        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+        url "$rootDir/../node_modules/react-native/android"
     }
+    maven {
+        url 'https://dl.bintray.com/underdark/android/'
+    }
+}
 ```
 
 4.\) Under your app level build.gradle, add the following:
