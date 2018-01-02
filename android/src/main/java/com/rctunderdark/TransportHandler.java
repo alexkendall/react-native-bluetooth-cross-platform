@@ -46,7 +46,7 @@ public class TransportHandler implements TransportListener {
         }
 
         if("WIFI".equals(kind)) {
-            EnumSet.of(TransportKind.WIFI);
+            kinds = EnumSet.of(TransportKind.WIFI);
 
         } else if("BT".equals(kind)) {
             kinds = EnumSet.of(TransportKind.BLUETOOTH);
