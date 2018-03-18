@@ -176,8 +176,9 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
       if nearbyUsers[i].deviceId == user.deviceId && nearbyUsers[i].mode != user.mode {
         nearbyUsers[i].mode = user.mode;
         return;
+      } else if nearbyUsers[i].deviceId == user.deviceId {
+        return;
       }
-      return;
     }
     nearbyUsers.append(user)
     self.sendEvent(withName: "detectedUser", body: user.getJSUser("new user"))
