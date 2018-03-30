@@ -22,7 +22,7 @@ public class NetworkCommunicator extends TransportHandler implements MessageDeco
     private String typeDelimeter = "%$#";
     private String deviceDelimeter = "$#%";
     private String deviceID = Settings.Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
-    private String displayName = BluetoothAdapter.getDefaultAdapter().getName();
+    private String displayName;
     private Timer broadcastTimer = null;
     private Boolean isRunning = false;
     private User.PeerType type = User.PeerType.OFFLINE;
@@ -30,6 +30,9 @@ public class NetworkCommunicator extends TransportHandler implements MessageDeco
     // INITIALIAZATION
     public NetworkCommunicator(ReactApplicationContext reactContext) {
         super(reactContext);
+        if (BluetoothAdapter.getDefaultAdapter() != null) {
+            displayName = BluetoothAdapter.getDefaultAdapter().getName();
+        }
     }
 
     @Override
