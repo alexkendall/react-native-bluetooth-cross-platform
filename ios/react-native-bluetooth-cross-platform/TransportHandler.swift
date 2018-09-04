@@ -12,7 +12,7 @@ open class TransportHandler: RCTEventEmitter, UDTransportDelegate {
   internal var links = [UDLink]()
   internal var nearbyUsers = [User]()
 
-  // ratkinson - setting up a dispatch queue to handle "links" and "nearbyUsers"
+  // setting up a dispatch queue to handle "links" and "nearbyUsers"
   // logic syncronously in eventHandlers
   let serialQueue = DispatchQueue(label: "serialQueue")
   
