@@ -19,6 +19,7 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
     self.type = inType
     initTimer()
   }
+
   func initTimer() {
     DispatchQueue.main.async(execute: {
       if self.advertiseTimer == nil {
@@ -100,30 +101,37 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
       user.link.sendFrame(data!)
     }
   }
+
   open func sendMessage(message: String, link:UDLink) {
     let data = "\(displayName)\(displayDelimeter)\(self.type.rawValue)\(typeDelimeter)\(deviceId)\(deviceDelimeter)\(message)".data(using: String.Encoding.utf8)
     link.sendFrame(data!)
   }
+
   open func informConnected(user: User) {
     self.sendMessage(message: "connected", link: user.link)
   }
+
   open func informDisonnected(user: User) {
     sendMessage(message: "disconnected", link: user.link)
     user.connected = false
     self.sendEvent(withName: "lostUser", body: user.getJSUser("lost peer"))
     
   }
+
   open func informAcceptedInvite(user: User) {
     sendMessage(message: "accepted", link: user.link)
   }
+
   open func inviteUser(user: User) {
     sendMessage(message: "invitation", link: user.link)
   }
+
   open func broadcastType() {
     for i in 0..<links.count {
       sendMessage(message: self.type.rawValue, link: links[i])
     }
   }
+
   // MARK: MESSAGE DECODER PROTOCOOL
   open func getDisplayName(frameData: Data)-> String? {
     let str: String = String(data: frameData, encoding: String.Encoding.utf8) ?? ""
@@ -133,6 +141,7 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
     }
     return nil
   }
+
   open func getType(frameData: Data)-> String? {
     let str: String = String(data: frameData, encoding: String.Encoding.utf8) ?? ""
     if let startIndex: Int = str.getIndexOf(displayDelimeter) {
@@ -142,6 +151,7 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
     }
     return nil
   }
+
   open func getDeviceId(frameData: Data)-> String? {
     let str: String = String(data: frameData, encoding: String.Encoding.utf8) ?? ""
     if let startIndex: Int = str.getIndexOf(typeDelimeter) {
@@ -152,6 +162,7 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
     }
     return nil
   }
+
   open func getMessage(frameData: Data)-> String? {
     let str: String = String(data: frameData, encoding: String.Encoding.utf8) ?? ""
     if let startIndex: Int = str.getIndexOf(deviceDelimeter) {
@@ -171,17 +182,24 @@ public class NetworkCommunicator: TransportHandler, MessageEncoder, MessageDecod
     }
     return nil
   }
+
   fileprivate func checkForNewUsers(_ user: User) {
-    for i in 0..<nearbyUsers.count {
-      if nearbyUsers[i].deviceId == user.deviceId && nearbyUsers[i].mode != user.mode {
-        nearbyUsers[i].mode = user.mode;
-        return;
-      } else if nearbyUsers[i].deviceId == user.deviceId {
-        return;
+    serialQueue.sync {
+      let nearbyUserCount = nearbyUsers.count
+
+      for i in 0..<nearbyUserCount {
+        if nearbyUsers[i].deviceId == user.deviceId && nearbyUsers[i].mode != user.mode {
+          nearbyUsers[i].mode = user.mode;
+          return;
+        } else if nearbyUsers[i].deviceId == user.deviceId {
+          return;
+        }
       }
+
+      nearbyUsers.append(user)
+
+      self.sendEvent(withName: "detectedUser", body: user.getJSUser("new user"))
     }
-    nearbyUsers.append(user)
-    self.sendEvent(withName: "detectedUser", body: user.getJSUser("new user"))
   }
   
   override open func supportedEvents() -> [String]! {
