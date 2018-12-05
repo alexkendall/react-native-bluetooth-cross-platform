@@ -18,7 +18,7 @@ BluetoothCP.advertise\("WIFI"\)
 Browse takes one argument which can be one of "WIFI", "BT", or "WIFI-BT". Likewise, the WIFI option browses devices over WI-FI, BT browses devices over bluetooth, and WIFI-BT broswes devices over both WI-FI and bluetooth channels. \(Default is WIFI-BT\)
 
 **Example: browse over bluetooth**  
-BluetoothCP.advertise\("BT"\)
+BluetoothCP.browse\("BT"\)
 
 ## Listeners
 
